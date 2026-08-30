@@ -4,7 +4,7 @@
   "subject": {
    "name": "hf://spaces/SZLHOLDINGS/*",
    "digest": {
-    "sha256": "0a4826a9927baef5fcb0aef4ac4dfb8d318842e8dca78dc73c1cb520313168a9"
+    "sha256": "8e147874c8b147258a434be9eba358058eaa656b8fe9170a48e4fde9ee186f0d"
    }
   },
   "predicate": {
@@ -37,21 +37,21 @@
     "redaction_commitments": []
    },
    "timestamps": {
-    "created": "2026-08-30T23:35:52.277107+00:00",
-    "executed": "2026-08-30T23:35:52.277107+00:00",
+    "created": "2026-08-30T23:38:35.009675+00:00",
+    "executed": "2026-08-30T23:38:35.009675+00:00",
     "ntp_synced": true
    },
    "prev_chain_hash": "GENESIS"
   },
   "signatures": [
    {
-    "keyid": "fc0c3d397b1d6000",
-    "sig": "khbPlOfeCdaN2FFPd7cwYSIndhvjQpsM/gny48vSLDXxwAepnXq4VRAcKzX4+IHmF+HD4b8UcDry58wQkIaCAw=="
+    "keyid": "fd3cea304943d437",
+    "sig": "i3RV/LtPQjotRJsvHqH1JSjpiPTbi05L9ZArROaUTyMrmq9ow2VQoKvfGn2HQPY2ZD5XxXK+YD2i6h5PWenyDw=="
    }
   ]
  },
- "chain_hash": "4a41d1ab7648f0600289356e4fe8cb56d3bff709b1d339d4989c2a2d49995f59",
- "auditor_key": "E6rH+n8Goj6b8yKFCAUKx6ZeIA6KCEH9SGp1NPgDAs0=",
+ "chain_hash": "daf5968ebaa975935ea229a25143ae1aa08384cb91ecb4966a81eb6b67578d76",
+ "auditor_key": "90M/qnLkjhqcv5+hbrycEUgYj0JzPGTeupaI2IMbJJ0=",
  "completeness": "COMPLETE",
  "limitations": [
   "stage=RUNNING is not evidence of a deployed revision",

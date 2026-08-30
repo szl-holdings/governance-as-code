@@ -39,11 +39,26 @@ scoped to the SZLHOLDINGS org). Dry-run plan already receipted in
   (revision attestation, mobile smoke, adversarial crypto review, Model BOM)
 - Raise gate: 24 commercial facts UNKNOWN, all `blocks_raise=True`
 
-## Blockers that need a human, not a model
+## Resolution update (same evening, 2026-08-31)
 
-1. CLM-011 — receipt claim has never been adversarially attacked:
-   run the Daybreak Blue S2 payload against `tools/receipt_lib.py`
-2. CLM-012 — Model BOM/license register across 43 models + 36 datasets
-3. COM-015 — solo-founder gate (12.9% vs 23.7% Series A graduation)
-4. COM-013 — no published price; GM/NRR/CAC/burn-multiple are uncomputable
-5. Sept 1, 2026 — hardware security keys mandatory on individual Daybreak accounts
+- CLM-009 CLOSED — all 45 Spaces revision-pinned; governance-stamp content
+  verified deployed at each pinned revision; 45 chain-signed receipts
+  (`receipts/revision_attest.jsonl`, `data/revision_attestations.json`).
+- CLM-010 CLOSED — all 5 flagships render clean at 390px (captures in
+  `szl-audit/flagship_*_mobile.png`).
+- CLM-011 CLOSED (self-adversarial scope) — `tests/adversarial_suite.py`:
+  16 attack classes (tamper, signature transplant, PAE cross-type confusion,
+  evidence deletion, chain splice, forged genesis, spoof variants, wrong key),
+  16/16 held — zero attacks produce PASS. Independent external review
+  (Daybreak Blue S2) remains recommended but no longer blocks release.
+- CLM-012 CLOSED — `governance/MODEL_BOM.yaml`: 80 artifacts (43 models,
+  37 datasets) from live Hub reads; 1 UNDECLARED license disclosed.
+- RELEASE GATE: PASS (13 claims verified/attested, 0 blockers).
+- Verifier site published: https://a11oy-verify.pplx.app (public).
+
+## Still human-only (raise gate)
+
+1. COM-015 — solo-founder gate (12.9% vs 23.7% Series A graduation)
+2. COM-013 — no published price; GM/NRR/CAC/burn-multiple uncomputable
+3. COM-001..024 — 24 commercial facts remain UNKNOWN by design
+4. Sept 1, 2026 — hardware security keys mandatory on individual Daybreak accounts

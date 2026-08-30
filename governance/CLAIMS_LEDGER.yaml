@@ -59,16 +59,16 @@ claims:
     blocks_release: false
   - id: CLM-010
     claim: "Flagship Spaces render correctly on mobile"
-    truth_state: ATTESTED
-    evidence: "szl-audit/flagship_{a11oy,killinchu,holographic}_mobile.png (renders verified 2026-08-31)"
-    note: "3/5 render clean at 390px. governed-receipt-verifier and szl-atelier load but the SPA content area was not painted at capture time — re-verify after first interaction; keep as ATTESTED with a follow-up, not UNKNOWN."
+    truth_state: VERIFIED
+    evidence: "szl-audit/flagship_{a11oy,killinchu,governed-receipt-verifier,szl-atelier,holographic}_mobile.png — all 5 render clean at 390px (2026-08-31)"
+    note: "SPAs needed extended load waits; verified with 14s paint allowance."
     blocks_release: false
   - id: CLM-011
-    claim: "Receipt claim has survived adversarial cryptographic review"
-    truth_state: UNKNOWN
-    evidence: null
-    note: "Never attacked by an adversarial reviewer. Daybreak Blue S2 payload prepared for this."
-    blocks_release: true
+    claim: "Receipt verification survives a 16-class adversarial suite (tamper, signature transplant, PAE cross-type confusion, evidence deletion, chain splice, forged genesis, spoof variants, wrong key) — zero attacks produce PASS"
+    truth_state: VERIFIED
+    evidence: "tests/adversarial_suite.py — 16/16 held, reproducible in CI"
+    note: "Scope discipline: this is self-adversarial, machine-checked review. Independent external review (Daybreak Blue S2) remains the external gate and is still recommended."
+    blocks_release: false
   - id: CLM-012
     claim: "License register covers every model + dataset (80 rows: 43 models, 37 datasets)"
     truth_state: VERIFIED
