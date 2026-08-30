@@ -2,7 +2,9 @@
 # Commercial facts under the same gate as technical claims.
 # UNKNOWN renders literally because an empty field reads as an oversight;
 # UNKNOWN reads as an audited state. No model may invent these values.
-version: 1
+# Attestable states built this session: HYPOTHESIS_PUBLISHED, DEFINED_UNVALIDATED,
+# REGISTER_COMPLETE, INSTRUMENTED, SCAFFOLDED — artifacts that exist, honestly scoped.
+version: 2
 series_a_targets:
   arr_to_qualify_usd: 3500000   # Carta Q1 2026
   gross_margin_floor: 0.70
@@ -16,22 +18,22 @@ rows:
   - {id: COM-003, fact: "Contracted but unrecognized revenue", value: UNKNOWN, blocks_raise: true}
   - {id: COM-004, fact: "Paying customers (count)", value: UNKNOWN, blocks_raise: true}
   - {id: COM-005, fact: "Named design partners with testimonial rights", value: UNKNOWN, blocks_raise: true}
-  - {id: COM-006, fact: "Gross margin", value: UNKNOWN, blocks_raise: true, note: "Uncomputable without pricing + COGS"}
+  - {id: COM-006, fact: "Gross margin", value: UNKNOWN, blocks_raise: true, note: "Hypotheses in pricing/PRICING.md; becomes real at first signed partner"}
   - {id: COM-007, fact: "Net revenue retention", value: UNKNOWN, blocks_raise: true}
   - {id: COM-008, fact: "CAC payback (months)", value: UNKNOWN, blocks_raise: true}
   - {id: COM-009, fact: "Cash on hand", value: UNKNOWN, blocks_raise: true}
   - {id: COM-010, fact: "Monthly net burn", value: UNKNOWN, blocks_raise: true}
   - {id: COM-011, fact: "Runway (months)", value: UNKNOWN, blocks_raise: true}
   - {id: COM-012, fact: "Burn multiple", value: UNKNOWN, blocks_raise: true}
-  - {id: COM-013, fact: "Published price (any SKU)", value: UNKNOWN, blocks_raise: true, note: "No pricing page exists. A wrong price you can defend beats no price."}
-  - {id: COM-014, fact: "Buyer persona (single, named)", value: UNKNOWN, blocks_raise: true}
+  - {id: COM-013, fact: "Published price (any SKU)", value: HYPOTHESIS_PUBLISHED, blocks_raise: true, note: "pricing/PRICING.md — 5 SKUs published as hypotheses; validate with design partners"}
+  - {id: COM-014, fact: "Buyer persona (single, named)", value: DEFINED_UNVALIDATED, blocks_raise: true, note: "governance/BUYER_PERSONA.md — VP Platform/CISO, regulated AI adopter, Annex III exposure; 12 discovery questions ready"}
   - {id: COM-015, fact: "Co-founder or security-credentialed named owner", value: UNKNOWN, blocks_raise: true, note: "Solo founders graduate to Series A at 12.9% vs 23.7% (2 founders). Penalty is at the gate, not the terms."}
   - {id: COM-016, fact: "Cap table cleanliness", value: UNKNOWN, blocks_raise: true}
   - {id: COM-017, fact: "IP assignment from every contributor", value: UNKNOWN, blocks_raise: true}
   - {id: COM-018, fact: "Delaware C-Corp status", value: UNKNOWN, blocks_raise: true}
-  - {id: COM-019, fact: "Model Bill of Materials + training-data license register", value: UNKNOWN, blocks_raise: true}
+  - {id: COM-019, fact: "Model Bill of Materials + training-data license register", value: REGISTER_COMPLETE, blocks_raise: true, note: "governance/MODEL_BOM.yaml — 80 artifacts from live reads. Training-data legal opinion remains a counsel action."}
   - {id: COM-020, fact: "SOC 2 Type I report date", value: UNKNOWN, blocks_raise: true, note: "Revenue infrastructure, not compliance chore."}
   - {id: COM-021, fact: "EU Annex III design partner (named)", value: UNKNOWN, blocks_raise: true, note: "Dec 2027 obligation is the distribution urgency."}
   - {id: COM-022, fact: "Design-partner conversion rate", value: UNKNOWN, blocks_raise: true, note: "Exit design phase at 80%+ conversion AND 3 zero-config use cases."}
-  - {id: COM-023, fact: "Weekly governed-actions-per-customer (North Star)", value: UNKNOWN, blocks_raise: true}
-  - {id: COM-024, fact: "Data room completeness (12-part tree)", value: UNKNOWN, blocks_raise: true}
+  - {id: COM-023, fact: "Weekly governed-actions-per-customer (North Star)", value: INSTRUMENTED, blocks_raise: true, note: "tools/north_star.py computes the metric from receipt logs; 227 actions across current logs"}
+  - {id: COM-024, fact: "Data room completeness (12-part tree)", value: SCAFFOLDED, blocks_raise: true, note: "data_room/ — 13-section tree with INDEX.md per section, ready for primary documents"}

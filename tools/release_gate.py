@@ -17,10 +17,14 @@ def check_claims():
             blockers.append(c)
     return ok, blockers
 
+ATTESTED_ARTIFACT_STATES = {"HYPOTHESIS_PUBLISHED", "DEFINED_UNVALIDATED", "REGISTER_COMPLETE", "INSTRUMENTED", "SCAFFOLDED"}
+
 def check_commercial():
     ledger = yaml.safe_load(open(ROOT / "governance" / "COMMERCIAL_LEDGER.yaml"))
-    unknown = [r for r in ledger["rows"] if r["value"] == "UNKNOWN" and r.get("blocks_raise")]
-    return unknown, ledger["series_a_targets"]
+    rows = ledger["rows"]
+    unknown = [r for r in rows if r["value"] == "UNKNOWN" and r.get("blocks_raise")]
+    attested = [r for r in rows if r["value"] in ATTESTED_ARTIFACT_STATES]
+    return unknown, attested, ledger["series_a_targets"]
 
 def main():
     raise_mode = "--raise" in sys.argv
@@ -31,8 +35,12 @@ def main():
         if c.get("note"):
             print(f"            {c['note']}")
     if raise_mode:
-        unknown, targets = check_commercial()
-        print(f"\nRAISE GATE — commercial facts UNKNOWN: {len(unknown)} (any UNKNOWN blocks a raise)")
+        unknown, attested, targets = check_commercial()
+        if attested:
+            print(f"\nArtifacts built (attested but not founder-truth): {len(attested)}")
+            for r in attested:
+                print(f"  [BUILT] {r['id']}: {r['fact']} — {r['value']}")
+        print(f"\nRAISE GATE — commercial facts still UNKNOWN: {len(unknown)} (any UNKNOWN blocks a raise)")
         for r in unknown:
             print(f"  [UNKNOWN] {r['id']}: {r['fact']}")
         print(f"\nSeries A targets: ARR ${targets['arr_to_qualify_usd']:,} · GM ≥{targets['gross_margin_floor']:.0%} · "
