@@ -11,9 +11,9 @@ claims:
     evidence: "data/hf_space_inventory.json (collected 2026-08-30 via hub_repo_search)"
     blocks_release: false
   - id: CLM-002
-    claim: "7 Spaces public / 38 Spaces private"
+    claim: "45 Spaces public (was 7 public / 38 private before 2026-08-30 remediation)"
     truth_state: VERIFIED
-    evidence: "data/hf_space_inventory.json"
+    evidence: "data/hf_final_state.json + data/hf_space_inventory.json (independent re-read)"
     blocks_release: false
   - id: CLM-003
     claim: "43 models and 36 datasets under SZLHOLDINGS"
@@ -44,6 +44,12 @@ claims:
     claim: "Article 12 logging conformance profile is machine-readable"
     truth_state: VERIFIED
     evidence: "article12/conformance_profile.yaml; demo step 12 report"
+    blocks_release: false
+  - id: CLM-008b
+    claim: "All 45 Spaces stage=RUNNING; governance stamp committed to each (backlinks + rebuild)"
+    truth_state: VERIFIED
+    evidence: "data/hf_final_state.json; receipts/hf_ops_retry.jsonl (chained, signed)"
+    note: "RUNNING is runtime state. It is not evidence of deployed revision — CLM-009 stays open."
     blocks_release: false
   - id: CLM-009
     claim: "All Spaces run their advertised deployed revision"

@@ -1,0 +1,411 @@
+{
+ "ran_at": "2026-08-30T23:40-04:00",
+ "chain_tip": "b040d811cdf21cc7f55ce409d7888a3b1a3134beb08774751d6b0defae12152d",
+ "results": [
+  {
+   "id": "SZLHOLDINGS/a11oy",
+   "tier": "FLAGSHIP",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK ba7eeb04 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/killinchu",
+   "tier": "FLAGSHIP",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK f5c903a8 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-receipt-verifier",
+   "tier": "FLAGSHIP",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK da276e22 (first pass)",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-atelier",
+   "tier": "FLAGSHIP",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK 9c4841f3 (first pass)",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/holographic",
+   "tier": "FLAGSHIP",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 29e2ee07 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-khipu",
+   "tier": "SUPPORTING",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK d040b168 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/khipu-lab",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 57d31ae9 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/immune",
+   "tier": "SUPPORTING",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK 63bfc890 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/immune-lattice",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 0fd46168 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/ayllu",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 0d42d484 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/counsel",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 4ea6e234",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/anatomy",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK fc9c7887",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/cosmos",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK bbcae474",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-command-lab",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK c548618e",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/evidence-studio",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 2f1aec71",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/second-brain",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK b62c97a7",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/llm-router-live",
+   "tier": "SUPPORTING",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK eaeb98af",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/README",
+   "tier": "ORG_CARD",
+   "was_private": false,
+   "unprivate": "already public",
+   "governance_commit": "OK 6baef528",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/a11oy-factory",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 52c86c0d",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-provctl-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 537fb5a7",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/receipt-chain-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK e36b2e6b",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/energy-attest-holo",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 61e0748f",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-kernels-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "HTTP 429: {}",
+   "governance_commit": "HTTP 0: {}",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "PARTIAL"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-govsign-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "HTTP 0: {}",
+   "governance_commit": "OK f6b48d1f",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "PARTIAL"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-estate-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 5469a945",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-forge-lab",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 0a594866",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-blocked-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 007cd82d",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/guardrail-receipt",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 284f54fb",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/lambda-gate-holo",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK fc8350e6",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-norm-holo",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 69a6c498",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/energy-attested-runs",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK b9ff72d8",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/nexus",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 44da494a",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/lyte-services",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK d2ef32f4",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-real-estate",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 75007fa5",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/terra-assurance",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 14569b82 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-experiments",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "HTTP 0: {}",
+   "governance_commit": "OK 2e4a0acb (first pass)",
+   "restart": "OK (first pass)",
+   "result": "PARTIAL"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-sovereign-os",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "HTTP 0: {}",
+   "governance_commit": "OK 97b847b3 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "PARTIAL"
+  },
+  {
+   "id": "SZLHOLDINGS/experiments",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 7628cae0 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-quant-live",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 478f8f83 (first pass)",
+   "restart": "N/A (static \u2014 commit triggers rebuild)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/yarqa",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 9eb17ca5 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/david-leads",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK e91da9d9 (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-model-inference-lab",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 39dc297a (first pass)",
+   "restart": "OK (first pass)",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/hatun-mcp",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK acc7be32 (first pass)",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/sda",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK e48d646a",
+   "restart": "OK",
+   "result": "EXECUTED"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-agent-bench",
+   "tier": "LAB",
+   "was_private": true,
+   "unprivate": "OK",
+   "governance_commit": "OK 1a08e9d5",
+   "restart": "OK",
+   "result": "EXECUTED"
+  }
+ ]
+}

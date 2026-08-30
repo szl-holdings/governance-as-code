@@ -4,7 +4,7 @@
   "subject": {
    "name": "hf://spaces/SZLHOLDINGS/*",
    "digest": {
-    "sha256": "e7e3657750353d0215163e7c4f2b3d41d8fd0013c5e9387e32ace9d3dcfd9d2b"
+    "sha256": "a15f3e42eb6314d8c4ab2f28654563407fb2f97d5f11d93cda1ff7021cc247f8"
    }
   },
   "predicate": {
@@ -29,7 +29,7 @@
     "items": [
      {
       "id": "data/hf_space_inventory.json",
-      "sha256": "a58c52ce43968ba2f912da961aab56e9e5a7ff96b414e94a5d3f5bd2c2b0bded",
+      "sha256": "8af38f7ef5986fd8e7a953a9a264786aec5d4d4b0a38d6d4d1d34b59d141d1db",
       "present": true
      }
     ],
@@ -37,21 +37,21 @@
     "redaction_commitments": []
    },
    "timestamps": {
-    "created": "2026-08-30T22:15:05.663511+00:00",
-    "executed": "2026-08-30T22:15:05.663511+00:00",
+    "created": "2026-08-30T23:19:46.691913+00:00",
+    "executed": "2026-08-30T23:19:46.691913+00:00",
     "ntp_synced": true
    },
    "prev_chain_hash": "GENESIS"
   },
   "signatures": [
    {
-    "keyid": "2267905f14191569",
-    "sig": "yBG2PYIzJLH5KzVy9A/KcVDeEPXYc6bcpz5K8dnZvACKvyqTC9HyQCAUBcerQ/+NI/M1S/nNrJfmQXG3KF8uDw=="
+    "keyid": "e1d7687a0a86bbb7",
+    "sig": "pOl0JKpluFNiNtO0pBmoV2XpJSJoXUjGRhpnaNnYPlkGEqVNTD1ta1jkQu6IyE1HeWqmbIWYLCLCNn5SiVU2Bg=="
    }
   ]
  },
- "chain_hash": "1713347dbdcf578a7d8146436ac89ff40062a4bd373a26f72fd0e5c39c4beca0",
- "auditor_key": "pshu1LzMu4yozBCgB8adoxf549V4v+1gR9bS08h9hn0=",
+ "chain_hash": "e803f71ade4faa14cf86fa34d3b4975b221abd68122226088a44cb120bf5abd8",
+ "auditor_key": "EnW62iXNvaIvYtD9Jmc9LSi+eojnOyMbdU4Q0Q/JooM=",
  "completeness": "COMPLETE",
  "limitations": [
   "stage=RUNNING is not evidence of a deployed revision",
@@ -60,11 +60,6 @@
  ],
  "findings": [
   {
-   "sev": "BLOCKER",
-   "rule": "PRIVATE_FLAGSHIP",
-   "msg": "SZLHOLDINGS/holographic is FLAGSHIP but private \u2014 invisible to buyers/diligence"
-  },
-  {
    "sev": "INFO",
    "rule": "DOCKER_TIER",
    "msg": "29 docker/gradio Spaces; account is PRO, org plan=team \u2014 recreatable. Docker on free tier would be at billing risk."
@@ -72,12 +67,7 @@
   {
    "sev": "INFO",
    "rule": "VISIBILITY",
-   "msg": "7 public / 38 private of 45 Spaces"
-  },
-  {
-   "sev": "HIGH",
-   "rule": "STALE_SURFACE",
-   "msg": "SZLHOLDINGS/holographic (FLAGSHIP) untouched 41d \u2014 DEGRADED until re-attested"
+   "msg": "45 public / 0 private of 45 Spaces"
   }
  ]
 }
