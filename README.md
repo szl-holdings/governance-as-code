@@ -43,3 +43,17 @@ vendor, the outage, or the auditor; the receipt does.
 No MCP servers. No agent framework. No UI beyond the demo. No multi-tenant SaaS.
 No billing. No AQL. The Zero-Bandaid Law applies to generated code too: no
 `pass`, no `NotImplementedError`, no mock-for-now.
+
+## License
+
+Apache-2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+This is the deliberate expression of "give away the format": the GovernedAction/v1
+schema, gates, and demo in this repository are Apache-2.0 so anyone can implement
+and verify the format. The SZL control plane and any repository carrying
+`LicenseRef-SZL-Proprietary` are **not** covered by this grant.
+
+**Verification boundary.** A receipt in this format proves integrity, origin, and
+that a declared policy executed. It does not prove model accuracy, safety,
+fairness, effectiveness, or uptime. Λ = Conjecture 1 (advisory) — never
+"proven trust."
