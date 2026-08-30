@@ -1,0 +1,73 @@
+{
+ "audit_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "hf://spaces/SZLHOLDINGS/*",
+   "digest": {
+    "sha256": "7a2e8f9caaf4bc3da953f959ff57e5a35dbd1f81c3567b9ddce01e72ed91d383"
+   }
+  },
+  "predicate": {
+   "action_id": "spaces-audit-2026-08-30",
+   "actor": {
+    "type": "human",
+    "id": "stephenlutar2",
+    "is_service_account": false,
+    "auth_method": "oidc",
+    "human_principal": "Stephen P. Lutar"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "369460aefd25048984070200da3c2d752545513a2701075dffd28d0a37f11c07",
+    "evaluated_at": "2026-08-30T22:15:00+00:00"
+   },
+   "execution": {
+    "side_effect_class": "READ_ONLY",
+    "status": "EXECUTED"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "data/hf_space_inventory.json",
+      "sha256": "8af38f7ef5986fd8e7a953a9a264786aec5d4d4b0a38d6d4d1d34b59d141d1db",
+      "present": true
+     }
+    ],
+    "completeness": "COMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2026-08-30T23:44:11.751529+00:00",
+    "executed": "2026-08-30T23:44:11.751529+00:00",
+    "ntp_synced": true
+   },
+   "prev_chain_hash": "GENESIS"
+  },
+  "signatures": [
+   {
+    "keyid": "ecf6f9942839a468",
+    "sig": "YQPtPHNiz7espcIic7y2upZqSpaf0FYBgNIRj3K5pOHPqONKx1vnoL5cPpytoVnCcwAhRPzxG7I2DtJlokmVAA=="
+   }
+  ]
+ },
+ "chain_hash": "8e30f1ab8ffc28adb0334add46ed564786d5c8653b7d706fc7b65662b0a10ae3",
+ "auditor_key": "f3NdHOXUQ+sZjeQUXln2H1P6biCwTqpkqVLiU0EIjCo=",
+ "completeness": "COMPLETE",
+ "limitations": [
+  "stage=RUNNING is not evidence of a deployed revision",
+  "runtime stage not probed per-Space in this run",
+  "visibility change requires org settings scope, not available to this audit"
+ ],
+ "findings": [
+  {
+   "sev": "INFO",
+   "rule": "DOCKER_TIER",
+   "msg": "29 docker/gradio Spaces; account is PRO, org plan=team \u2014 recreatable. Docker on free tier would be at billing risk."
+  },
+  {
+   "sev": "INFO",
+   "rule": "VISIBILITY",
+   "msg": "45 public / 0 private of 45 Spaces"
+  }
+ ]
+}

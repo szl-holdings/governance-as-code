@@ -1,0 +1,362 @@
+[
+ {
+  "id": "SZLHOLDINGS/a11oy",
+  "tier": "FLAGSHIP",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/killinchu",
+  "tier": "FLAGSHIP",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/governed-receipt-verifier",
+  "tier": "FLAGSHIP",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-atelier",
+  "tier": "FLAGSHIP",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/holographic",
+  "tier": "FLAGSHIP",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-khipu",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/khipu-lab",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/immune",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/immune-lattice",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/ayllu",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/counsel",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/anatomy",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/cosmos",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-command-lab",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "t4-small"
+ },
+ {
+  "id": "SZLHOLDINGS/evidence-studio",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/second-brain",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/llm-router-live",
+  "tier": "SUPPORTING",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/README",
+  "tier": "ORG_CARD",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/a11oy-factory",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-provctl-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/receipt-chain-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/energy-attest-holo",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-kernels-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-govsign-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-estate-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-forge-lab",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": null,
+  "stage": null,
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/szl-blocked-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": null,
+  "stage": null,
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/guardrail-receipt",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": null,
+  "stage": null,
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/lambda-gate-holo",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": null,
+  "stage": null,
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/governed-norm-holo",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/energy-attested-runs",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/nexus",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/lyte-services",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-real-estate",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/terra-assurance",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-experiments",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-sovereign-os",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/experiments",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-quant-live",
+  "tier": "LAB",
+  "sdk": "static",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": null
+ },
+ {
+  "id": "SZLHOLDINGS/yarqa",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/david-leads",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/szl-model-inference-lab",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/hatun-mcp",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/sda",
+  "tier": "LAB",
+  "sdk": "docker",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ },
+ {
+  "id": "SZLHOLDINGS/governed-agent-bench",
+  "tier": "LAB",
+  "sdk": "gradio",
+  "private": false,
+  "stage": "RUNNING",
+  "hardware": "cpu-basic"
+ }
+]

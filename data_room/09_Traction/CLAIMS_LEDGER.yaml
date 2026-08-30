@@ -1,0 +1,77 @@
+# CLAIMS_LEDGER.yaml — enforced by tools/release_gate.py
+# Every public claim carries a truth state and evidence pointer.
+# truth_state: VERIFIED (machine-checked) | ATTESTED (signed, human-checked) |
+#              DEGRADED (was true, stale) | UNKNOWN (no evidence — default)
+# A claim that is public with truth_state UNKNOWN is a Zero-Bandaid violation.
+version: 1
+claims:
+  - id: CLM-001
+    claim: "45 Spaces exist under hf.co/SZLHOLDINGS"
+    truth_state: VERIFIED
+    evidence: "data/hf_space_inventory.json (collected 2026-08-30 via hub_repo_search)"
+    blocks_release: false
+  - id: CLM-002
+    claim: "45 Spaces public (was 7 public / 38 private before 2026-08-30 remediation)"
+    truth_state: VERIFIED
+    evidence: "data/hf_final_state.json + data/hf_space_inventory.json (independent re-read)"
+    blocks_release: false
+  - id: CLM-003
+    claim: "43 models and 36 datasets under SZLHOLDINGS"
+    truth_state: VERIFIED
+    evidence: "data/hf_models_datasets.json (collected 2026-08-30)"
+    blocks_release: false
+  - id: CLM-004
+    claim: "98 repos under github.com/szl-holdings, 5 private"
+    truth_state: VERIFIED
+    evidence: "szl-audit/github_repos.tsv (gh api, 2026-08-30)"
+    blocks_release: false
+  - id: CLM-005
+    claim: "Receipts are Ed25519-signed and offline-verifiable"
+    truth_state: VERIFIED
+    evidence: "demo/demo_harness.py steps 2-3, 6-7; receipts/chain.jsonl"
+    blocks_release: false
+  - id: CLM-006
+    claim: "Missing evidence yields INCOMPLETE, never PASS"
+    truth_state: VERIFIED
+    evidence: "tools/receipt_lib.py verify_receipt(); demo step 7"
+    blocks_release: false
+  - id: CLM-007
+    claim: "is_service_account=false is structurally enforced for human principals"
+    truth_state: VERIFIED
+    evidence: "schemas/governed_action_v1.schema.json; demo step 11 rejects spoof"
+    blocks_release: false
+  - id: CLM-008
+    claim: "Article 12 logging conformance profile is machine-readable"
+    truth_state: VERIFIED
+    evidence: "article12/conformance_profile.yaml; demo step 12 report"
+    blocks_release: false
+  - id: CLM-008b
+    claim: "All 45 Spaces stage=RUNNING; governance stamp committed to each (backlinks + rebuild)"
+    truth_state: VERIFIED
+    evidence: "data/hf_final_state.json; receipts/hf_ops_retry.jsonl (chained, signed)"
+    note: "RUNNING is runtime state. It is not evidence of deployed revision — CLM-009 stays open."
+    blocks_release: false
+  - id: CLM-009
+    claim: "Every public Space is revision-pinned and its governance stamp is verified deployed at that revision"
+    truth_state: VERIFIED
+    evidence: "data/revision_attestations.json + receipts/revision_attest.jsonl (45 receipts, chain-signed, 2026-08-31)"
+    note: "stage=RUNNING plus pinned rev plus stamp content-match. The claim IS the attestation scope; nothing broader is claimed."
+    blocks_release: false
+  - id: CLM-010
+    claim: "Flagship Spaces render correctly on mobile"
+    truth_state: VERIFIED
+    evidence: "szl-audit/flagship_{a11oy,killinchu,governed-receipt-verifier,szl-atelier,holographic}_mobile.png — all 5 render clean at 390px (2026-08-31)"
+    note: "SPAs needed extended load waits; verified with 14s paint allowance."
+    blocks_release: false
+  - id: CLM-011
+    claim: "Receipt verification survives a 16-class adversarial suite (tamper, signature transplant, PAE cross-type confusion, evidence deletion, chain splice, forged genesis, spoof variants, wrong key) — zero attacks produce PASS"
+    truth_state: VERIFIED
+    evidence: "tests/adversarial_suite.py — 16/16 held, reproducible in CI"
+    note: "Scope discipline: this is self-adversarial, machine-checked review. Independent external review (Daybreak Blue S2) remains the external gate and is still recommended."
+    blocks_release: false
+  - id: CLM-012
+    claim: "License register covers every model + dataset (80 rows: 43 models, 37 datasets)"
+    truth_state: VERIFIED
+    evidence: "governance/MODEL_BOM.yaml + data/model_bom.json (live HF reads 2026-08-31); 1 dataset UNDECLARED, disclosed"
+    note: "UNDECLARED license on vault-artifacts (private) is disclosed, not hidden. Legal review of training-data rights is a counsel action, COM-019."
+    blocks_release: false
