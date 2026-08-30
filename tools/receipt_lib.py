@@ -29,9 +29,11 @@ def sha256_hex(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
 def pae(payload_type: str, payload: bytes) -> bytes:
-    """DSSE Pre-Authentication Encoding: prevents signature confusion across payload types."""
+    """DSSE Pre-Authentication Encoding, per the DSSE spec (v1):
+    'DSSEv1' SP <decimal len(type)> SP <type> SP <decimal len(payload)> SP <payload>.
+    Prevents signature confusion across payload types."""
     pt = payload_type.encode("utf-8")
-    return b"DSSE" + len(pt).to_bytes(4, "big") + pt + len(payload).to_bytes(4, "big") + payload
+    return b"DSSEv1 " + str(len(pt)).encode() + b" " + pt + b" " + str(len(payload)).encode() + b" " + payload
 
 # ---------------------------------------------------------------- keys
 
