@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>a11oy — Offline Governed-Action Verifier</title>
+<meta name="description" content="Verify signed governed-action receipts in your browser. No server. Missing evidence yields INCOMPLETE, never PASS." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='6' fill='none' stroke='%230b6b63' stroke-width='2.5'/%3E%3Cpath d='M10 17l4 4 8-10' fill='none' stroke='%230b6b63' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=JetBrains+Mono:ital,wght@0,400..800;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="./" aria-label="a11oy verifier home">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="4" y="4" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M10 17l4 4 8-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      a11oy / verify
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#demo">Demo</a>
+      <a href="#art12">Article 12</a>
+      <a href="#laws">Laws</a>
+      <a href="https://github.com/szl-holdings/governance-as-code" rel="noopener">Source</a>
+      <a href="https://huggingface.co/SZLHOLDINGS" rel="noopener">HF</a>
+    </nav>
+    <button data-theme-toggle aria-label="Toggle dark mode"></button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">szl.dev/GovernedAction/v1 · ed25519 over dsse</p>
+    <h1>Control before action. <em>Evidence after.</em></h1>
+    <p class="lede">Every receipt on this page verifies in your browser, right now, with
+      WebCrypto Ed25519 over DSSE pre-authentication encoding. No server decides anything here.</p>
+    <p class="boundary">IAM says what an identity may access. a11oy proves what an AI agent was
+      authorized to do, what it actually did, and whether the required evidence exists.
+      A signature attests integrity and origin — never accuracy or performance.</p>
+    <p id="keyline">loading demo bundle…</p>
+  </div>
+</section>
+
+<section class="demo" id="demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <h2 id="demo-title">The governed action, in six checks</h2>
+      <button id="run" disabled>Run verification</button>
+    </div>
+    <p id="status-line">bundle not yet loaded</p>
+    <div class="steps">
+      <div class="step" id="s2">
+        <span class="no">02</span>
+        <span class="name">Signed execution — human-approved, reversible change</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+      <div class="step" id="s5">
+        <span class="no">05</span>
+        <span class="name">Signed denial — agent attempted irreversible action, blocked</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+      <div class="step" id="s6">
+        <span class="no">06</span>
+        <span class="name">Tamper test — one field altered after signing</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+      <div class="step" id="s7">
+        <span class="no">07</span>
+        <span class="name">Evidence cut — honestly signed, one evidence item missing</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+      <div class="step" id="s11">
+        <span class="no">11</span>
+        <span class="name">Identity spoof — service account claiming a human principal</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+      <div class="step" id="s9">
+        <span class="no">09</span>
+        <span class="name">Replay — re-verify the chain; nothing may change</span>
+        <span class="detail"></span>
+        <span class="verdict">—</span>
+      </div>
+    </div>
+    <div class="legend" aria-label="Legend">
+      <span class="lpass">PASS: signature valid, evidence complete, time attested</span>
+      <span class="linc">INCOMPLETE: honestly signed, evidence missing — never PASS</span>
+      <span class="lfail">FAIL: signature broken, chain broken, or human-principal spoof</span>
+    </div>
+  </div>
+</section>
+
+<section class="art12" id="art12">
+  <div class="wrap">
+    <h2>Article 12 logging conformance profile</h2>
+    <p class="sub">Regulation (EU) 2024/1689, Article 12 — machine-readable at
+      <code>article12/conformance_profile.yaml</code>. This is a logging conformance profile,
+      not a claim of EU AI Act compliance; applicability, classification, and deployer
+      obligations remain customer-specific. Retention floor: 180 days.</p>
+    <div class="grid12">
+      <div class="cell"><h3>ART12-1 · AUTOMATIC LOGS</h3><p>Events recorded over the system lifetime.</p><p class="binding">$.predicate.timestamps.created — receipt emitted at decision time.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-2 · TRACEABILITY</h3><p>Input data and sources referenced.</p><p class="binding">Evidence items are sha256-addressed; absence ⇒ INCOMPLETE.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-3 · HUMAN PRINCIPAL</h3><p>Natural persons involved in verification identified (12(3)(d) via Art.14).</p><p class="binding">is_service_account pinned false for human actors; api_key cannot claim human.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-4 · PERIOD OF USE</h3><p>Start and end of each use recorded.</p><p class="binding">executed ≥ created; ntp_synced const true; rfc3161 for anti-backdating.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-5 · TAMPER PROTECTION</h3><p>Logs protected against alteration.</p><p class="binding">Ed25519 over DSSEv1 PAE; prev_chain_hash links every receipt.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-6 · RETENTION</h3><p>Retained per policy, six-month floor.</p><p class="binding">PENDING_SYNC is a visible state during outage; local durability after flock+fsync only.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-7 · AUDITOR ACCESS</h3><p>Logs accessible to authorities and auditors on request.</p><p class="binding">The bundle verifies offline, without entering the platform. This page is the proof.</p><span class="met">MET</span></div>
+      <div class="cell"><h3>ART12-8 · REVISION RECORD</h3><p>System version in use is recorded.</p><p class="binding">deployed_revision pinned at execution; runtime stage is never evidence of revision.</p><span class="met">MET</span></div>
+    </div>
+    <div class="gaps">
+      <h3>KNOWN GAPS — DISCLOSED, NOT HIDDEN</h3>
+      <ul>
+        <li>GAP-01 — rfc3161 trusted-timestamp issuance requires a TSA integration; demo attests local ntp_synced only.</li>
+        <li>GAP-02 — Retention here is a policy floor; the WORM retention tier is a control-plane feature.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="laws" id="laws">
+  <div class="wrap">
+    <h2>Laws enforced in code, not prose</h2>
+    <div class="law"><code>L1</code><p>Missing evidence yields INCOMPLETE, never PASS — computed in the verifier, on every run, in both Python and this page.</p></div>
+    <div class="law"><code>L2</code><p>A signature attests integrity and origin, never accuracy or performance.</p></div>
+    <div class="law"><code>L3</code><p>Human principals cannot be service accounts; api_key cannot claim a human (Art.12(3)(d)).</p></div>
+    <div class="law"><code>L4</code><p>ntp_synced is a schema constant; unattested time cannot produce PASS.</p></div>
+    <div class="law"><code>L5</code><p>Local durability is acknowledged only after flock + fsync. PENDING_SYNC stays visible during sink outage.</p></div>
+    <div class="law"><code>L6</code><p>Replay is non-mutating: verification never changes the chain.</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>SZL Holdings · a11oy verifier</span>
+    <span>give away the format — sell the control plane</span>
+    <a href="https://github.com/szl-holdings/governance-as-code" rel="noopener">governance-as-code</a>
+    <a href="https://huggingface.co/spaces/SZLHOLDINGS/a11oy" rel="noopener">hf space</a>
+  </div>
+</footer>
+
+<script src="verify.js"></script>
+</body>
+</html>

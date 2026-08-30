@@ -1,0 +1,484 @@
+{
+ "predicateType": "https://szl.dev/predicates/governed-action/v1",
+ "public_key_raw_b64": "iW5z88rJ6tgGw9O0B1sHC0G+z7pAj5HXkAjwh+hFnQY=",
+ "keyid": "64703029516be829",
+ "chain_tip": "0b9d8edffadaf337d78b1fbb20eaa10cbd2ad5e673d97fa74db1dabcfd83fb11",
+ "receipts": [
+  {
+   "predicate": {
+    "action_id": "governed-change-047",
+    "actor": {
+     "auth_method": "hardware_key",
+     "human_principal": "Stephen P. Lutar",
+     "id": "s.lutar",
+     "is_service_account": false,
+     "type": "human"
+    },
+    "evidence": {
+     "completeness": "COMPLETE",
+     "items": [
+      {
+       "id": "policy-eval-log",
+       "present": true,
+       "sha256": "73caec7c33738bb0713644c5bf706f129e40c9498134148d1e6ac215c5fedea6"
+      },
+      {
+       "id": "human-approval",
+       "present": true,
+       "sha256": "eb8cb90e4272c0038534053c6d99bea21c4e04aec3ec9b25f85f5179846c6203"
+      },
+      {
+       "id": "test-run",
+       "present": true,
+       "sha256": "4f10eeea71f79331da183f14e4e8765a0c157f0ec3441f285be412eedf3479fc"
+      },
+      {
+       "id": "deploy-log",
+       "present": true,
+       "sha256": "a093cef858209c184a84120d3f38b3be12d23040fecce527331140f2f68dd2e0"
+      }
+     ],
+     "redaction_commitments": []
+    },
+    "execution": {
+     "deployed_revision": "9f2c1e",
+     "side_effect_class": "WRITE_REVERSIBLE",
+     "status": "EXECUTED"
+    },
+    "policy_decision": {
+     "evaluated_at": "2026-08-30T20:41:00+00:00",
+     "human_approval": {
+      "approver": "s.lutar",
+      "at": "2026-08-30T20:40:12+00:00"
+     },
+     "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+     "result": "ALLOW"
+    },
+    "prev_chain_hash": "GENESIS",
+    "timestamps": {
+     "created": "2026-08-30T22:19:12.874935+00:00",
+     "executed": "2026-08-30T22:19:12.874935+00:00",
+     "ntp_synced": true
+    }
+   },
+   "predicateType": "https://szl.dev/predicates/governed-action/v1",
+   "signatures": [
+    {
+     "keyid": "64703029516be829",
+     "sig": "QoSOXjRhhLybYwgTKkiK8za5IV/XdLxS2XAZMPEQ5/h2WQf0ZQhATGpcus/wy3wdPLB52f8UjOYHv0CW/o0FBg=="
+    }
+   ],
+   "subject": {
+    "digest": {
+     "sha256": "2a3c8bc479948ae4982fdcb74a4af9c555d346b6137ea524cb906fed132580b7"
+    },
+    "name": "prod:payment-service"
+   }
+  },
+  {
+   "predicate": {
+    "action_id": "rotate-prod-secret-012",
+    "actor": {
+     "auth_method": "api_key",
+     "id": "agent://patch-bot",
+     "is_service_account": true,
+     "type": "service"
+    },
+    "evidence": {
+     "completeness": "COMPLETE",
+     "items": [
+      {
+       "id": "policy-eval-log",
+       "present": true,
+       "sha256": "c11c2ce4f52be4a75d9d66d4269bdf65bbf5327b12a19ef2ec42ae765a9d85fc"
+      }
+     ],
+     "redaction_commitments": []
+    },
+    "execution": {
+     "side_effect_class": "WRITE_IRREVERSIBLE",
+     "status": "DENIED"
+    },
+    "policy_decision": {
+     "evaluated_at": "2026-08-30T20:44:00+00:00",
+     "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+     "result": "DENY"
+    },
+    "prev_chain_hash": "08d76da2842af55ebf6a6e8fd182e62f8ba457de354532b85825ad68fc7a7def",
+    "timestamps": {
+     "created": "2026-08-30T22:19:12.875642+00:00",
+     "executed": "2026-08-30T22:19:12.875642+00:00",
+     "ntp_synced": true
+    }
+   },
+   "predicateType": "https://szl.dev/predicates/governed-action/v1",
+   "signatures": [
+    {
+     "keyid": "64703029516be829",
+     "sig": "UI6+wpa6dE/r4vK6Jb7Mit9VqPTncVQPxypM4+togMyV6PH8IdOd1Wj89XDodDJMGV7jXaD1ZlfY9YBKuPvwAw=="
+    }
+   ],
+   "subject": {
+    "digest": {
+     "sha256": "3c3d4c1ace613bebd3acf9992b8f88f1462163ac5eded68a14f5229a7adaf320"
+    },
+    "name": "prod:vault"
+   }
+  }
+ ],
+ "tampered_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "prod:payment-service",
+   "digest": {
+    "sha256": "2a3c8bc479948ae4982fdcb74a4af9c555d346b6137ea524cb906fed132580b7"
+   }
+  },
+  "predicate": {
+   "action_id": "governed-change-047",
+   "actor": {
+    "type": "human",
+    "id": "s.lutar",
+    "is_service_account": false,
+    "auth_method": "hardware_key",
+    "human_principal": "Stephen P. Lutar"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+    "evaluated_at": "2026-08-30T20:41:00+00:00",
+    "human_approval": {
+     "approver": "s.lutar",
+     "at": "2026-08-30T20:40:12+00:00"
+    }
+   },
+   "execution": {
+    "side_effect_class": "WRITE_REVERSIBLE",
+    "status": "EXECUTED",
+    "deployed_revision": "beef00"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "policy-eval-log",
+      "sha256": "73caec7c33738bb0713644c5bf706f129e40c9498134148d1e6ac215c5fedea6",
+      "present": true
+     },
+     {
+      "id": "human-approval",
+      "sha256": "eb8cb90e4272c0038534053c6d99bea21c4e04aec3ec9b25f85f5179846c6203",
+      "present": true
+     },
+     {
+      "id": "test-run",
+      "sha256": "4f10eeea71f79331da183f14e4e8765a0c157f0ec3441f285be412eedf3479fc",
+      "present": true
+     },
+     {
+      "id": "deploy-log",
+      "sha256": "a093cef858209c184a84120d3f38b3be12d23040fecce527331140f2f68dd2e0",
+      "present": true
+     }
+    ],
+    "completeness": "COMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2026-08-30T22:19:12.874935+00:00",
+    "executed": "2026-08-30T22:19:12.874935+00:00",
+    "ntp_synced": true
+   },
+   "prev_chain_hash": "GENESIS"
+  },
+  "signatures": [
+   {
+    "keyid": "64703029516be829",
+    "sig": "QoSOXjRhhLybYwgTKkiK8za5IV/XdLxS2XAZMPEQ5/h2WQf0ZQhATGpcus/wy3wdPLB52f8UjOYHv0CW/o0FBg=="
+   }
+  ]
+ },
+ "incomplete_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "prod:payment-service",
+   "digest": {
+    "sha256": "bb5f220f7972f527612d68a5926734c40fa395aca13aaae6fc19a2bdbaafe585"
+   }
+  },
+  "predicate": {
+   "action_id": "governed-change-048",
+   "actor": {
+    "type": "human",
+    "id": "s.lutar",
+    "is_service_account": false,
+    "auth_method": "hardware_key",
+    "human_principal": "Stephen P. Lutar"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+    "evaluated_at": "2026-08-30T20:52:00+00:00",
+    "human_approval": {
+     "approver": "s.lutar",
+     "at": "2026-08-30T20:51:40+00:00"
+    }
+   },
+   "execution": {
+    "side_effect_class": "WRITE_REVERSIBLE",
+    "status": "EXECUTED",
+    "deployed_revision": "a17d3b"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "policy-eval-log",
+      "sha256": "73caec7c33738bb0713644c5bf706f129e40c9498134148d1e6ac215c5fedea6",
+      "present": true
+     },
+     {
+      "id": "human-approval",
+      "sha256": "eb8cb90e4272c0038534053c6d99bea21c4e04aec3ec9b25f85f5179846c6203",
+      "present": true
+     },
+     {
+      "id": "test-run",
+      "sha256": "4f10eeea71f79331da183f14e4e8765a0c157f0ec3441f285be412eedf3479fc",
+      "present": true
+     },
+     {
+      "id": "deploy-log",
+      "sha256": "",
+      "present": false
+     }
+    ],
+    "completeness": "INCOMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2026-08-30T22:19:12.876147+00:00",
+    "executed": "2026-08-30T22:19:12.876147+00:00",
+    "ntp_synced": true
+   },
+   "prev_chain_hash": "0b9d8edffadaf337d78b1fbb20eaa10cbd2ad5e673d97fa74db1dabcfd83fb11"
+  },
+  "signatures": [
+   {
+    "keyid": "64703029516be829",
+    "sig": "YMGSECJLEz4TR3WihraJeXrdibi84Nin3hXbWojGM9iFogAP1GixUW2amxmkQBRrvL0s7JrvUDJqQQUR4hzHDA=="
+   }
+  ]
+ },
+ "spoof_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "prod:payment-service",
+   "digest": {
+    "sha256": "2a3c8bc479948ae4982fdcb74a4af9c555d346b6137ea524cb906fed132580b7"
+   }
+  },
+  "predicate": {
+   "action_id": "governed-change-047",
+   "actor": {
+    "type": "human",
+    "id": "agent://patch-bot",
+    "is_service_account": false,
+    "auth_method": "api_key"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+    "evaluated_at": "2026-08-30T20:41:00+00:00",
+    "human_approval": {
+     "approver": "s.lutar",
+     "at": "2026-08-30T20:40:12+00:00"
+    }
+   },
+   "execution": {
+    "side_effect_class": "WRITE_REVERSIBLE",
+    "status": "EXECUTED",
+    "deployed_revision": "9f2c1e"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "policy-eval-log",
+      "sha256": "73caec7c33738bb0713644c5bf706f129e40c9498134148d1e6ac215c5fedea6",
+      "present": true
+     },
+     {
+      "id": "human-approval",
+      "sha256": "eb8cb90e4272c0038534053c6d99bea21c4e04aec3ec9b25f85f5179846c6203",
+      "present": true
+     },
+     {
+      "id": "test-run",
+      "sha256": "4f10eeea71f79331da183f14e4e8765a0c157f0ec3441f285be412eedf3479fc",
+      "present": true
+     },
+     {
+      "id": "deploy-log",
+      "sha256": "a093cef858209c184a84120d3f38b3be12d23040fecce527331140f2f68dd2e0",
+      "present": true
+     }
+    ],
+    "completeness": "COMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2026-08-30T22:19:12.874935+00:00",
+    "executed": "2026-08-30T22:19:12.874935+00:00",
+    "ntp_synced": true
+   },
+   "prev_chain_hash": "GENESIS"
+  },
+  "signatures": [
+   {
+    "keyid": "64703029516be829",
+    "sig": "QoSOXjRhhLybYwgTKkiK8za5IV/XdLxS2XAZMPEQ5/h2WQf0ZQhATGpcus/wy3wdPLB52f8UjOYHv0CW/o0FBg=="
+   }
+  ]
+ },
+ "backdated_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "prod:payment-service",
+   "digest": {
+    "sha256": "2a3c8bc479948ae4982fdcb74a4af9c555d346b6137ea524cb906fed132580b7"
+   }
+  },
+  "predicate": {
+   "action_id": "governed-change-047",
+   "actor": {
+    "type": "human",
+    "id": "s.lutar",
+    "is_service_account": false,
+    "auth_method": "hardware_key",
+    "human_principal": "Stephen P. Lutar"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
+    "evaluated_at": "2026-08-30T20:41:00+00:00",
+    "human_approval": {
+     "approver": "s.lutar",
+     "at": "2026-08-30T20:40:12+00:00"
+    }
+   },
+   "execution": {
+    "side_effect_class": "WRITE_REVERSIBLE",
+    "status": "EXECUTED",
+    "deployed_revision": "9f2c1e"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "policy-eval-log",
+      "sha256": "73caec7c33738bb0713644c5bf706f129e40c9498134148d1e6ac215c5fedea6",
+      "present": true
+     },
+     {
+      "id": "human-approval",
+      "sha256": "eb8cb90e4272c0038534053c6d99bea21c4e04aec3ec9b25f85f5179846c6203",
+      "present": true
+     },
+     {
+      "id": "test-run",
+      "sha256": "4f10eeea71f79331da183f14e4e8765a0c157f0ec3441f285be412eedf3479fc",
+      "present": true
+     },
+     {
+      "id": "deploy-log",
+      "sha256": "a093cef858209c184a84120d3f38b3be12d23040fecce527331140f2f68dd2e0",
+      "present": true
+     }
+    ],
+    "completeness": "COMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2020-01-01T00:00:00+00:00",
+    "executed": "2026-08-30T22:19:12.874935+00:00",
+    "ntp_synced": false
+   },
+   "prev_chain_hash": "GENESIS"
+  },
+  "signatures": [
+   {
+    "keyid": "64703029516be829",
+    "sig": "QoSOXjRhhLybYwgTKkiK8za5IV/XdLxS2XAZMPEQ5/h2WQf0ZQhATGpcus/wy3wdPLB52f8UjOYHv0CW/o0FBg=="
+   }
+  ]
+ },
+ "article12_report": {
+  "profile": "szl.dev/article12-logging/v1",
+  "retention_minimum_days": 180,
+  "fields": [
+   {
+    "id": "ART12-1",
+    "requirement": "Automatic recording of events (logs) over the lifetime of the system",
+    "receipt_binding": "Every governed action emits a receipt at decision time, not after.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-2",
+    "requirement": "Traceability of functioning: input data / data sources referenced",
+    "receipt_binding": "Evidence items are sha256-addressed; absence => INCOMPLETE.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-3",
+    "requirement": "Identification of natural persons involved in verifying results (Art.12(3)(d) via Art.14 human oversight)",
+    "receipt_binding": "actor.is_service_account pinned false for human type; api_key cannot claim human.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-4",
+    "requirement": "Recording of the period of each use (start/end)",
+    "receipt_binding": "ntp_synced const true; rfc3161_token for anti-backdating.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-5",
+    "requirement": "Logs protected against tampering",
+    "receipt_binding": "Ed25519 over DSSE PAE; hash chain via prev_chain_hash; offline verification.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-6",
+    "requirement": "Logs retained per retention policy, min 6 months",
+    "receipt_binding": "PENDING_SYNC is a visible state during sink outage; local durability ACKed only after flock+fsync.",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-7",
+    "requirement": "Logs accessible to authorities / auditors on request",
+    "receipt_binding": "An external auditor verifies the bundle without entering the platform (offline verifier).",
+    "status": "MET"
+   },
+   {
+    "id": "ART12-8",
+    "requirement": "Record of the AI system version / revision in use",
+    "receipt_binding": "Reviewed revision != executed revision unless attested; stage=RUNNING is not evidence.",
+    "status": "MET"
+   }
+  ],
+  "known_gaps": [
+   {
+    "id": "GAP-01",
+    "item": "rfc3161_token issuance requires a TSA integration; demo uses local ntp_synced attestation only."
+   },
+   {
+    "id": "GAP-02",
+    "item": "Retention is a policy floor here; the retention tier (WORM storage) is a Control-plane feature."
+   }
+  ]
+ },
+ "verdicts": {
+  "allowed": "PASS",
+  "deny_record": "PASS",
+  "tampered": "FAIL",
+  "evidence_cut": "INCOMPLETE",
+  "backdated": "FAIL",
+  "spoof": "FAIL"
+ }
+}
