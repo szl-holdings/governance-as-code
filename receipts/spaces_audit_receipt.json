@@ -1,0 +1,83 @@
+{
+ "audit_receipt": {
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+   "name": "hf://spaces/SZLHOLDINGS/*",
+   "digest": {
+    "sha256": "e7e3657750353d0215163e7c4f2b3d41d8fd0013c5e9387e32ace9d3dcfd9d2b"
+   }
+  },
+  "predicate": {
+   "action_id": "spaces-audit-2026-08-30",
+   "actor": {
+    "type": "human",
+    "id": "stephenlutar2",
+    "is_service_account": false,
+    "auth_method": "oidc",
+    "human_principal": "Stephen P. Lutar"
+   },
+   "policy_decision": {
+    "result": "ALLOW",
+    "policy_hash": "369460aefd25048984070200da3c2d752545513a2701075dffd28d0a37f11c07",
+    "evaluated_at": "2026-08-30T22:15:00+00:00"
+   },
+   "execution": {
+    "side_effect_class": "READ_ONLY",
+    "status": "EXECUTED"
+   },
+   "evidence": {
+    "items": [
+     {
+      "id": "data/hf_space_inventory.json",
+      "sha256": "a58c52ce43968ba2f912da961aab56e9e5a7ff96b414e94a5d3f5bd2c2b0bded",
+      "present": true
+     }
+    ],
+    "completeness": "COMPLETE",
+    "redaction_commitments": []
+   },
+   "timestamps": {
+    "created": "2026-08-30T22:15:05.663511+00:00",
+    "executed": "2026-08-30T22:15:05.663511+00:00",
+    "ntp_synced": true
+   },
+   "prev_chain_hash": "GENESIS"
+  },
+  "signatures": [
+   {
+    "keyid": "2267905f14191569",
+    "sig": "yBG2PYIzJLH5KzVy9A/KcVDeEPXYc6bcpz5K8dnZvACKvyqTC9HyQCAUBcerQ/+NI/M1S/nNrJfmQXG3KF8uDw=="
+   }
+  ]
+ },
+ "chain_hash": "1713347dbdcf578a7d8146436ac89ff40062a4bd373a26f72fd0e5c39c4beca0",
+ "auditor_key": "pshu1LzMu4yozBCgB8adoxf549V4v+1gR9bS08h9hn0=",
+ "completeness": "COMPLETE",
+ "limitations": [
+  "stage=RUNNING is not evidence of a deployed revision",
+  "runtime stage not probed per-Space in this run",
+  "visibility change requires org settings scope, not available to this audit"
+ ],
+ "findings": [
+  {
+   "sev": "BLOCKER",
+   "rule": "PRIVATE_FLAGSHIP",
+   "msg": "SZLHOLDINGS/holographic is FLAGSHIP but private \u2014 invisible to buyers/diligence"
+  },
+  {
+   "sev": "INFO",
+   "rule": "DOCKER_TIER",
+   "msg": "29 docker/gradio Spaces; account is PRO, org plan=team \u2014 recreatable. Docker on free tier would be at billing risk."
+  },
+  {
+   "sev": "INFO",
+   "rule": "VISIBILITY",
+   "msg": "7 public / 38 private of 45 Spaces"
+  },
+  {
+   "sev": "HIGH",
+   "rule": "STALE_SURFACE",
+   "msg": "SZLHOLDINGS/holographic (FLAGSHIP) untouched 41d \u2014 DEGRADED until re-attested"
+  }
+ ]
+}

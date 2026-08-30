@@ -1,0 +1,37 @@
+# CANONICAL_LEXICON.yaml — enforced by tools/lexicon_gate.py
+# Zero-Bandaid Law at the vocabulary level: public text may not claim
+# states the estate cannot evidence. Missing evidence => INCOMPLETE, never PASS.
+version: 1
+banned:
+  - phrase: "EU AI Act compliant"
+    why: "Applicability, classification and deployer obligations are customer-specific; no certification exists to claim."
+    say_instead: "Article 12 logging conformance profile (machine-readable); applicability remains customer-specific."
+  - phrase: "production-ready"
+    why: "Unbounded claim. Readiness is per-surface and per-revision."
+    say_instead: "Truth state per surface: VERIFIED / ATTESTED / DEGRADED / UNKNOWN, with revision pins."
+  - phrase: "fully operational"
+    why: "Unbounded. stage=RUNNING is not evidence of deployed revision."
+    say_instead: "Deployed revision <sha> attested at <time>; runtime state reported separately."
+  - phrase: "guaranteed uptime"
+    why: "No SLA infrastructure exists to honor it."
+    say_instead: "Observed availability with receipts; PENDING_SYNC during sink outage."
+  - phrase: "military-grade"
+    why: "Marketing noise; fails technical-buyer sniff test."
+    say_instead: "Ed25519 over DSSE PAE; hash-chained; offline-verifiable."
+  - phrase: "100% secure"
+    why: "Unfalsifiable."
+    say_instead: "Adversarial review scope and residual-risk register."
+  - phrase: "SOC 2 certified"
+    why: "Not certified. Readiness != certification."
+    say_instead: "SOC 2 Type I readiness in progress; do not publish before the report exists."
+  - phrase: "ISO 42001 certified"
+    why: "Not certified."
+    say_instead: "ISO 42001 implementation in progress (only once a Statement of Applicability exists)."
+  - phrase: "no logs"
+    why: "Overclaim against competitors; apply Zero-Bandaid to our own copy."
+    say_instead: "not its stated purpose (cite the vendor's docs)."
+required_patterns:
+  - pattern: "is_service_account"
+    context: "Any receipt schema doc must pin is_service_account to false for human principals (Art.12(3)(d): natural persons in verification)."
+  - pattern: "INCOMPLETE"
+    context: "Any verifier doc must state: missing evidence yields INCOMPLETE, never PASS."

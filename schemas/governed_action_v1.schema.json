@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://szl.dev/predicates/governed-action/v1/schema.json",
+  "title": "szl.dev/GovernedAction/v1",
+  "description": "Portable evidence for a consequential AI-agent action. in-toto ITE-6 Statement envelope; this schema governs the predicate. Missing evidence yields INCOMPLETE, never PASS. A signature attests integrity and origin, never accuracy or performance.",
+  "type": "object",
+  "required": ["predicateType", "subject", "predicate"],
+  "properties": {
+    "predicateType": {"const": "https://szl.dev/predicates/governed-action/v1"},
+    "subject": {
+      "type": "object",
+      "required": ["name", "digest"],
+      "properties": {
+        "name": {"type": "string"},
+        "digest": {"type": "object", "required": ["sha256"], "properties": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "required": ["action_id", "actor", "policy_decision", "execution", "evidence", "timestamps", "prev_chain_hash"],
+      "properties": {
+        "action_id": {"type": "string"},
+        "actor": {
+          "type": "object",
+          "required": ["type", "id", "is_service_account", "auth_method"],
+          "properties": {
+            "type": {"enum": ["human", "service"]},
+            "id": {"type": "string"},
+            "auth_method": {"enum": ["hardware_key", "oidc", "api_key", "mtls"]},
+            "is_service_account": {"type": "boolean"},
+            "human_principal": {"type": "string", "description": "Natural person accountable (Art.12(3)(d)). Required when type=human."}
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"type": {"const": "human"}}},
+              "then": {
+                "properties": {"is_service_account": {"const": false}, "auth_method": {"enum": ["hardware_key", "oidc", "mtls"]}},
+                "required": ["human_principal"]
+              },
+              "else": {"properties": {"is_service_account": {"const": true}}}
+            }
+          ]
+        },
+        "policy_decision": {
+          "type": "object",
+          "required": ["result", "policy_hash", "evaluated_at"],
+          "properties": {
+            "result": {"enum": ["ALLOW", "DENY"]},
+            "policy_hash": {"type": "string"},
+            "evaluated_at": {"type": "string", "format": "date-time"},
+            "human_approval": {"type": "object", "properties": {"approver": {"type": "string"}, "at": {"type": "string", "format": "date-time"}}}
+          }
+        },
+        "execution": {
+          "type": "object",
+          "required": ["side_effect_class", "status"],
+          "properties": {
+            "side_effect_class": {"enum": ["READ_ONLY", "WRITE_REVERSIBLE", "WRITE_IRREVERSIBLE", "EXTERNAL_OBSERVABLE"]},
+            "status": {"enum": ["EXECUTED", "DENIED", "ROLLED_BACK", "PENDING_SYNC"]},
+            "deployed_revision": {"type": "string", "description": "Revision attested as executed. Never inferred from runtime stage."}
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "required": ["items", "completeness"],
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "sha256", "present"],
+                "properties": {"id": {"type": "string"}, "sha256": {"type": "string"}, "present": {"type": "boolean"}}
+              }
+            },
+            "completeness": {"enum": ["COMPLETE", "INCOMPLETE"]},
+            "redaction_commitments": {"type": "array", "items": {"type": "string"}, "description": "Salted hash commitments so redaction cannot silently remove exculpatory evidence."}
+          }
+        },
+        "timestamps": {
+          "type": "object",
+          "required": ["created", "ntp_synced"],
+          "properties": {
+            "created": {"type": "string", "format": "date-time"},
+            "executed": {"type": "string", "format": "date-time"},
+            "ntp_synced": {"const": true},
+            "rfc3161_token": {"type": "string", "description": "Anti-backdating trusted timestamp."}
+          }
+        },
+        "prev_chain_hash": {"type": "string", "pattern": "^([0-9a-f]{64}|GENESIS)$"}
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["keyid", "sig"],
+        "properties": {"keyid": {"type": "string"}, "sig": {"type": "string"}}
+      }
+    }
+  }
+}

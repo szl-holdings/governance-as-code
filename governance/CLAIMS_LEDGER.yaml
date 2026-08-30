@@ -1,0 +1,71 @@
+# CLAIMS_LEDGER.yaml — enforced by tools/release_gate.py
+# Every public claim carries a truth state and evidence pointer.
+# truth_state: VERIFIED (machine-checked) | ATTESTED (signed, human-checked) |
+#              DEGRADED (was true, stale) | UNKNOWN (no evidence — default)
+# A claim that is public with truth_state UNKNOWN is a Zero-Bandaid violation.
+version: 1
+claims:
+  - id: CLM-001
+    claim: "45 Spaces exist under hf.co/SZLHOLDINGS"
+    truth_state: VERIFIED
+    evidence: "data/hf_space_inventory.json (collected 2026-08-30 via hub_repo_search)"
+    blocks_release: false
+  - id: CLM-002
+    claim: "7 Spaces public / 38 Spaces private"
+    truth_state: VERIFIED
+    evidence: "data/hf_space_inventory.json"
+    blocks_release: false
+  - id: CLM-003
+    claim: "43 models and 36 datasets under SZLHOLDINGS"
+    truth_state: VERIFIED
+    evidence: "data/hf_models_datasets.json (collected 2026-08-30)"
+    blocks_release: false
+  - id: CLM-004
+    claim: "98 repos under github.com/szl-holdings, 5 private"
+    truth_state: VERIFIED
+    evidence: "szl-audit/github_repos.tsv (gh api, 2026-08-30)"
+    blocks_release: false
+  - id: CLM-005
+    claim: "Receipts are Ed25519-signed and offline-verifiable"
+    truth_state: VERIFIED
+    evidence: "demo/demo_harness.py steps 2-3, 6-7; receipts/chain.jsonl"
+    blocks_release: false
+  - id: CLM-006
+    claim: "Missing evidence yields INCOMPLETE, never PASS"
+    truth_state: VERIFIED
+    evidence: "tools/receipt_lib.py verify_receipt(); demo step 7"
+    blocks_release: false
+  - id: CLM-007
+    claim: "is_service_account=false is structurally enforced for human principals"
+    truth_state: VERIFIED
+    evidence: "schemas/governed_action_v1.schema.json; demo step 11 rejects spoof"
+    blocks_release: false
+  - id: CLM-008
+    claim: "Article 12 logging conformance profile is machine-readable"
+    truth_state: VERIFIED
+    evidence: "article12/conformance_profile.yaml; demo step 12 report"
+    blocks_release: false
+  - id: CLM-009
+    claim: "All Spaces run their advertised deployed revision"
+    truth_state: UNKNOWN
+    evidence: null
+    note: "stage=RUNNING was not probed per-Space and is not evidence of revision. Requires per-Space revision attestation."
+    blocks_release: true
+  - id: CLM-010
+    claim: "Flagship Spaces render correctly on mobile"
+    truth_state: UNKNOWN
+    evidence: null
+    note: "Requires per-flagship smoke capture."
+    blocks_release: true
+  - id: CLM-011
+    claim: "Receipt claim has survived adversarial cryptographic review"
+    truth_state: UNKNOWN
+    evidence: null
+    note: "Never attacked by an adversarial reviewer. Daybreak Blue S2 payload prepared for this."
+    blocks_release: true
+  - id: CLM-012
+    claim: "Model/dataset license register (Model BOM) is complete for 43 models + 36 datasets"
+    truth_state: UNKNOWN
+    evidence: null
+    note: "AI diligence now includes training-data rights and indemnity exposure."
+    blocks_release: true

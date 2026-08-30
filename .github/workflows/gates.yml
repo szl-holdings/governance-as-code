@@ -1,0 +1,20 @@
+name: governance-gates
+on: [push, pull_request]
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install pyyaml cryptography
+      - name: Lexicon gate (Zero-Bandaid vocabulary)
+        run: python3 tools/lexicon_gate.py
+      - name: Demo harness (12-step acceptance test)
+        run: python3 demo/demo_harness.py
+      - name: Spaces audit (READ_ONLY, self-receipting)
+        run: python3 tools/spaces_audit.py
+      - name: Release gate
+        run: python3 tools/release_gate.py
+      - name: Raise gate (report-only in CI; founder supplies commercial facts)
+        run: python3 tools/release_gate.py --raise || true
