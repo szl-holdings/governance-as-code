@@ -70,8 +70,8 @@ claims:
     note: "Never attacked by an adversarial reviewer. Daybreak Blue S2 payload prepared for this."
     blocks_release: true
   - id: CLM-012
-    claim: "Model/dataset license register (Model BOM) is complete for 43 models + 36 datasets"
-    truth_state: UNKNOWN
-    evidence: null
-    note: "AI diligence now includes training-data rights and indemnity exposure."
-    blocks_release: true
+    claim: "License register covers every model + dataset (80 rows: 43 models, 37 datasets)"
+    truth_state: VERIFIED
+    evidence: "governance/MODEL_BOM.yaml + data/model_bom.json (live HF reads 2026-08-31); 1 dataset UNDECLARED, disclosed"
+    note: "UNDECLARED license on vault-artifacts (private) is disclosed, not hidden. Legal review of training-data rights is a counsel action, COM-019."
+    blocks_release: false

@@ -1,0 +1,219 @@
+{
+ "models": [
+  {
+   "id": "SZLHOLDINGS/SZLHOLDINGS"
+  },
+  {
+   "id": "SZLHOLDINGS/chaski"
+  },
+  {
+   "id": "SZLHOLDINGS/chaski-r2"
+  },
+  {
+   "id": "SZLHOLDINGS/WILLAY"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v3"
+  },
+  {
+   "id": "SZLHOLDINGS/khipu-r3"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-training-scripts"
+  },
+  {
+   "id": "SZLHOLDINGS/chaski-5050"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-nemo"
+  },
+  {
+   "id": "SZLHOLDINGS/tinku"
+  },
+  {
+   "id": "SZLHOLDINGS/waman"
+  },
+  {
+   "id": "SZLHOLDINGS/chakana"
+  },
+  {
+   "id": "SZLHOLDINGS/qantu"
+  },
+  {
+   "id": "SZLHOLDINGS/KILLINCHU-EYE"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-khipu-kernels"
+  },
+  {
+   "id": "SZLHOLDINGS/MiniEmbed-Nano"
+  },
+  {
+   "id": "SZLHOLDINGS/Moons-Nano"
+  },
+  {
+   "id": "SZLHOLDINGS/ReceiptAgent-Nano"
+  },
+  {
+   "id": "SZLHOLDINGS/TinyKhipu-Nano"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-governed-norm"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-lambda-gate"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-block-kv"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-khipu"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-ouroboros"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-receipt-attn"
+  },
+  {
+   "id": "SZLHOLDINGS/YARQA-ATTN"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-maskmod"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-kernels"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-blocked"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-invariants"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-formulas"
+  },
+  {
+   "id": "SZLHOLDINGS/brain-navigator-r2"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v2"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-provctl"
+  },
+  {
+   "id": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF"
+  },
+  {
+   "id": "SZLHOLDINGS/SZL-Khipu-1.5B-abstain"
+  },
+  {
+   "id": "SZLHOLDINGS/SZL-Khipu-1.5B"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-govsign"
+  },
+  {
+   "id": "SZLHOLDINGS/SZL-Forge-1.5B-ReceiptAgent"
+  },
+  {
+   "id": "SZLHOLDINGS/KHIPU-R2"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-inference-meter"
+  },
+  {
+   "id": "SZLHOLDINGS/a11oy-v19-substrate"
+  },
+  {
+   "id": "SZLHOLDINGS/A11OY-MINI"
+  }
+ ],
+ "datasets": [
+  {
+   "id": "SZLHOLDINGS/a11oy-verifiable-corpus"
+  },
+  {
+   "id": "SZLHOLDINGS/killinchu-osint-corpus"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-evidence",
+   "private": true
+  },
+  {
+   "id": "SZLHOLDINGS/SZLHOLDINGS"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-lake"
+  },
+  {
+   "id": "SZLHOLDINGS/receipted-unsloth"
+  },
+  {
+   "id": "SZLHOLDINGS/why-we-lead"
+  },
+  {
+   "id": "SZLHOLDINGS/vault-artifacts",
+   "private": true
+  },
+  {
+   "id": "SZLHOLDINGS/szl-training-receipts",
+   "private": true
+  },
+  {
+   "id": "SZLHOLDINGS/governed-agent-bench"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-1-doctrine-sft"
+  },
+  {
+   "id": "SZLHOLDINGS/alloy-sovereign-eval-runs"
+  },
+  {
+   "id": "SZLHOLDINGS/energy-attested-runs"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-receipts-bench"
+  },
+  {
+   "id": "SZLHOLDINGS/readiness-runs"
+  },
+  {
+   "id": "SZLHOLDINGS/uds-bundles-v1"
+  },
+  {
+   "id": "SZLHOLDINGS/yuyay-v3-axis-labels-v1",
+   "private": true
+  },
+  {
+   "id": "SZLHOLDINGS/k-verify-benchmark-v1"
+  },
+  {
+   "id": "SZLHOLDINGS/doctrine-v10-v11"
+  },
+  {
+   "id": "SZLHOLDINGS/thesis-corpus-v18"
+  },
+  {
+   "id": "SZLHOLDINGS/canonical-formulas-v1"
+  },
+  {
+   "id": "SZLHOLDINGS/lean-proofs-v1"
+  },
+  {
+   "id": "SZLHOLDINGS/rag-corpus-v1"
+  },
+  {
+   "id": "SZLHOLDINGS/lean-theorem-tree"
+  },
+  {
+   "id": "SZLHOLDINGS/thesis-formula-index",
+   "private": true
+  },
+  {
+   "id": "SZLHOLDINGS/anatomy-alive-harness",
+   "private": true
+  }
+ ]
+}
