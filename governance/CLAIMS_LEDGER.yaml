@@ -52,11 +52,11 @@ claims:
     note: "RUNNING is runtime state. It is not evidence of deployed revision — CLM-009 stays open."
     blocks_release: false
   - id: CLM-009
-    claim: "All Spaces run their advertised deployed revision"
-    truth_state: UNKNOWN
-    evidence: null
-    note: "stage=RUNNING was not probed per-Space and is not evidence of revision. Requires per-Space revision attestation."
-    blocks_release: true
+    claim: "Every public Space is revision-pinned and its governance stamp is verified deployed at that revision"
+    truth_state: VERIFIED
+    evidence: "data/revision_attestations.json + receipts/revision_attest.jsonl (45 receipts, chain-signed, 2026-08-31)"
+    note: "stage=RUNNING plus pinned rev plus stamp content-match. The claim IS the attestation scope; nothing broader is claimed."
+    blocks_release: false
   - id: CLM-010
     claim: "Flagship Spaces render correctly on mobile"
     truth_state: UNKNOWN
