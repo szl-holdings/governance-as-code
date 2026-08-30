@@ -56,9 +56,19 @@ scoped to the SZLHOLDINGS org). Dry-run plan already receipted in
 - RELEASE GATE: PASS (13 claims verified/attested, 0 blockers).
 - Verifier site published: https://a11oy-verify.pplx.app (public).
 
-## Still human-only (raise gate)
+## Commercial artifacts built (2026-08-31, same session)
 
-1. COM-015 — solo-founder gate (12.9% vs 23.7% Series A graduation)
-2. COM-013 — no published price; GM/NRR/CAC/burn-multiple uncomputable
-3. COM-001..024 — 24 commercial facts remain UNKNOWN by design
-4. Sept 1, 2026 — hardware security keys mandatory on individual Daybreak accounts
+- `pricing/PRICING.md` — 5 SKUs as testable hypotheses; never token-priced
+- `governance/BUYER_PERSONA.md` — VP Platform/CISO at regulated AI adopter; 12 discovery questions
+- `data_room/` — 13-section scaffold ready for primary documents
+- `tools/north_star.py` — verified governed actions / customer / month, computable from receipt logs (227 actions already recorded)
+- `daybreak/S2_ADVERSARIAL_REVIEW_PAYLOAD.md` — ready for the independent Daybreak Blue run
+- `governance/COMMERCIAL_LEDGER.yaml` — 5 rows attested as built artifacts, 19 remain founder-only UNKNOWN
+
+## Still founder-only (raise gate blocks here, by design)
+
+1. COM-001..012 — financial truth (ARR, MRR, cash, burn, runway, margins)
+2. COM-015 — named co-founder / security-credentialed owner (12.9% vs 23.7% graduation)
+3. COM-016..018 — cap table, IP assignments, Delaware C-Corp
+4. COM-020..022 — SOC 2 date, named EU design partner, conversion rate
+5. Sept 1, 2026 — hardware security keys mandatory on individual Daybreak accounts
