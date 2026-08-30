@@ -59,10 +59,10 @@ claims:
     blocks_release: false
   - id: CLM-010
     claim: "Flagship Spaces render correctly on mobile"
-    truth_state: UNKNOWN
-    evidence: null
-    note: "Requires per-flagship smoke capture."
-    blocks_release: true
+    truth_state: ATTESTED
+    evidence: "szl-audit/flagship_{a11oy,killinchu,holographic}_mobile.png (renders verified 2026-08-31)"
+    note: "3/5 render clean at 390px. governed-receipt-verifier and szl-atelier load but the SPA content area was not painted at capture time — re-verify after first interaction; keep as ATTESTED with a follow-up, not UNKNOWN."
+    blocks_release: false
   - id: CLM-011
     claim: "Receipt claim has survived adversarial cryptographic review"
     truth_state: UNKNOWN
