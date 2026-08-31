@@ -1,0 +1,101 @@
+name: temporary-build-license-successor
+
+on:
+  push:
+    branches:
+      - fix/license-current-master-20260830-v2
+    paths:
+      - .github/workflows/temporary-build-license-successor.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: fix/license-current-master-20260830-v2
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Prove and apply exact license plus pinned-workflow delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Lutar, Stephen P."
+          git config user.email "stephenlutar2@gmail.com"
+          git fetch origin master chore/p1-1-add-apache-license
+          source_ref=origin/chore/p1-1-add-apache-license
+          base_ref=origin/master
+          expected=(LICENSE NOTICE README.md .github/workflows/gates.yml)
+
+          already=true
+          for path in "${expected[@]}"; do
+            if ! git diff --quiet "$base_ref" "$source_ref" -- "$path"; then
+              already=false
+              break
+            fi
+          done
+          if [ "$already" = true ]; then
+            echo "Current master already contains the reviewed legal and workflow bytes."
+            git reset --hard "$base_ref"
+            git push --force-with-lease origin HEAD:fix/license-current-master-20260830-v2
+            exit 0
+          fi
+
+          merge_base="$(git merge-base "$base_ref" "$source_ref")"
+          git diff --name-only "${merge_base}..${source_ref}" -- \
+            . ':(exclude).github/workflows/temporary-*' ':(exclude).ci-*' | sort -u > /tmp/observed-paths
+          printf '%s\n' "${expected[@]}" | sort -u > /tmp/expected-paths
+          if ! diff -u /tmp/expected-paths /tmp/observed-paths; then
+            echo "::error::License source branch contains unreviewed path drift."
+            exit 1
+          fi
+          git diff --binary "${merge_base}..${source_ref}" -- "${expected[@]}" > /tmp/license.patch
+          git reset --hard "$base_ref"
+          git apply --3way --index /tmp/license.patch
+          rm -f .github/workflows/temporary-build-license-successor.yml
+          git add -A
+          git diff --cached --check
+
+          python -m pip install pyyaml cryptography
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import yaml
+
+          license_text = Path('LICENSE').read_text(encoding='utf-8')
+          for phrase in (
+              'Apache License',
+              'Version 2.0, January 2004',
+              'http://www.apache.org/licenses/',
+          ):
+              if phrase not in license_text:
+                  raise SystemExit(f'LICENSE missing canonical Apache-2.0 phrase: {phrase}')
+          notice = Path('NOTICE').read_text(encoding='utf-8')
+          readme = Path('README.md').read_text(encoding='utf-8')
+          for text, name in ((notice, 'NOTICE'), (readme, 'README.md')):
+              if 'Apache-2.0' not in text:
+                  raise SystemExit(f'{name} does not state Apache-2.0')
+              if 'Conjecture 1' not in text:
+                  raise SystemExit(f'{name} omits the conjecture verification boundary')
+          workflow_path = Path('.github/workflows/gates.yml')
+          workflow_text = workflow_path.read_text(encoding='utf-8')
+          workflow = yaml.safe_load(workflow_text)
+          if not isinstance(workflow, dict) or 'jobs' not in workflow:
+              raise SystemExit('governance workflow is not valid YAML')
+          refs = re.findall(r'(?m)^\s*-?\s*uses:\s*([^\s#]+)', workflow_text)
+          if not refs:
+              raise SystemExit('governance workflow has no action references')
+          for ref in refs:
+              if '@' not in ref or not re.fullmatch(r'.+@[0-9a-f]{40}', ref):
+                  raise SystemExit(f'action is not pinned to a full commit SHA: {ref}')
+          PY
+          python3 tools/lexicon_gate.py
+          python3 demo/demo_harness.py
+          python3 tools/spaces_audit.py
+          python3 tools/release_gate.py
+          git commit -m "chore(legal): add Apache-2.0 license and pin governance CI" -m "Signed-off-by: Stephen P. Lutar <stephenlutar2@gmail.com>"
+          git push --force-with-lease origin HEAD:fix/license-current-master-20260830-v2
