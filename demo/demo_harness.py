@@ -25,7 +25,8 @@ def step(n, msg): print(f"\n[step {n:2d}] {msg}")
 
 def main():
     sk, pk = generate_keypair()
-    print(f"[step  1] boot — Ed25519 key {keyid(pk)} generated (demo root; production keys live in HSM/KMS)")
+    sk_svc, pk_svc = generate_keypair()   # the service workload signs with its OWN key
+    print(f"[step  1] boot — human key {keyid(pk)}, service key {keyid(pk_svc)} (demo roots; production keys live in HSM/KMS)")
 
     pol_hash = sha256_hex(b"a11oy-policy-bundle:v1.4.2")
     ev_items = [
@@ -34,6 +35,9 @@ def main():
         {"id": "test-run", "sha256": sha256_hex(b"pytest 41/41"), "present": True},
         {"id": "deploy-log", "sha256": sha256_hex(b"deploy rev 9f2c1e"), "present": True},
     ]
+    registry = {keyid(pk): {"id": "s.lutar", "type": "human"},
+                keyid(pk_svc): {"id": "agent://patch-bot", "type": "service"}}
+    keyring = {keyid(pk): pk, keyid(pk_svc): pk_svc}
     r1 = build_receipt(action_id="governed-change-047", subject_name="prod:payment-service",
         actor=HUMAN,
         policy_decision={"result": "ALLOW", "policy_hash": pol_hash,
@@ -43,8 +47,9 @@ def main():
                    "deployed_revision": "9f2c1e"},
         evidence_items=ev_items, prev_chain_hash="GENESIS", signing_key=sk)
     print("[step  2] allowed action signed — governed-change-047 (WRITE_REVERSIBLE, human-approved)")
+    chain_id = r1["predicate"]["chain_id"]
 
-    v1 = verify_receipt(r1, pk)
+    v1 = verify_receipt(r1, pk, authorized_actors=registry)
     print(f"[step  3] verify -> {v1.verdict} (signature {'valid' if v1.signature_valid else 'INVALID'})")
     assert v1.verdict == "PASS"
 
@@ -55,8 +60,8 @@ def main():
                          "evaluated_at": "2026-08-30T20:44:00+00:00"},
         execution={"side_effect_class": "WRITE_IRREVERSIBLE", "status": "DENIED"},
         evidence_items=[{"id": "policy-eval-log", "sha256": sha256_hex(b"deny trace"), "present": True}],
-        prev_chain_hash=chain_hash(r1), signing_key=sk)
-    v2 = verify_receipt(r2, pk)
+        prev_chain_hash=chain_hash(r1), signing_key=sk_svc, chain_id=chain_id)
+    v2 = verify_receipt(r2, pk_svc, authorized_actors=registry)
     print(f"[step  4] denied action recorded — agent attempted IRREVERSIBLE without approval; no execution occurred")
     print(f"[step  5] verify deny-receipt -> {v2.verdict} (the DENY is itself signed evidence)")
     assert v2.verdict == "PASS"
@@ -75,8 +80,8 @@ def main():
         execution={"side_effect_class": "WRITE_REVERSIBLE", "status": "EXECUTED",
                    "deployed_revision": "a17d3b"},
         evidence_items=[*ev_items[:3], {"id": "deploy-log", "sha256": "", "present": False}],
-        prev_chain_hash=chain_hash(r2), signing_key=sk)
-    v4 = verify_receipt(cut, pk)
+        prev_chain_hash=chain_hash(r2), signing_key=sk, chain_id=chain_id)
+    v4 = verify_receipt(cut, pk, authorized_actors=registry)
     print(f"[step  7] honestly-signed receipt with one evidence item missing -> {v4.verdict} "
           f"(signature {'valid' if v4.signature_valid else 'INVALID'}) :: missing evidence never PASSes")
     assert v4.verdict == "INCOMPLETE" and v4.signature_valid is True
@@ -88,8 +93,10 @@ def main():
     print(f"[step  8] sink outage — local ACK after flock+fsync; remote state stays visible: {ack['remote']}")
 
     chain = fr.read_all()
-    before = verify_chain(chain, pk); tip_before = before["tip"]
-    after = verify_chain(fr.read_all(), pk)
+    before = verify_chain(chain, keyring=keyring, authorized_actors=registry)
+    tip_before = before["tip"]
+    after = verify_chain(fr.read_all(), keyring=keyring, authorized_actors=registry,
+                         expected_tip=tip_before, min_length=len(chain))
     print(f"[step  9] replay — chain re-verified, tip unchanged: {tip_before == after['tip']} (replay is non-mutating)")
     assert tip_before == after["tip"] and before["all_links_valid"]
 
@@ -122,7 +129,10 @@ def main():
     (OUT / "article12_report.json").write_text(json.dumps(report, indent=1))
 
     bundle = {"predicateType": r1["predicateType"], "public_key_raw_b64": export_pubkey_raw_b64(pk),
-              "keyid": keyid(pk), "chain_tip": before["tip"],
+              "keyid": keyid(pk),
+              "keyring": {keyid(pk): export_pubkey_raw_b64(pk), keyid(pk_svc): export_pubkey_raw_b64(pk_svc)},
+              "authorized_actors": registry, "chain_tip": before["tip"],
+              "chain_length": len(chain),
               "receipts": chain, "tampered_receipt": tampered, "incomplete_receipt": cut,
               "spoof_receipt": spoof, "backdated_receipt": r3,
               "article12_report": report,

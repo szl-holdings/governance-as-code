@@ -14,6 +14,8 @@ jobs:
         run: python3 demo/demo_harness.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
+      - name: Reviewer-PoC regression (independent review findings must stay fixed)
+        run: python3 tests/regression_v2.py
       - name: Spaces audit (READ_ONLY, self-receipting)
         run: python3 tools/spaces_audit.py
       - name: Release gate

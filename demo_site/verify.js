@@ -1,17 +1,21 @@
-/* a11oy offline verifier — real Ed25519 over DSSEv1 PAE via WebCrypto.
-   No server, no network. The verifier is the product. */
+/* a11oy offline verifier v2 — real Ed25519 over DSSEv1 PAE via WebCrypto.
+   Parity with receipt_lib v2: structural fail-closed checks, keyid binding,
+   subject-digest recompute, registry identity binding, signatures-region
+   purity, time plausibility. No server, no network. */
 "use strict";
 
 const $ = (s) => document.querySelector(s);
 let BUNDLE = null;
-let PUBKEY = null;   // CryptoKey
-let KEYID = null;
+let KEYRING = null;     // keyid -> CryptoKey
+let REGISTRY = null;    // keyid -> {id, type}
 
 const enc = new TextEncoder();
+const PREDICATE_TYPE = "https://szl.dev/predicates/governed-action/v1";
+const SIDE_EFFECTS = new Set(["READ_ONLY", "WRITE_REVERSIBLE", "WRITE_IRREVERSIBLE", "EXTERNAL_OBSERVABLE"]);
+const EXEC_STATUS = new Set(["EXECUTED", "DENIED", "ROLLED_BACK", "PENDING_SYNC"]);
+const AUTH_METHODS = new Set(["hardware_key", "oidc", "api_key", "mtls"]);
+const HEX64 = /^[0-9a-f]{64}$/;
 
-// canonical JSON matching Python json.dumps(sort_keys=True, separators=(",",":"))
-// Note: demo bundle contains only ASCII + JSON-safe scalars, so a deep-sorted
-// serialization with no whitespace is byte-identical to the Python canonical form.
 function canonicalize(v) {
   if (v === null) return "null";
   if (typeof v === "number" || typeof v === "boolean") return JSON.stringify(v);
@@ -27,7 +31,6 @@ async function sha256Hex(bytes) {
 }
 
 function paeBytes(payloadType, payloadBytes) {
-  // 'DSSEv1' SP <len> SP <type> SP <len> SP <payload>
   const pt = enc.encode(payloadType);
   const head = enc.encode(`DSSEv1 ${pt.length} `);
   const mid = enc.encode(` ${payloadBytes.length} `);
@@ -40,51 +43,110 @@ function paeBytes(payloadType, payloadBytes) {
 
 const b64ToBytes = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
-async function importPub() {
-  if (PUBKEY) return;
-  const raw = b64ToBytes(BUNDLE.public_key_raw_b64);
-  PUBKEY = await crypto.subtle.importKey("raw", raw, { name: "Ed25519" }, false, ["verify"]);
-  KEYID = (await sha256Hex(raw)).slice(0, 16);
+async function importKeys() {
+  if (KEYRING) return;
+  KEYRING = {};
+  for (const [kid, rawb64] of Object.entries(BUNDLE.keyring || { [BUNDLE.keyid]: BUNDLE.public_key_raw_b64 })) {
+    KEYRING[kid] = await crypto.subtle.importKey("raw", b64ToBytes(rawb64), { name: "Ed25519" }, false, ["verify"]);
+  }
+  REGISTRY = BUNDLE.authorized_actors || null;
 }
 
-// mirror of receipt_lib.verify_receipt — laws are identical in both languages
+async function keyidOf(rawB64) { return (await sha256Hex(b64ToBytes(rawB64))).slice(0, 16); }
+
+const parseTime = (s) => {
+  if (typeof s !== "string") return null;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+};
+
 async function verifyReceipt(r) {
   const reasons = [];
-  let sigValid = false;
-  const sigs = r.signatures || [];
-  if (sigs.length) {
-    const signed = {};
-    for (const k of Object.keys(r)) if (k !== "signatures") signed[k] = r[k];
-    const payload = enc.encode(canonicalize(signed));
-    try {
-      sigValid = await crypto.subtle.verify({ name: "Ed25519" }, PUBKEY, b64ToBytes(sigs[0].sig), paeBytes(r.predicateType, payload));
-    } catch (e) { reasons.push("signature malformed"); }
-    if (!sigValid && !reasons.length) reasons.push("signature verification failed — content altered after signing");
-  } else reasons.push("no signatures present");
-
-  const pred = r.predicate || {};
-  const actor = pred.actor || {};
-  if (actor.type === "human" && (actor.is_service_account !== false || actor.auth_method === "api_key" || !actor.human_principal)) {
-    reasons.push("L3 violation: human actor claimed with service-account properties (spoof attempt)");
-    sigValid = false;
+  let sigValid = false, timeAttested = true, identityUncapped = false;
+  try {
+    if (r.predicateType !== PREDICATE_TYPE) reasons.push("predicateType mismatch");
+    const subj = r.subject, pred = r.predicate;
+    if (!subj || !pred) return { verdict: "FAIL", reasons: ["missing subject or predicate"] };
+    // subject↔predicate binding
+    const recomputed = await sha256Hex(enc.encode(canonicalize(pred)));
+    if ((subj.digest || {}).sha256 !== recomputed) reasons.push("subject digest does not match predicate (binding broken)");
+    // required fields
+    if (typeof pred.action_id !== "string" || !pred.action_id.trim()) reasons.push("missing/blank action_id");
+    const actor = pred.actor || {};
+    const kid = (r.signatures || [])[0] ? (r.signatures[0].keyid) : null;
+    if (actor.type === "human") {
+      if (actor.is_service_account !== false) reasons.push("L3: human actor without is_service_account=false");
+      if (actor.auth_method === "api_key") reasons.push("L3: api_key cannot claim a human principal");
+      if (typeof actor.human_principal !== "string" || !actor.human_principal.trim()) reasons.push("L3: missing/blank human_principal");
+    } else if (actor.type === "service") {
+      if (actor.is_service_account !== true) reasons.push("L3: service actor must carry is_service_account=true");
+    } else reasons.push(`actor.type ${JSON.stringify(actor.type)} is not exactly 'human' or 'service'`);
+    if (!AUTH_METHODS.has(actor.auth_method)) reasons.push("unknown auth_method");
+    const pol = pred.policy_decision || {};
+    if (!["ALLOW", "DENY"].includes(pol.result)) reasons.push("policy_decision.result must be ALLOW or DENY");
+    const ex = pred.execution || {};
+    if (!SIDE_EFFECTS.has(ex.side_effect_class)) reasons.push("unknown side_effect_class");
+    if (!EXEC_STATUS.has(ex.status)) reasons.push("unknown execution status");
+    // time
+    const ts = pred.timestamps || {};
+    const created = parseTime(ts.created), executed = parseTime(ts.executed);
+    if (!created) { reasons.push("timestamps.created not parseable"); timeAttested = false; }
+    if (!executed) { reasons.push("timestamps.executed not parseable"); timeAttested = false; }
+    if (created && created.getTime() < Date.UTC(2015, 0, 1)) { reasons.push("created precedes plausibility floor (2015)"); timeAttested = false; }
+    if (created && created.getTime() > Date.now() + 86400000) { reasons.push("created is more than 24h in the future"); timeAttested = false; }
+    if (created && executed && executed < created) { reasons.push("executed precedes created (temporal inversion)"); timeAttested = false; }
+    if (ts.ntp_synced !== true) { reasons.push("time not attested (ntp_synced != true)"); timeAttested = false; }
+    if (ts.rfc3161_token != null) {
+      try { if (!b64ToBytes(ts.rfc3161_token).length) throw 0; } catch { reasons.push("rfc3161_token not valid base64"); timeAttested = false; }
+    }
+    // evidence
+    const ev = pred.evidence || {};
+    const items = Array.isArray(ev.items) ? ev.items : [];
+    for (const i of items) {
+      if (typeof i.present !== "boolean") { reasons.push("evidence item: present must be strict boolean"); continue; }
+      if (i.present && !HEX64.test(String(i.sha256 || ""))) reasons.push(`evidence ${i.id}: sha256 not 64-hex`);
+    }
+    const completeness = (items.length && items.every((i) => i.present === true)) ? "COMPLETE" : "INCOMPLETE";
+    if (ev.completeness && ev.completeness !== completeness) reasons.push(`declared completeness ${ev.completeness} != computed ${completeness}`);
+    for (const c of ev.redaction_commitments || []) {
+      if (typeof c !== "string" || !/^[0-9a-f]{16,64}:[0-9a-f]{64}$/.test(c)) reasons.push("redaction_commitment malformed");
+    }
+    // signatures-region purity + keyid binding + verify
+    const sigs = r.signatures || [];
+    if (!sigs.length) reasons.push("no signatures present");
+    else {
+      sigs.forEach((s, i) => { if (Object.keys(s).some((k) => !["keyid", "sig"].includes(k))) reasons.push(`signatures[${i}] carries unauthenticated metadata`); });
+      if (sigs.length !== 1) reasons.push(`signatures count ${sigs.length} != 1`);
+      const s0 = sigs[0];
+      if (!KEYRING[s0.keyid]) reasons.push(`signer keyid ${s0.keyid} not in keyring`);
+      else {
+        const signed = {};
+        for (const k of Object.keys(r)) if (k !== "signatures") signed[k] = r[k];
+        try {
+          sigValid = await crypto.subtle.verify({ name: "Ed25519" }, KEYRING[s0.keyid], b64ToBytes(s0.sig), paeBytes(r.predicateType, enc.encode(canonicalize(signed))));
+        } catch { reasons.push("signature malformed"); }
+        if (!sigValid && !reasons.some((x) => x.includes("signature"))) reasons.push("signature verification failed — content altered after signing");
+      }
+    }
+    // registry identity binding
+    if (actor.type === "human" || actor.type === "service") {
+      if (REGISTRY && kid && REGISTRY[kid]) {
+        const entry = REGISTRY[kid];
+        if (entry.type !== actor.type) reasons.push(`registry binds key to type ${entry.type}, receipt claims ${actor.type}`);
+        if (actor.type === "human" && entry.id !== actor.id) reasons.push(`registry binds key to ${entry.id}, receipt claims ${actor.id}`);
+      } else if (actor.type === "human") {
+        reasons.push("no authorized-actors registry supplied — human identity claim unverifiable, capping at INCOMPLETE");
+        identityUncapped = true;
+      }
+    }
+    let verdict;
+    if (!sigValid || reasons.some((x) => !x.includes("capping at INCOMPLETE") && !x.startsWith("no authorized-actors"))) verdict = "FAIL";
+    else if (completeness !== "COMPLETE" || !timeAttested || identityUncapped) verdict = "INCOMPLETE";
+    else verdict = "PASS";
+    return { verdict, sigValid, completeness, timeAttested, reasons };
+  } catch (e) {
+    return { verdict: "FAIL", reasons: [`verifier exception (fail-closed): ${e.message}`] };
   }
-  const ts = pred.timestamps || {};
-  const timeAttested = ts.ntp_synced === true;
-  if (!timeAttested) reasons.push("time not attested (ntp_synced != true)");
-
-  const ev = pred.evidence || {};
-  const items = ev.items || [];
-  const completeness = (items.length && items.every((i) => i.present)) ? "COMPLETE" : "INCOMPLETE";
-  if (ev.completeness && ev.completeness !== completeness)
-    reasons.push(`declared completeness ${ev.completeness} != computed ${completeness}`);
-
-  let verdict;
-  if (!sigValid) verdict = "FAIL";
-  else if (completeness !== "COMPLETE" || !timeAttested) {
-    verdict = "INCOMPLETE";
-    if (completeness !== "COMPLETE") reasons.push("evidence incomplete — INCOMPLETE is the verdict, never PASS");
-  } else verdict = "PASS";
-  return { verdict, sigValid, completeness, timeAttested, reasons };
 }
 
 function verdictChip(v, el) {
@@ -92,12 +154,14 @@ function verdictChip(v, el) {
   el.textContent = v;
 }
 
+async function chainHashOf(receipt) { return sha256Hex(enc.encode(canonicalize(receipt))); }
+
 async function runStep(id, receipt, chainPrev, expectedPrev) {
   const card = document.getElementById(id);
   const chip = card.querySelector(".verdict");
   const detail = card.querySelector(".detail");
   chip.className = "verdict running"; chip.textContent = "VERIFYING";
-  await new Promise((r) => setTimeout(r, 320)); // let the eye register the check
+  await new Promise((r) => setTimeout(r, 320));
   const v = await verifyReceipt(receipt);
   let linkOK = null;
   if (chainPrev !== null) {
@@ -107,7 +171,7 @@ async function runStep(id, receipt, chainPrev, expectedPrev) {
   }
   verdictChip(v.verdict, chip);
   detail.textContent = v.reasons.length ? v.reasons.join(" · ")
-    : v.verdict === "PASS" ? "Ed25519 over DSSEv1 PAE · chain link intact · evidence complete"
+    : v.verdict === "PASS" ? "Ed25519 over DSSEv1 PAE · chain link intact · identity registry-bound · evidence complete"
     : "signed honestly — missing evidence holds at INCOMPLETE";
   card.classList.add("done");
   return { ...v, linkOK };
@@ -119,21 +183,20 @@ async function runDemo() {
   btn.disabled = true; btn.textContent = "Running…";
   $("#status-line").textContent = "verifying chain in-browser · no server involved";
   for (const c of document.querySelectorAll(".step")) { c.classList.remove("done"); }
-  const r = BUNDLE.receipts; // [r1 allowed, r2 denied]
+  const r = BUNDLE.receipts;
   const results = {};
   results.s2 = await runStep("s2", r[0], true, "GENESIS");
   results.s5 = await runStep("s5", r[1], true, await chainHashOf(r[0]));
   results.s6 = await runStep("s6", BUNDLE.tampered_receipt, true, "GENESIS");
   results.s7 = await runStep("s7", BUNDLE.incomplete_receipt, true, await chainHashOf(r[1]));
   results.s11 = await runStep("s11", BUNDLE.spoof_receipt, true, "GENESIS");
-  // replay check: recompute tips twice
   const tips = $("#s9 .detail");
-  const tip1 = BUNDLE.chain_tip, tip2 = await chainTip([...r, BUNDLE.incomplete_receipt].slice(0, 2));
-  const replayOK = tip1 === tip2;
+  const recomputedTip = await chainHashOf(r[r.length - 1]);
+  const replayOK = recomputedTip === BUNDLE.chain_tip && r.length === BUNDLE.chain_length;
   verdictChip(replayOK ? "PASS" : "FAIL", $("#s9 .verdict"));
   tips.textContent = replayOK
-    ? `chain tip ${tip1.slice(0, 20)}… recomputed in-browser, matches the signed tip — replay is non-mutating`
-    : "chain tip mismatch";
+    ? `tip ${BUNDLE.chain_tip.slice(0, 20)}… recomputed in-browser, matches signed tip · length ${r.length} anchored — replay is non-mutating`
+    : "chain tip or length mismatch — possible truncation";
   $("#s9").classList.add("done");
   const passed = Object.values(results);
   $("#status-line").textContent =
@@ -143,16 +206,13 @@ async function runDemo() {
   btn.disabled = false; btn.textContent = "Re-run verification";
 }
 
-async function chainHashOf(receipt) { return sha256Hex(enc.encode(canonicalize(receipt))); }
-async function chainTip(receipts) { return chainHashOf(receipts[receipts.length - 1]); }
-
 async function boot() {
   try {
     const res = await fetch("demo_bundle.json", { cache: "no-store" });
     BUNDLE = await res.json();
-    await importPub();
-    $("#keyline").textContent = `demo root key ${KEYID} · Ed25519 · ${BUNDLE.predicateType.split("/").slice(-2).join("/")}`;
-    $("#status-line").textContent = `bundle loaded · public key imported · ${BUNDLE.receipts.length} chained receipts ready — no network from here on`;
+    await importKeys();
+    $("#keyline").textContent = `human key ${BUNDLE.keyid} · registry-bound · Ed25519 · governed-action/v1`;
+    $("#status-line").textContent = `bundle loaded · ${Object.keys(KEYRING).length} keys imported · identity registry bound · ${BUNDLE.receipts.length} chained receipts ready — no network from here on`;
     $("#run").addEventListener("click", runDemo);
     $("#run").disabled = false;
   } catch (e) {
@@ -160,7 +220,6 @@ async function boot() {
   }
 }
 
-// theme toggle
 (function () {
   const t = document.querySelector("[data-theme-toggle]"), r = document.documentElement;
   let d = matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";

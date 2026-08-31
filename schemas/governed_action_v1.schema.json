@@ -86,7 +86,8 @@
             "rfc3161_token": {"type": "string", "description": "Anti-backdating trusted timestamp."}
           }
         },
-        "prev_chain_hash": {"type": "string", "pattern": "^([0-9a-f]{64}|GENESIS)$"}
+        "prev_chain_hash": {"type": "string", "pattern": "^([0-9a-f]{64}|GENESIS)$"},
+        "chain_id": {"type": "string", "description": "Genesis-derived lineage marker. Fork splices across chains yield divergent chain_ids and are flagged by verify_chain. Cross-context replay additionally requires an out-of-band anchor (expected_tip/min_length)."}
       }
     },
     "signatures": {

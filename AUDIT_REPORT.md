@@ -39,6 +39,27 @@ scoped to the SZLHOLDINGS org). Dry-run plan already receipted in
   (revision attestation, mobile smoke, adversarial crypto review, Model BOM)
 - Raise gate: 24 commercial facts UNKNOWN, all `blocks_raise=True`
 
+## Adversarial review — executed 2026-08-31 (evening)
+
+Three independent frontier-model reviewers (Claude Opus, GPT Sol, Kimi K3)
+ran the S2 payload against `tools/receipt_lib.py` v1 with a hard rule: every
+claimed exploit needed a runnable PoC. Result: 39 executable PoCs; 37 confirmed
+exploits at the semantic layer (gutted receipts passing, human-principal forgery,
+backdating, chain truncation/replay, torn-tail DoS); the crypto core —
+Ed25519 over DSSEv1 PAE, canonicalization injectivity — held in all three reviews.
+
+`receipt_lib.py` v2 closed them: fail-closed structural enforcement,
+subject-digest recompute, keyid↔key binding, authorized-actors registry,
+signatures-region purity, time plausibility window, chain_id lineage markers,
+torn-tail-tolerant FlightRecorder, anchored chain verification
+(expected_tip/min_length). `tests/regression_v2.py` re-executes every PoC in
+CI: **37 HELD, 0 regressed, 2 documented residuals** — both share one
+information-theoretic root cause (offline verification cannot detect history
+truncation without an out-of-band anchor); the verifier now discloses
+unanchored verification explicitly, and closure is the Control-plane
+transparency log. Demo receipts now use a two-key keyring (human and service
+workload sign with separate keys). Browser verifier has full parity.
+
 ## Resolution update (same evening, 2026-08-31)
 
 - CLM-009 CLOSED — all 45 Spaces revision-pinned; governance-stamp content

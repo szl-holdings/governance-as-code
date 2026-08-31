@@ -1,0 +1,12 @@
+# AUTHORIZED_ACTORS.yaml — the trust anchor for identity claims.
+# keyid -> identity binding. Verifiers cross-check this registry against the
+# keyid embedded in each receipt. An auditor should fetch THIS file from the
+# signed repo (github.com/szl-holdings/governance-as-code), never trust a
+# registry that arrives inside the bundle being verified.
+version: 1
+authorized_actors:
+  # Demo root key — regenerated per demo run; the demo bundle carries the
+  # live keyid for that run. Production bindings land here as real HSM/KMS
+  # keys are enrolled.
+  demo-root:
+    note: "placeholder — the demo harness writes the live binding into demo_bundle.json under authorized_actors; production keys enroll here"
