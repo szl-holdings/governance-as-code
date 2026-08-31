@@ -1,0 +1,1 @@
+tests/ contains no collectible tests; this repo's verification lives in its governance scripts and the org gates. Ruff E9/F remains blocking here.
