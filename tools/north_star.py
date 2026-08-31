@@ -11,7 +11,7 @@ so the number exists before there is a dashboard.
 """
 import json, pathlib, sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime
 
 def parse_ts(r):
     ts = (r.get("predicate", {}).get("timestamps", {}) or {}).get("created", "")

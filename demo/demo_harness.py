@@ -14,7 +14,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools")
 import yaml
 from receipt_lib import (FlightRecorder, build_receipt, chain_hash, generate_keypair,
                          keyid, export_pubkey_raw_b64, verify_chain, verify_receipt,
-                         canonical, sha256_hex)
+                         sha256_hex)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "receipts"; OUT.mkdir(exist_ok=True)
@@ -57,7 +57,7 @@ def main():
         evidence_items=[{"id": "policy-eval-log", "sha256": sha256_hex(b"deny trace"), "present": True}],
         prev_chain_hash=chain_hash(r1), signing_key=sk)
     v2 = verify_receipt(r2, pk)
-    print(f"[step  4] denied action recorded — agent attempted IRREVERSIBLE without approval; no execution occurred")
+    print("[step  4] denied action recorded — agent attempted IRREVERSIBLE without approval; no execution occurred")
     print(f"[step  5] verify deny-receipt -> {v2.verdict} (the DENY is itself signed evidence)")
     assert v2.verdict == "PASS"
 
@@ -84,7 +84,7 @@ def main():
     fr_path = OUT / "flight_recorder.bin"
     fr_path.unlink(missing_ok=True)   # demo is idempotent: fresh recorder each run
     fr = FlightRecorder(str(fr_path))
-    ack = fr.append(r1); ack2 = fr.append(r2)
+    ack = fr.append(r1); _ = fr.append(r2)
     print(f"[step  8] sink outage — local ACK after flock+fsync; remote state stays visible: {ack['remote']}")
 
     chain = fr.read_all()
@@ -130,7 +130,7 @@ def main():
                            "evidence_cut": v4.verdict, "backdated": v5.verdict, "spoof": v6.verdict}}
     (OUT / "demo_bundle.json").write_text(json.dumps(bundle, indent=1))
     (OUT / "chain.jsonl").write_text("\n".join(json.dumps(r) for r in chain))
-    print(f"\nDEMO COMPLETE — receipts/chain.jsonl, demo_bundle.json, article12_report.json")
+    print("\nDEMO COMPLETE — receipts/chain.jsonl, demo_bundle.json, article12_report.json")
     print("Every verdict above is reproducible offline: python3 demo/demo_harness.py")
     return 0
 

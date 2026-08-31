@@ -10,7 +10,7 @@ Laws enforced here (not in prose):
   L6  Replay is non-mutating: verification never changes the chain.
 """
 from __future__ import annotations
-import base64, hashlib, json, os, sys
+import base64, hashlib, json, os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 

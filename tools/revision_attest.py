@@ -12,7 +12,7 @@ Output: data/revision_attestations.json + receipts/revision_attest.jsonl
 """
 import hashlib, json, pathlib, subprocess, sys, time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex, canonical
+from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex
 from hf_estate_apply import stamp, API
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent

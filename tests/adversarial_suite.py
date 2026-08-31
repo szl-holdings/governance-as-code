@@ -23,10 +23,10 @@ Attack classes:
   A14 subject digest mismatch vs predicate (binding attack)
   A15 unicode/canonicalization confusion in string fields
 """
-import copy, json, pathlib, sys
+import copy, pathlib, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
 from receipt_lib import (build_receipt, chain_hash, generate_keypair, verify_chain,
-                         verify_receipt, canonical, sha256_hex, sign, PREDICATE_TYPE)
+                         verify_receipt, canonical, sha256_hex, sign)
 
 HUMAN = {"type": "human", "id": "s.lutar", "is_service_account": False,
          "auth_method": "hardware_key", "human_principal": "Stephen P. Lutar"}
@@ -109,7 +109,7 @@ def main():
     # A14: subject digest no longer binds predicate — detect by recompute
     t = copy.deepcopy(r1)
     recomputed = sha256_hex(canonical(t["predicate"]))
-    bound = t["subject"]["digest"]["sha256"] == recomputed
+    _ = t["subject"]["digest"]["sha256"] == recomputed
     t["subject"]["digest"]["sha256"] = sha256_hex(b"different")
     # verifier currently checks signature only — does it catch subject/predicate drift?
     v = verify_receipt(t, pk)
