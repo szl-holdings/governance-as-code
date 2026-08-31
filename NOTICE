@@ -1,0 +1,34 @@
+governance-as-code
+Copyright 2026 Lutar, Stephen P. — SZL Holdings
+
+This product includes software developed by SZL Holdings.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+--------------------------------------------------------------------------------
+SCOPE OF THE GRANT
+
+This repository is the GovernedAction/v1 receipt FORMAT, its JSON schemas, CI
+gates, and the 12-step governed-action demo. The Apache-2.0 grant covers this
+format and reference tooling — "give away the format."
+
+It does NOT grant rights to the SZL control plane, the a11oy runtime, or any
+repository carrying LicenseRef-SZL-Proprietary (e.g. szl-holdings/platform).
+Those remain proprietary and separately licensed.
+
+VERIFICATION BOUNDARY
+
+A receipt produced under this format proves integrity, origin, and that a
+declared policy executed. It does NOT prove model accuracy, safety, fairness,
+effectiveness, or uptime. Λ = Conjecture 1 (advisory; uniqueness open) — never
+"proven trust."
