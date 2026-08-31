@@ -1,0 +1,54 @@
+# Article 12 Logging Conformance Profile — machine-readable
+# Regulation (EU) 2024/1689, Article 12 (record-keeping) for high-risk AI systems.
+# This is a LOGGING CONFORMANCE PROFILE, not a claim of "EU AI Act compliance".
+# Applicability, classification, and deployer obligations remain customer-specific.
+profile_id: szl.dev/article12-logging/v1
+regulation: "Regulation (EU) 2024/1689"
+article: 12
+retention_minimum_days: 180   # statutory floor is 6 months; we set 180
+fields:
+  - id: ART12-1
+    requirement: "Automatic recording of events (logs) over the lifetime of the system"
+    jsonpath: "$.predicate.timestamps.created"
+    validator: "required_rfc3339"
+    receipt_binding: "Every governed action emits a receipt at decision time, not after."
+  - id: ART12-2
+    requirement: "Traceability of functioning: input data / data sources referenced"
+    jsonpath: "$.predicate.evidence.items[*]"
+    validator: "evidence_items_hashed"
+    receipt_binding: "Evidence items are sha256-addressed; absence => INCOMPLETE."
+  - id: ART12-3
+    requirement: "Identification of natural persons involved in verifying results (Art.12(3)(d) via Art.14 human oversight)"
+    jsonpath: "$.predicate.actor.human_principal"
+    validator: "human_principal_required_when_actor_human"
+    receipt_binding: "actor.is_service_account pinned false for human type; api_key cannot claim human."
+  - id: ART12-4
+    requirement: "Recording of the period of each use (start/end)"
+    jsonpath: "$.predicate.timestamps.executed"
+    validator: "executed_after_created"
+    receipt_binding: "ntp_synced const true; rfc3161_token for anti-backdating."
+  - id: ART12-5
+    requirement: "Logs protected against tampering"
+    jsonpath: "$.signatures[0].sig"
+    validator: "ed25519_over_dsse_pae"
+    receipt_binding: "Ed25519 over DSSE PAE; hash chain via prev_chain_hash; offline verification."
+  - id: ART12-6
+    requirement: "Logs retained per retention policy, min 6 months"
+    jsonpath: "$.predicate.execution.status"
+    validator: "retention_floor_enforced"
+    receipt_binding: "PENDING_SYNC is a visible state during sink outage; local durability ACKed only after flock+fsync."
+  - id: ART12-7
+    requirement: "Logs accessible to authorities / auditors on request"
+    jsonpath: "$.predicate.prev_chain_hash"
+    validator: "offline_verifiable_bundle"
+    receipt_binding: "An external auditor verifies the bundle without entering the platform (offline verifier)."
+  - id: ART12-8
+    requirement: "Record of the AI system version / revision in use"
+    jsonpath: "$.predicate.execution.deployed_revision"
+    validator: "revision_pinned_when_executed"
+    receipt_binding: "Reviewed revision != executed revision unless attested; stage=RUNNING is not evidence."
+known_gaps:
+  - id: GAP-01
+    item: "rfc3161_token issuance requires a TSA integration; demo uses local ntp_synced attestation only."
+  - id: GAP-02
+    item: "Retention is a policy floor here; the retention tier (WORM storage) is a Control-plane feature."

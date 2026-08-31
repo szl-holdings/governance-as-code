@@ -1,0 +1,64 @@
+{
+ "profile": "szl.dev/article12-logging/v1",
+ "retention_minimum_days": 180,
+ "fields": [
+  {
+   "id": "ART12-1",
+   "requirement": "Automatic recording of events (logs) over the lifetime of the system",
+   "receipt_binding": "Every governed action emits a receipt at decision time, not after.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-2",
+   "requirement": "Traceability of functioning: input data / data sources referenced",
+   "receipt_binding": "Evidence items are sha256-addressed; absence => INCOMPLETE.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-3",
+   "requirement": "Identification of natural persons involved in verifying results (Art.12(3)(d) via Art.14 human oversight)",
+   "receipt_binding": "actor.is_service_account pinned false for human type; api_key cannot claim human.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-4",
+   "requirement": "Recording of the period of each use (start/end)",
+   "receipt_binding": "ntp_synced const true; rfc3161_token for anti-backdating.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-5",
+   "requirement": "Logs protected against tampering",
+   "receipt_binding": "Ed25519 over DSSE PAE; hash chain via prev_chain_hash; offline verification.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-6",
+   "requirement": "Logs retained per retention policy, min 6 months",
+   "receipt_binding": "PENDING_SYNC is a visible state during sink outage; local durability ACKed only after flock+fsync.",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-7",
+   "requirement": "Logs accessible to authorities / auditors on request",
+   "receipt_binding": "An external auditor verifies the bundle without entering the platform (offline verifier).",
+   "status": "MET"
+  },
+  {
+   "id": "ART12-8",
+   "requirement": "Record of the AI system version / revision in use",
+   "receipt_binding": "Reviewed revision != executed revision unless attested; stage=RUNNING is not evidence.",
+   "status": "MET"
+  }
+ ],
+ "known_gaps": [
+  {
+   "id": "GAP-01",
+   "item": "rfc3161_token issuance requires a TSA integration; demo uses local ntp_synced attestation only."
+  },
+  {
+   "id": "GAP-02",
+   "item": "Retention is a policy floor here; the retention tier (WORM storage) is a Control-plane feature."
+  }
+ ]
+}

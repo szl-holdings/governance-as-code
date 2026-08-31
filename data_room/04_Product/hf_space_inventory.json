@@ -1,0 +1,374 @@
+{
+ "inventory_meta": {
+  "collected_at": "2026-08-30T22:15:00-04:00",
+  "collector": "hub_repo_search via HF connector (read-repos scope)",
+  "org": "SZLHOLDINGS",
+  "org_plan": "team",
+  "account_pro": true,
+  "side_effect_class": "READ_ONLY",
+  "note": "post-remediation state verified 2026-08-30: 45/45 public, 45/45 stage=RUNNING. stage=RUNNING is runtime state, never evidence of deployed revision.",
+  "remediated_at": "2026-08-30T23:59:00-04:00"
+ },
+ "spaces": [
+  {
+   "id": "SZLHOLDINGS/a11oy",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-03",
+   "lastModified": "2026-08-30",
+   "tier": "FLAGSHIP"
+  },
+  {
+   "id": "SZLHOLDINGS/killinchu",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-01",
+   "lastModified": "2026-08-30",
+   "tier": "FLAGSHIP"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-receipt-verifier",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-09",
+   "lastModified": "2026-08-30",
+   "tier": "FLAGSHIP"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-atelier",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-30",
+   "tier": "FLAGSHIP"
+  },
+  {
+   "id": "SZLHOLDINGS/holographic",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-07-06",
+   "lastModified": "2026-08-30",
+   "tier": "FLAGSHIP"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-khipu",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-30",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/khipu-lab",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/immune",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-16",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/immune-lattice",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/ayllu",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/counsel",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/anatomy",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-08",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/cosmos",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-07-02",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-command-lab",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/evidence-studio",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/second-brain",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/llm-router-live",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-11",
+   "lastModified": "2026-08-20",
+   "tier": "SUPPORTING"
+  },
+  {
+   "id": "SZLHOLDINGS/README",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-05-30",
+   "lastModified": "2026-08-29",
+   "tier": "ORG_CARD"
+  },
+  {
+   "id": "SZLHOLDINGS/a11oy-factory",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-provctl-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/receipt-chain-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/energy-attest-holo",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-kernels-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-govsign-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-estate-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-forge-lab",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-11",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-blocked-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/guardrail-receipt",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-09",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/lambda-gate-holo",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-norm-holo",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-10",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/energy-attested-runs",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-07-09",
+   "lastModified": "2026-08-30",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/nexus",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/lyte-services",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-real-estate",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/terra-assurance",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-experiments",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-sovereign-os",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/experiments",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-08-29",
+   "lastModified": "2026-08-29",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-quant-live",
+   "sdk": "static",
+   "private": false,
+   "created": "2026-08-28",
+   "lastModified": "2026-08-28",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/yarqa",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-11",
+   "lastModified": "2026-08-28",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/david-leads",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-28",
+   "lastModified": "2026-08-26",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/szl-model-inference-lab",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-07-15",
+   "lastModified": "2026-08-26",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/hatun-mcp",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-11",
+   "lastModified": "2026-08-26",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/sda",
+   "sdk": "docker",
+   "private": false,
+   "created": "2026-06-13",
+   "lastModified": "2026-08-08",
+   "tier": "LAB"
+  },
+  {
+   "id": "SZLHOLDINGS/governed-agent-bench",
+   "sdk": "gradio",
+   "private": false,
+   "created": "2026-07-28",
+   "lastModified": "2026-07-28",
+   "tier": "LAB"
+  }
+ ]
+}
