@@ -23,10 +23,10 @@ Attack classes:
   A14 subject digest mismatch vs predicate (binding attack)
   A15 unicode/canonicalization confusion in string fields
 """
-import copy, json, pathlib, sys
+import copy, pathlib, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
 from receipt_lib import (build_receipt, chain_hash, generate_keypair, verify_chain,
-                         verify_receipt, canonical, sha256_hex, sign, PREDICATE_TYPE)
+                         verify_receipt, canonical, sha256_hex, sign)
 
 HUMAN = {"type": "human", "id": "s.lutar", "is_service_account": False,
          "auth_method": "hardware_key", "human_principal": "Stephen P. Lutar"}
