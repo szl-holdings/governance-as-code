@@ -1,0 +1,3 @@
+anchor key keyid: 0d665a83aa08ba0b
+raw ed25519 pubkey (b64): DIkxEHzmz8CmH1uXXJVlImZaTqEJhlTky+U19CQUoww=
+out-of-band check: fetch this file from github.com/szl-holdings/governance-as-code
