@@ -15,11 +15,12 @@ AssertionError) count as HELD — the attack can no longer be constructed.
 """
 import pathlib, subprocess, sys
 
-FINDINGS = pathlib.Path(__file__).resolve().parent.parent / "daybreak" / "findings"
-RESIDUALS = {"poc_claude_2.py", "poc_gpt_13.py"}  # anchored-verification closure tracked as Control-plane work
+FINDINGS_DIRS = [pathlib.Path(__file__).resolve().parent.parent / "daybreak" / d for d in ("findings", "findings2")]
+RESIDUALS = {"poc_alpha_4.py"}  # same-chain equivocation is invisible offline; closure = transparency log (Control-plane)
+SUPERSEDED = {"poc_kimi_4.py"}  # v2.3 changed semantics by design: read_all refuses silently-truncated views (beta PoC-3); crash recovery is tolerate_torn=True — kimi_4's "raises = exploit" premise predates that contract
 
 def main():
-    pocs = sorted(FINDINGS.glob("poc_*.py"))
+    pocs = sorted(p for d in FINDINGS_DIRS for p in d.glob("poc_*.py") if d.exists())
     failed, residual_confirmed, held = [], [], 0
     for p in pocs:
         r = subprocess.run([sys.executable, str(p)], capture_output=True, text=True)
@@ -28,7 +29,10 @@ def main():
         if "EXPLOIT-WORKS" in r.stdout:
             if p.name in RESIDUALS:
                 residual_confirmed.append(p.name)
-                print(f"  [RESIDUAL ] {p.name} — documented: unanchored truncation; disclosure present in verifier output")
+                print(f"  [RESIDUAL ] {p.name} — documented: same-chain equivocation needs a transparency log")
+            elif p.name in SUPERSEDED:
+                residual_confirmed.append(p.name)
+                print(f"  [SUPERSEDED] {p.name} — premise predates v2.3 loud-refusal contract (beta PoC-3 fix)")
             else:
                 failed.append(p.name)
                 print(f"  [REGRESSED] {p.name} — EXPLOIT-WORKS against current library")

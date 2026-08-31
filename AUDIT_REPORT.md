@@ -39,6 +39,21 @@ scoped to the SZLHOLDINGS org). Dry-run plan already receipted in
   (revision attestation, mobile smoke, adversarial crypto review, Model BOM)
 - Raise gate: 24 commercial facts UNKNOWN, all `blocks_raise=True`
 
+## Adversarial review — round 2 (2026-08-31, late)
+
+Two fresh independent reviewers (Alpha, Beta) attacked the hardened v2 and
+found 21 more exploits — service-identity forgery, honest-chain rejection by
+the chain_id logic (dogfooding caught it), DENY+EXECUTED self-contradiction,
+ISO-vs-RFC3339 divergence, present:1 truthiness leak, YAML duplicate-key
+registry supply-chain, deterministic chain_id collisions, and a batch of
+crash vectors. v2.3 closed all of them; the regression harness now sweeps
+both rounds: **64 HELD, 1 documented residual (same-chain equivocation —
+transparency-log territory), 0 regressed.**
+
+Anchors shipped: `anchors/CHAIN_TIPS.jsonl` signs the tip+length of every
+receipt log and is committed to the repo — the truncation residual class now
+has a working out-of-band anchor mechanism, not just a disclosure.
+
 ## Adversarial review — executed 2026-08-31 (evening)
 
 Three independent frontier-model reviewers (Claude Opus, GPT Sol, Kimi K3)

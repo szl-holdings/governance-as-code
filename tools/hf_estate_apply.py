@@ -48,6 +48,7 @@ def main():
     spaces = INV["spaces"]
     sk, pk = generate_keypair()
     prev = "GENESIS"
+    chain_cid = None; chain_cid = None
     results = []
     log = open(OUT / "hf_ops_applied.jsonl", "w")
     for s in spaces:
@@ -83,8 +84,10 @@ def main():
                              "human_approval": {"approver": "s.lutar", "at": "2026-08-30T23:15:00+00:00"}},
             execution={"side_effect_class": "WRITE_REVERSIBLE", "status": "EXECUTED" if all_ok else "DENIED"},
             evidence_items=[{"id": "op-result", "sha256": sha256_hex(canonical(op)), "present": True}],
-            prev_chain_hash=prev, signing_key=sk)
+            prev_chain_hash=prev, signing_key=sk, **({"chain_id": chain_cid} if chain_cid else {}))
         prev = chain_hash(r)
+        if chain_cid is None:
+            chain_cid = r["predicate"].get("chain_id")
         log.write(json.dumps(r) + "\n")
         results.append(op)
         print(f"  {rid:46s} {op['result']:8s} pub={op['unprivate'][:14]:14s} commit={op['governance_commit'][:20]:20s} restart={op['restart'][:20]}", flush=True)

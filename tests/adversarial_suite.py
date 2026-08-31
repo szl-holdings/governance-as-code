@@ -47,7 +47,8 @@ def fresh_chain(sk):
                        evidence_items=EV, prev_chain_hash="GENESIS", signing_key=sk)
     r2 = build_receipt(action_id="a-002", subject_name="prod:svc", actor=HUMAN,
                        policy_decision=POL, execution={"side_effect_class": "READ_ONLY", "status": "EXECUTED"},
-                       evidence_items=EV, prev_chain_hash=chain_hash(r1), signing_key=sk)
+                       evidence_items=EV, prev_chain_hash=chain_hash(r1), signing_key=sk,
+                       chain_id=r1["predicate"]["chain_id"])
     return r1, r2
 
 def main():
@@ -74,7 +75,8 @@ def main():
     honest = build_receipt(action_id="a-003", subject_name="prod:svc", actor=HUMAN,
                            policy_decision=POL, execution={"side_effect_class": "READ_ONLY", "status": "EXECUTED"},
                            evidence_items=[{"id": "log", "sha256": "", "present": False}],
-                           prev_chain_hash=chain_hash(r2), signing_key=sk)
+                           prev_chain_hash=chain_hash(r2), signing_key=sk,
+                           chain_id=r1["predicate"]["chain_id"])
     all_ok &= check("A5 honest incomplete evidence", verify_receipt(honest, pk).verdict, ["INCOMPLETE"])
 
     t = copy.deepcopy(r1); t["predicate"]["actor"]["auth_method"] = "api_key"

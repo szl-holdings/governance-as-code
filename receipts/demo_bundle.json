@@ -1,22 +1,22 @@
 {
  "predicateType": "https://szl.dev/predicates/governed-action/v1",
- "public_key_raw_b64": "NCAn03aYVpJeiloG5SsQ/CctzM/bAr+SyBCE7mg0+cI=",
- "keyid": "6ea764a6cf285d32",
+ "public_key_raw_b64": "ntZsLK4Fz9CHjTq9WDNfaq6GtTfpw1RD5F+tJw+hKIY=",
+ "keyid": "5cd9c5669caf77da",
  "keyring": {
-  "6ea764a6cf285d32": "NCAn03aYVpJeiloG5SsQ/CctzM/bAr+SyBCE7mg0+cI=",
-  "068956d8d4cdd40c": "sRVQd7EzXZTj7W71lES/qKeblyU9Gaapj34zhQ5fYds="
+  "5cd9c5669caf77da": "ntZsLK4Fz9CHjTq9WDNfaq6GtTfpw1RD5F+tJw+hKIY=",
+  "480561db063ea797": "LT0ryjbr+r9rL+0YPug1JBKL6werwOvjH61a1417eok="
  },
  "authorized_actors": {
-  "6ea764a6cf285d32": {
+  "5cd9c5669caf77da": {
    "id": "s.lutar",
    "type": "human"
   },
-  "068956d8d4cdd40c": {
+  "480561db063ea797": {
    "id": "agent://patch-bot",
    "type": "service"
   }
  },
- "chain_tip": "b09a9306f23ba05d383c3591d0b323bca8d768509453779257463ed4f98cf62f",
+ "chain_tip": "f06ab16b643bfa0b1933de88b16d50771059cacabe630312a3065a131a248151",
  "chain_length": 2,
  "receipts": [
   {
@@ -29,7 +29,7 @@
      "is_service_account": false,
      "type": "human"
     },
-    "chain_id": "chain:7375ec11f97ebadc",
+    "chain_id": "chain:4e7e5f5552b0521c",
     "evidence": {
      "completeness": "COMPLETE",
      "items": [
@@ -72,21 +72,21 @@
     },
     "prev_chain_hash": "GENESIS",
     "timestamps": {
-     "created": "2026-08-31T05:19:19.067531+00:00",
-     "executed": "2026-08-31T05:19:19.067531+00:00",
+     "created": "2026-08-31T13:27:10.608450+00:00",
+     "executed": "2026-08-31T13:27:10.608450+00:00",
      "ntp_synced": true
     }
    },
    "predicateType": "https://szl.dev/predicates/governed-action/v1",
    "signatures": [
     {
-     "keyid": "6ea764a6cf285d32",
-     "sig": "AfJJ/3IzKftLkeOkvdc3xU6mn3gHcXz0ivc4hyKC/lSlsq5q/6/OLxbWTzAkNv6Xc3rgAlWticA9L/YFuMYADA=="
+     "keyid": "5cd9c5669caf77da",
+     "sig": "M107lyuJqh3z/5ICPth+c059pJdn3dDgL6v6KZI9NhneK7c9zpFGp65SZ+6S12eIdJostAaFarQ958IxPvc5CQ=="
     }
    ],
    "subject": {
     "digest": {
-     "sha256": "8e5f28da37a0b912033d4c3d105b55c10006f086bd08a0493fd63f3e11864e78"
+     "sha256": "d8258d436fdc8575b74e31a1216747eb8e3130872ab6fcd3de51a95c75d9f550"
     },
     "name": "prod:payment-service"
    }
@@ -100,7 +100,7 @@
      "is_service_account": true,
      "type": "service"
     },
-    "chain_id": "chain:7375ec11f97ebadc",
+    "chain_id": "chain:4e7e5f5552b0521c",
     "evidence": {
      "completeness": "COMPLETE",
      "items": [
@@ -121,23 +121,23 @@
      "policy_hash": "96598faa60c66e8e3d357b635185760f19dcf688faf40f66bc4ffcecdc431928",
      "result": "DENY"
     },
-    "prev_chain_hash": "4e9e9699b067173e962d989f788dac86021cbf32220a3429d9f551c7965bad1d",
+    "prev_chain_hash": "a3b63c61ddd0b160ff605f04ac5cfcc59fa6e91ffce1f667f0a77ea2b170c8cb",
     "timestamps": {
-     "created": "2026-08-31T05:19:19.068332+00:00",
-     "executed": "2026-08-31T05:19:19.068332+00:00",
+     "created": "2026-08-31T13:27:10.609042+00:00",
+     "executed": "2026-08-31T13:27:10.609042+00:00",
      "ntp_synced": true
     }
    },
    "predicateType": "https://szl.dev/predicates/governed-action/v1",
    "signatures": [
     {
-     "keyid": "068956d8d4cdd40c",
-     "sig": "HLmrPvhdZvoCGCSiDS84odmu1Fw1notVs99eVq46LISVMYqixSGbaN9HsqrTNzkm1k2LOCywsg+jv4SiLz0QCA=="
+     "keyid": "480561db063ea797",
+     "sig": "1Ns7ZiGIfhKuT+LsbtK1Qz8g1S60hbJwd/u2X9jeEDgw0DZpIYYbkL7kZkjMYIFtJMfuArExrO4/7sPZTb8fCg=="
     }
    ],
    "subject": {
     "digest": {
-     "sha256": "72cf3e6f297765cf55fda0a72bdf95a808063b75dbeaa0e16e6b71207c8559e8"
+     "sha256": "e014ee5479b8c85a639d774061d7a39072d26a0184dc96c16723fe33f7508ec4"
     },
     "name": "prod:vault"
    }
@@ -148,7 +148,7 @@
   "subject": {
    "name": "prod:payment-service",
    "digest": {
-    "sha256": "8e5f28da37a0b912033d4c3d105b55c10006f086bd08a0493fd63f3e11864e78"
+    "sha256": "d8258d436fdc8575b74e31a1216747eb8e3130872ab6fcd3de51a95c75d9f550"
    }
   },
   "predicate": {
@@ -201,17 +201,17 @@
     "redaction_commitments": []
    },
    "timestamps": {
-    "created": "2026-08-31T05:19:19.067531+00:00",
-    "executed": "2026-08-31T05:19:19.067531+00:00",
+    "created": "2026-08-31T13:27:10.608450+00:00",
+    "executed": "2026-08-31T13:27:10.608450+00:00",
     "ntp_synced": true
    },
    "prev_chain_hash": "GENESIS",
-   "chain_id": "chain:7375ec11f97ebadc"
+   "chain_id": "chain:4e7e5f5552b0521c"
   },
   "signatures": [
    {
-    "keyid": "6ea764a6cf285d32",
-    "sig": "AfJJ/3IzKftLkeOkvdc3xU6mn3gHcXz0ivc4hyKC/lSlsq5q/6/OLxbWTzAkNv6Xc3rgAlWticA9L/YFuMYADA=="
+    "keyid": "5cd9c5669caf77da",
+    "sig": "M107lyuJqh3z/5ICPth+c059pJdn3dDgL6v6KZI9NhneK7c9zpFGp65SZ+6S12eIdJostAaFarQ958IxPvc5CQ=="
    }
   ]
  },
@@ -220,7 +220,7 @@
   "subject": {
    "name": "prod:payment-service",
    "digest": {
-    "sha256": "8ce3c7627c6698c856e4f6e3c9ec18e34fa72569c09d41e46b540b2317d28d43"
+    "sha256": "8a4db6bd3daad47a2dafcf274649f705ca078a2020d539aa42cf05a7102c89ba"
    }
   },
   "predicate": {
@@ -273,17 +273,17 @@
     "redaction_commitments": []
    },
    "timestamps": {
-    "created": "2026-08-31T05:19:19.068940+00:00",
-    "executed": "2026-08-31T05:19:19.068940+00:00",
+    "created": "2026-08-31T13:27:10.609627+00:00",
+    "executed": "2026-08-31T13:27:10.609627+00:00",
     "ntp_synced": true
    },
-   "prev_chain_hash": "b09a9306f23ba05d383c3591d0b323bca8d768509453779257463ed4f98cf62f",
-   "chain_id": "chain:7375ec11f97ebadc"
+   "prev_chain_hash": "f06ab16b643bfa0b1933de88b16d50771059cacabe630312a3065a131a248151",
+   "chain_id": "chain:4e7e5f5552b0521c"
   },
   "signatures": [
    {
-    "keyid": "6ea764a6cf285d32",
-    "sig": "+ORImq+/px5avqBAVAYdO6xv98JRIXRHEiLr0dgD4+x3pkKv3qiJHYZQ2fUrV/kYgYIG2sWqdVRLz2L8A1RSDA=="
+    "keyid": "5cd9c5669caf77da",
+    "sig": "hJ8KVWgd3v03h/Wvem6Qjyy78PyOPzLH7uf8b3NQr/5Enp8eqVkPlFjymlD3QcuMLO61nGilJnfWmtzsaiRxDA=="
    }
   ]
  },
@@ -292,7 +292,7 @@
   "subject": {
    "name": "prod:payment-service",
    "digest": {
-    "sha256": "8e5f28da37a0b912033d4c3d105b55c10006f086bd08a0493fd63f3e11864e78"
+    "sha256": "d8258d436fdc8575b74e31a1216747eb8e3130872ab6fcd3de51a95c75d9f550"
    }
   },
   "predicate": {
@@ -344,17 +344,17 @@
     "redaction_commitments": []
    },
    "timestamps": {
-    "created": "2026-08-31T05:19:19.067531+00:00",
-    "executed": "2026-08-31T05:19:19.067531+00:00",
+    "created": "2026-08-31T13:27:10.608450+00:00",
+    "executed": "2026-08-31T13:27:10.608450+00:00",
     "ntp_synced": true
    },
    "prev_chain_hash": "GENESIS",
-   "chain_id": "chain:7375ec11f97ebadc"
+   "chain_id": "chain:4e7e5f5552b0521c"
   },
   "signatures": [
    {
-    "keyid": "6ea764a6cf285d32",
-    "sig": "AfJJ/3IzKftLkeOkvdc3xU6mn3gHcXz0ivc4hyKC/lSlsq5q/6/OLxbWTzAkNv6Xc3rgAlWticA9L/YFuMYADA=="
+    "keyid": "5cd9c5669caf77da",
+    "sig": "M107lyuJqh3z/5ICPth+c059pJdn3dDgL6v6KZI9NhneK7c9zpFGp65SZ+6S12eIdJostAaFarQ958IxPvc5CQ=="
    }
   ]
  },
@@ -363,7 +363,7 @@
   "subject": {
    "name": "prod:payment-service",
    "digest": {
-    "sha256": "8e5f28da37a0b912033d4c3d105b55c10006f086bd08a0493fd63f3e11864e78"
+    "sha256": "d8258d436fdc8575b74e31a1216747eb8e3130872ab6fcd3de51a95c75d9f550"
    }
   },
   "predicate": {
@@ -417,16 +417,16 @@
    },
    "timestamps": {
     "created": "2020-01-01T00:00:00+00:00",
-    "executed": "2026-08-31T05:19:19.067531+00:00",
+    "executed": "2026-08-31T13:27:10.608450+00:00",
     "ntp_synced": false
    },
    "prev_chain_hash": "GENESIS",
-   "chain_id": "chain:7375ec11f97ebadc"
+   "chain_id": "chain:4e7e5f5552b0521c"
   },
   "signatures": [
    {
-    "keyid": "6ea764a6cf285d32",
-    "sig": "AfJJ/3IzKftLkeOkvdc3xU6mn3gHcXz0ivc4hyKC/lSlsq5q/6/OLxbWTzAkNv6Xc3rgAlWticA9L/YFuMYADA=="
+    "keyid": "5cd9c5669caf77da",
+    "sig": "M107lyuJqh3z/5ICPth+c059pJdn3dDgL6v6KZI9NhneK7c9zpFGp65SZ+6S12eIdJostAaFarQ958IxPvc5CQ=="
    }
   ]
  },

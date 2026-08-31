@@ -54,8 +54,9 @@ async function importKeys() {
 
 async function keyidOf(rawB64) { return (await sha256Hex(b64ToBytes(rawB64))).slice(0, 16); }
 
+const RFC3339_STRICT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
 const parseTime = (s) => {
-  if (typeof s !== "string") return null;
+  if (typeof s !== "string" || !RFC3339_STRICT.test(s)) return null;  // strict RFC3339: no week dates, no space separator
   const d = new Date(s);
   return isNaN(d.getTime()) ? null : d;
 };
@@ -82,18 +83,22 @@ async function verifyReceipt(r) {
       if (actor.is_service_account !== true) reasons.push("L3: service actor must carry is_service_account=true");
     } else reasons.push(`actor.type ${JSON.stringify(actor.type)} is not exactly 'human' or 'service'`);
     if (!AUTH_METHODS.has(actor.auth_method)) reasons.push("unknown auth_method");
+    if (typeof actor.id !== "string" || !actor.id.trim()) reasons.push("actor.id missing/blank — unnamed actors carry no accountability");
     const pol = pred.policy_decision || {};
     if (!["ALLOW", "DENY"].includes(pol.result)) reasons.push("policy_decision.result must be ALLOW or DENY");
     const ex = pred.execution || {};
     if (!SIDE_EFFECTS.has(ex.side_effect_class)) reasons.push("unknown side_effect_class");
     if (!EXEC_STATUS.has(ex.status)) reasons.push("unknown execution status");
+    if (pol.result === "DENY" && ex.status === "EXECUTED") reasons.push("policy DENY with status EXECUTED — governance self-contradiction");
     // time
     const ts = pred.timestamps || {};
     const created = parseTime(ts.created), executed = parseTime(ts.executed);
-    if (!created) { reasons.push("timestamps.created not parseable"); timeAttested = false; }
-    if (!executed) { reasons.push("timestamps.executed not parseable"); timeAttested = false; }
-    if (created && created.getTime() < Date.UTC(2015, 0, 1)) { reasons.push("created precedes plausibility floor (2015)"); timeAttested = false; }
-    if (created && created.getTime() > Date.now() + 86400000) { reasons.push("created is more than 24h in the future"); timeAttested = false; }
+    if (!created) { reasons.push("timestamps.created not strict RFC3339"); timeAttested = false; }
+    if (!executed) { reasons.push("timestamps.executed not strict RFC3339"); timeAttested = false; }
+    for (const [label, d] of [["created", created], ["executed", executed]]) {
+      if (d && d.getTime() < Date.UTC(2015, 0, 1)) { reasons.push(`${label} precedes plausibility floor (2015)`); timeAttested = false; }
+      if (d && d.getTime() > Date.now() + 86400000) { reasons.push(`${label} is more than 24h in the future`); timeAttested = false; }
+    }
     if (created && executed && executed < created) { reasons.push("executed precedes created (temporal inversion)"); timeAttested = false; }
     if (ts.ntp_synced !== true) { reasons.push("time not attested (ntp_synced != true)"); timeAttested = false; }
     if (ts.rfc3161_token != null) {
@@ -132,8 +137,9 @@ async function verifyReceipt(r) {
     if (actor.type === "human" || actor.type === "service") {
       if (REGISTRY && kid && REGISTRY[kid]) {
         const entry = REGISTRY[kid];
+        if (typeof entry.id !== "string" || !entry.id.trim()) reasons.push("registry entry has no id — malformed row cannot bind");
         if (entry.type !== actor.type) reasons.push(`registry binds key to type ${entry.type}, receipt claims ${actor.type}`);
-        if (actor.type === "human" && entry.id !== actor.id) reasons.push(`registry binds key to ${entry.id}, receipt claims ${actor.id}`);
+        if (entry.id !== actor.id) reasons.push(`registry binds key to ${entry.id}, receipt claims ${actor.id}`);
       } else if (actor.type === "human") {
         reasons.push("no authorized-actors registry supplied — human identity claim unverifiable, capping at INCOMPLETE");
         identityUncapped = true;

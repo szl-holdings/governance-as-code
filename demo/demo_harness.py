@@ -92,11 +92,13 @@ def main():
     ack = fr.append(r1); ack2 = fr.append(r2)
     print(f"[step  8] sink outage — local ACK after flock+fsync; remote state stays visible: {ack['remote']}")
 
-    chain = fr.read_all()
+    chain = fr.read_all()   # strict: corrupt files raise instead of silently truncating
+    integrity = fr.verify_integrity()
     before = verify_chain(chain, keyring=keyring, authorized_actors=registry)
     tip_before = before["tip"]
     after = verify_chain(fr.read_all(), keyring=keyring, authorized_actors=registry,
                          expected_tip=tip_before, min_length=len(chain))
+    print(f"           recorder integrity: {integrity['sequence']}")
     print(f"[step  9] replay — chain re-verified, tip unchanged: {tip_before == after['tip']} (replay is non-mutating)")
     assert tip_before == after["tip"] and before["all_links_valid"]
 
