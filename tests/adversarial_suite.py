@@ -109,7 +109,7 @@ def main():
     # A14: subject digest no longer binds predicate — detect by recompute
     t = copy.deepcopy(r1)
     recomputed = sha256_hex(canonical(t["predicate"]))
-    bound = t["subject"]["digest"]["sha256"] == recomputed
+    _ = t["subject"]["digest"]["sha256"] == recomputed
     t["subject"]["digest"]["sha256"] = sha256_hex(b"different")
     # verifier currently checks signature only — does it catch subject/predicate drift?
     v = verify_receipt(t, pk)

@@ -84,7 +84,7 @@ def main():
     fr_path = OUT / "flight_recorder.bin"
     fr_path.unlink(missing_ok=True)   # demo is idempotent: fresh recorder each run
     fr = FlightRecorder(str(fr_path))
-    ack = fr.append(r1); ack2 = fr.append(r2)
+    ack = fr.append(r1); _ = fr.append(r2)
     print(f"[step  8] sink outage — local ACK after flock+fsync; remote state stays visible: {ack['remote']}")
 
     chain = fr.read_all()
