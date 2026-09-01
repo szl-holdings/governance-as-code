@@ -75,3 +75,8 @@ claims:
     evidence: "governance/MODEL_BOM.yaml + data/model_bom.json (live HF reads 2026-08-31); 1 dataset UNDECLARED, disclosed"
     note: "UNDECLARED license on vault-artifacts (private) is disclosed, not hidden. Legal review of training-data rights is a counsel action, COM-019."
     blocks_release: false
+  - id: CLM-016
+    claim: "Front doors aligned: holdings.a-11-oy.com (Pages) and a11oy.net (Proof Registry) link the verifier, GovernedAction/v1 spec, and verifier Space"
+    truth_state: VERIFIED
+    evidence: "szl-holdings.github.io commit e466ee9 (10 surface cards); a11oy-net commit 7cab125 (dossier rows 05-07); both pushed 2026-08-31"
+    blocks_release: false
