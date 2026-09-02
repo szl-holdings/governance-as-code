@@ -1,0 +1,45 @@
+{
+  "predicateType": "https://szl.dev/predicates/governed-action/v1",
+  "subject": {
+    "name": "test:unsigned-receipt",
+    "digest": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "predicate": {
+    "action_id": "unsigned-negative-fixture",
+    "actor": {
+      "type": "human",
+      "id": "fixture-owner",
+      "is_service_account": false,
+      "auth_method": "hardware_key",
+      "human_principal": "Fixture Owner"
+    },
+    "policy_decision": {
+      "result": "ALLOW",
+      "policy_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "evaluated_at": "2026-09-02T00:00:00+00:00"
+    },
+    "execution": {
+      "side_effect_class": "READ_ONLY",
+      "status": "EXECUTED"
+    },
+    "evidence": {
+      "items": [
+        {
+          "id": "fixture-evidence",
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "present": true
+        }
+      ],
+      "completeness": "COMPLETE",
+      "redaction_commitments": []
+    },
+    "timestamps": {
+      "created": "2026-09-02T00:00:00+00:00",
+      "executed": "2026-09-02T00:00:00+00:00",
+      "ntp_synced": true
+    },
+    "prev_chain_hash": "GENESIS"
+  }
+}

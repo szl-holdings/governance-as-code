@@ -13,11 +13,18 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
-      - run: python -m pip install --disable-pip-version-check pyyaml cryptography
+      - run: python -m pip install --disable-pip-version-check pyyaml cryptography pytest
       - name: Lexicon gate (Zero-Bandaid vocabulary)
         run: python3 tools/lexicon_gate.py
       - name: Demo harness (12-step acceptance test)
         run: python3 demo/demo_harness.py
+      - name: Offline demo-bundle verification
+        run: python3 examples/verify_demo_bundle.py receipts/demo_bundle.json
+      - name: Offline verifier and unsigned-receipt contracts
+        run: >-
+          python3 -m pytest -q
+          tests/test_unsigned_receipt.py
+          tests/test_demo_bundle_verifier.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
       - name: Spaces audit (READ_ONLY, self-receipting)

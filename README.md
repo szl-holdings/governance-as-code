@@ -16,12 +16,20 @@ Give away the format. Sell the control plane. This repo is the format.
 | Release | `tools/release_gate.py` | Claims without evidence block release; commercial UNKNOWNs block a raise |
 | Estate | `tools/spaces_audit.py` | READ_ONLY audit of all 45 Spaces; signs a receipt for its own run |
 | Demo | `demo/demo_harness.py` | 12 steps: sign, deny, tamper, evidence-cut, outage, replay, spoof, Article 12 report |
+| Offline verification | `examples/verify_demo_bundle.py` | Replays DSSE signatures and the receipt hash chain without network access |
+
+## Start here
+
+The [five-minute quickstart](QUICKSTART.md) goes from a fresh clone to a verified
+offline receipt chain, including Windows, macOS, and Linux commands and the exact
+shape of a passing result.
 
 ## Run it
 
 ```bash
-pip install pyyaml cryptography   # only dependencies
-python3 demo/demo_harness.py      # the 90-second demo, as a test
+pip install pyyaml cryptography   # only runtime dependencies
+python3 demo/demo_harness.py      # the 12-step demo, as a test
+python3 examples/verify_demo_bundle.py receipts/demo_bundle.json
 python3 tools/lexicon_gate.py     # vocabulary gate
 python3 tools/spaces_audit.py     # estate audit + self-receipt
 python3 tools/release_gate.py     # release gate
