@@ -9,18 +9,18 @@ independent review (Daybreak Blue S2) remains the external gate.
 Attack classes:
   A1  tamper predicate field after signing
   A2  signature transplant from a different receipt
-  A3  signature transplant across predicate types (PAE confusion)
+  A3  correctly signed foreign predicate type
   A4  evidence deletion after signing (integrity break)
   A5  honestly-signed incomplete evidence (must hold INCOMPLETE)
   A6  human-principal spoof via api_key
-  A7  service account claiming human via is_service_account=false
+  A7  correctly signed service actor with is_service_account=false
   A8  missing human_principal for human actor
   A9  chain link splice — receipt pulled from another position
   A10 forged GENESIS — first receipt with wrong prev hash
   A11 backdated receipt with ntp_synced=false
   A12 declared completeness != computed (lie in the field)
   A13 duplicate-signature list manipulation (empty sigs)
-  A14 subject digest mismatch vs predicate (binding attack)
+  A14 correctly signed subject digest mismatch vs predicate
   A15 unicode/canonicalization confusion in string fields
 """
 import copy, pathlib, sys
@@ -50,6 +50,14 @@ def fresh_chain(sk):
                        evidence_items=EV, prev_chain_hash=chain_hash(r1), signing_key=sk)
     return r1, r2
 
+def resign(receipt, sk):
+    """Re-sign a deliberately malformed envelope so semantic gates, not integrity failure, must reject it."""
+    key = receipt["signatures"][0]["keyid"]
+    payload_type = receipt.get("predicateType", "")
+    signed = {k: v for k, v in receipt.items() if k != "signatures"}
+    receipt["signatures"] = [{"keyid": key, "sig": sign(sk, payload_type, canonical(signed))}]
+    return receipt
+
 def main():
     sk, pk = generate_keypair()
     sk2, pk2 = generate_keypair()
@@ -62,11 +70,11 @@ def main():
     t = copy.deepcopy(r2); t["signatures"] = r1["signatures"]
     all_ok &= check("A2 signature transplant", verify_receipt(t, pk).verdict, ["FAIL"])
 
-    # A3: sign r1's payload under a different predicate type, present as governed-action
-    payload = canonical({k: v for k, v in r1.items() if k != "signatures"})
-    forged_sig = sign(sk, "https://example.com/other-predicate/v9", payload)
-    t = copy.deepcopy(r1); t["signatures"] = [{"keyid": "x", "sig": forged_sig}]
-    all_ok &= check("A3 PAE cross-type confusion", verify_receipt(t, pk).verdict, ["FAIL"])
+    # A3: foreign predicate type, honestly signed under that foreign type.
+    # Integrity alone is valid; the GovernedAction/v1 semantic contract must reject it.
+    t = copy.deepcopy(r1); t["predicateType"] = "https://example.com/other-predicate/v9"
+    resign(t, sk)
+    all_ok &= check("A3 signed foreign predicate type", verify_receipt(t, pk).verdict, ["FAIL"])
 
     t = copy.deepcopy(r1); t["predicate"]["evidence"]["items"] = []
     all_ok &= check("A4 evidence deletion post-signing", verify_receipt(t, pk).verdict, ["FAIL"])
@@ -82,7 +90,9 @@ def main():
 
     svc_spoof = copy.deepcopy(r1)
     svc_spoof["predicate"]["actor"] = {"type": "service", "id": "agent://x", "is_service_account": False, "auth_method": "api_key"}
-    all_ok &= check("A7 service with is_service_account=false", verify_receipt(svc_spoof, pk).verdict, ["FAIL"])
+    svc_spoof["subject"]["digest"]["sha256"] = sha256_hex(canonical(svc_spoof["predicate"]))
+    resign(svc_spoof, sk)
+    all_ok &= check("A7 signed service with is_service_account=false", verify_receipt(svc_spoof, pk).verdict, ["FAIL"])
 
     t = copy.deepcopy(r1); t["predicate"]["actor"]["human_principal"] = ""
     all_ok &= check("A8 human without principal", verify_receipt(t, pk).verdict, ["FAIL"])
@@ -106,14 +116,12 @@ def main():
     t = copy.deepcopy(r1); t["signatures"] = []
     all_ok &= check("A13 empty signature list", verify_receipt(t, pk).verdict, ["FAIL"])
 
-    # A14: subject digest no longer binds predicate — detect by recompute
+    # A14: corrupt the predicate-binding digest, then honestly re-sign the envelope.
+    # The signature is valid; the subject/predicate semantic binding must still fail.
     t = copy.deepcopy(r1)
-    recomputed = sha256_hex(canonical(t["predicate"]))
-    _ = t["subject"]["digest"]["sha256"] == recomputed
     t["subject"]["digest"]["sha256"] = sha256_hex(b"different")
-    # verifier currently checks signature only — does it catch subject/predicate drift?
-    v = verify_receipt(t, pk)
-    all_ok &= check("A14 subject-digest drift", v.verdict, ["FAIL"])
+    resign(t, sk)
+    all_ok &= check("A14 signed subject-digest drift", verify_receipt(t, pk).verdict, ["FAIL"])
 
     # A15: unicode confusables in actor id (homoglyph)
     t = copy.deepcopy(r1)
