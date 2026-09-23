@@ -111,12 +111,25 @@ class Verdict:
 
 def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
     reasons, time_attested = [], True
+    semantic_valid = True
+
+    if not isinstance(receipt, dict):
+        return Verdict(verdict="FAIL", signature_valid=False,
+                       evidence_completeness="INCOMPLETE",
+                       reasons=["receipt must be an object"], time_attested=False)
+
+    receipt_type = receipt.get("predicateType")
+    if receipt_type != PREDICATE_TYPE:
+        semantic_valid = False
+        reasons.append(f"predicateType mismatch: expected {PREDICATE_TYPE}, got {receipt_type!r}")
+
     sigs = receipt.get("signatures") or []
     signature_valid = False
     if sigs:
         signed = {k: v for k, v in receipt.items() if k != "signatures"}
         try:
-            public_key.verify(base64.b64decode(sigs[0]["sig"]), pae(receipt["predicateType"], canonical(signed)))
+            verify_type = receipt_type if isinstance(receipt_type, str) else ""
+            public_key.verify(base64.b64decode(sigs[0]["sig"]), pae(verify_type, canonical(signed)))
             signature_valid = True
         except InvalidSignature:
             reasons.append("signature verification failed — content altered after signing")
@@ -124,24 +137,64 @@ def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
             reasons.append(f"signature malformed: {e}")
     else:
         reasons.append("no signatures present")
+
     pred = receipt.get("predicate", {})
+    if not isinstance(pred, dict):
+        pred = {}
+        semantic_valid = False
+        reasons.append("predicate must be an object")
+
+    subject = receipt.get("subject", {})
+    digest = subject.get("digest", {}) if isinstance(subject, dict) else {}
+    declared_subject_digest = digest.get("sha256") if isinstance(digest, dict) else None
+    observed_subject_digest = sha256_hex(canonical(pred))
+    if declared_subject_digest != observed_subject_digest:
+        semantic_valid = False
+        reasons.append(
+            "subject digest does not bind the canonical predicate: "
+            f"declared={declared_subject_digest!r} observed={observed_subject_digest}"
+        )
+
     actor = pred.get("actor", {})
-    if actor.get("type") == "human" and (actor.get("is_service_account") is not False
-                                         or actor.get("auth_method") == "api_key"
-                                         or not actor.get("human_principal")):
-        reasons.append("L3 violation: human actor claimed with service-account properties (spoof attempt)")
-        signature_valid = False
+    if not isinstance(actor, dict):
+        actor = {}
+        semantic_valid = False
+        reasons.append("actor must be an object")
+    if actor.get("type") == "human":
+        if (actor.get("is_service_account") is not False
+                or actor.get("auth_method") == "api_key"
+                or not actor.get("human_principal")):
+            reasons.append("L3 violation: human actor claimed with service-account properties (spoof attempt)")
+            semantic_valid = False
+    elif actor.get("is_service_account") is not True:
+        reasons.append("L3 violation: non-human actor must have is_service_account=true")
+        semantic_valid = False
+
     ts = pred.get("timestamps", {})
+    if not isinstance(ts, dict):
+        ts = {}
+        semantic_valid = False
+        reasons.append("timestamps must be an object")
     if ts.get("ntp_synced") is not True:
         time_attested = False
         reasons.append("time not attested (ntp_synced != true)")
+
     ev = pred.get("evidence", {})
+    if not isinstance(ev, dict):
+        ev = {}
+        semantic_valid = False
+        reasons.append("evidence must be an object")
     items = ev.get("items", [])
+    if not isinstance(items, list) or any(not isinstance(i, dict) for i in items):
+        items = []
+        semantic_valid = False
+        reasons.append("evidence.items must be an array of objects")
     completeness = "COMPLETE" if (items and all(i.get("present") for i in items)) else "INCOMPLETE"
     if ev.get("completeness") != completeness:
         reasons.append(f"declared completeness {ev.get('completeness')} != computed {completeness}")
-    # L1 — missing evidence never PASSes, even with a valid signature
-    if not signature_valid:
+    # L1 — missing evidence never PASSes, even with a valid signature.
+    # A valid signature also cannot upgrade a semantically invalid GovernedAction envelope.
+    if not signature_valid or not semantic_valid:
         verdict = "FAIL"
     elif completeness != "COMPLETE" or not time_attested:
         verdict = "INCOMPLETE"
