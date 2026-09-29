@@ -88,7 +88,7 @@ async function verifyReceipt(r) {
 }
 
 function verdictChip(v, el) {
-  el.className = "verdict " + v.toLowerCase();
+  el.className = "chip verdict " + v.toLowerCase();
   el.textContent = v;
 }
 
@@ -96,7 +96,7 @@ async function runStep(id, receipt, chainPrev, expectedPrev) {
   const card = document.getElementById(id);
   const chip = card.querySelector(".verdict");
   const detail = card.querySelector(".detail");
-  chip.className = "verdict running"; chip.textContent = "VERIFYING";
+  chip.className = "chip verdict running"; chip.textContent = "VERIFYING";
   await new Promise((r) => setTimeout(r, 320)); // let the eye register the check
   const v = await verifyReceipt(receipt);
   let linkOK = null;
@@ -163,13 +163,13 @@ async function boot() {
 // theme toggle
 (function () {
   const t = document.querySelector("[data-theme-toggle]"), r = document.documentElement;
-  let d = "dark"; // SZL Kanchay: dark is home; the toggle still offers the light theme
-  r.setAttribute("data-theme", d);
+  let d = "dark"; // SZL KANCHAY: dark operator surface is home; the toggle offers the light surface
+  r.setAttribute("data-surface", d);
   const icon = () => d === "dark"
     ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
     : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
   t.innerHTML = icon();
-  t.addEventListener("click", () => { d = d === "dark" ? "light" : "dark"; r.setAttribute("data-theme", d); t.innerHTML = icon(); });
+  t.addEventListener("click", () => { d = d === "dark" ? "light" : "dark"; r.setAttribute("data-surface", d); t.innerHTML = icon(); });
 })();
 
 boot();

@@ -5,43 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>a11oy — Offline Governed-Action Verifier</title>
 <meta name="description" content="Verify signed governed-action receipts in your browser. No server. Missing evidence yields INCOMPLETE, never PASS." />
-<link rel="icon" type="image/svg+xml" href="kanchay/marks/szl-mark-gold.svg" />
-<link rel="stylesheet" href="kanchay/kanchay.css" />
+<meta name="theme-color" content="#030F29" /><!-- --bg (dark): --color-space-900 -->
+<link rel="icon" type="image/svg+xml" href="szl/logos/szl_favicon_square.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="szl/logos/szl_favicon_32.png" />
+<link rel="apple-touch-icon" href="szl/logos/szl_favicon_180.png" />
+<link rel="stylesheet" href="szl/szl-design-system.css" />
+<link rel="stylesheet" href="szl/szl-console.css" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site">
-  <div class="wrap nav">
-    <a class="brand" href="./" aria-label="a11oy verifier home">
-      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <rect x="4" y="4" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
-        <path d="M10 17l4 4 8-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      a11oy / verify
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#demo">Demo</a>
-      <a href="#art12">Article 12</a>
-      <a href="#laws">Laws</a>
-      <a href="https://github.com/szl-holdings/governance-as-code" rel="noopener">Source</a>
-      <a href="https://huggingface.co/SZLHOLDINGS" rel="noopener">HF</a>
-    </nav>
-    <button data-theme-toggle aria-label="Toggle dark mode"></button>
-  </div>
+<header class="nav site">
+  <a class="nav__brand" href="./" aria-label="a11oy verifier home">
+    <img src="szl/logos/szl_favicon_square.svg" alt="" width="28" height="28" />
+    a11oy / verify
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a class="nav__link" href="#demo">Demo</a>
+    <a class="nav__link" href="#art12">Article 12</a>
+    <a class="nav__link" href="#laws">Laws</a>
+    <a class="nav__link" href="https://github.com/szl-holdings/governance-as-code" rel="noopener">Source</a>
+    <a class="nav__link" href="https://huggingface.co/SZLHOLDINGS" rel="noopener">HF</a>
+  </nav>
+  <button class="btn btn-ghost theme-toggle" data-theme-toggle aria-label="Toggle dark mode"></button>
 </header>
 
 <main id="main">
 <section class="hero">
+  <div class="hero__orbit" aria-hidden="true"></div>
   <div class="wrap">
-    <p class="kicker">szl.dev/GovernedAction/v1 · ed25519 over dsse</p>
+    <p class="eyebrow kicker">szl.dev/GovernedAction/v1 · ed25519 over dsse</p>
     <h1>Control before action. <em>Evidence after.</em></h1>
     <p class="lede">Every receipt on this page verifies in your browser, right now, with
       WebCrypto Ed25519 over DSSE pre-authentication encoding. No server decides anything here.</p>
     <p class="boundary">IAM says what an identity may access. a11oy proves what an AI agent was
       authorized to do, what it actually did, and whether the required evidence exists.
       A signature attests integrity and origin — never accuracy or performance.</p>
-    <p id="keyline">loading demo bundle…</p>
+    <p class="receipt keyline"><span class="receipt__label">Signer</span><span class="receipt__root" id="keyline">loading demo bundle…</span></p>
   </div>
 </section>
 
@@ -49,7 +49,7 @@
   <div class="wrap">
     <div class="demo-head">
       <h2 id="demo-title">The governed action, in six checks</h2>
-      <button id="run" disabled>Run verification</button>
+      <button id="run" class="btn btn-primary" disabled>Run verification</button>
     </div>
     <p id="status-line">bundle not yet loaded</p>
     <div class="steps">
@@ -57,43 +57,43 @@
         <span class="no">02</span>
         <span class="name">Signed execution — human-approved, reversible change</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
       <div class="step" id="s5">
         <span class="no">05</span>
         <span class="name">Signed denial — agent attempted irreversible action, blocked</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
       <div class="step" id="s6">
         <span class="no">06</span>
         <span class="name">Tamper test — one field altered after signing</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
       <div class="step" id="s7">
         <span class="no">07</span>
         <span class="name">Evidence cut — honestly signed, one evidence item missing</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
       <div class="step" id="s11">
         <span class="no">11</span>
         <span class="name">Identity spoof — service account claiming a human principal</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
       <div class="step" id="s9">
         <span class="no">09</span>
         <span class="name">Replay — re-verify the chain; nothing may change</span>
         <span class="detail"></span>
-        <span class="verdict">—</span>
+        <span class="chip verdict">—</span>
       </div>
     </div>
     <div class="legend" aria-label="Legend">
-      <span class="lpass">PASS: signature valid, evidence complete, time attested</span>
-      <span class="linc">INCOMPLETE: honestly signed, evidence missing — never PASS</span>
-      <span class="lfail">FAIL: signature broken, chain broken, or human-principal spoof</span>
+      <span class="lpass"><span class="dot dot--ok" aria-hidden="true"></span>PASS: signature valid, evidence complete, time attested</span>
+      <span class="linc"><span class="dot dot--warn" aria-hidden="true"></span>INCOMPLETE: honestly signed, evidence missing — never PASS</span>
+      <span class="lfail"><span class="dot dot--err" aria-hidden="true"></span>FAIL: signature broken, chain broken, or human-principal spoof</span>
     </div>
   </div>
 </section>
@@ -106,14 +106,14 @@
       not a claim of EU AI Act compliance; applicability, classification, and deployer
       obligations remain customer-specific. Retention floor: 180 days.</p>
     <div class="grid12">
-      <div class="cell"><h3>ART12-1 · AUTOMATIC LOGS</h3><p>Events recorded over the system lifetime.</p><p class="binding">$.predicate.timestamps.created — receipt emitted at decision time.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-2 · TRACEABILITY</h3><p>Input data and sources referenced.</p><p class="binding">Evidence items are sha256-addressed; absence ⇒ INCOMPLETE.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-3 · HUMAN PRINCIPAL</h3><p>Natural persons involved in verification identified (12(3)(d) via Art.14).</p><p class="binding">is_service_account pinned false for human actors; api_key cannot claim human.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-4 · PERIOD OF USE</h3><p>Start and end of each use recorded.</p><p class="binding">executed ≥ created; ntp_synced const true; rfc3161 for anti-backdating.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-5 · TAMPER PROTECTION</h3><p>Logs protected against alteration.</p><p class="binding">Ed25519 over DSSEv1 PAE; prev_chain_hash links every receipt.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-6 · RETENTION</h3><p>Retained per policy, six-month floor.</p><p class="binding">PENDING_SYNC is a visible state during outage; local durability after flock+fsync only.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-7 · AUDITOR ACCESS</h3><p>Logs accessible to authorities and auditors on request.</p><p class="binding">The bundle verifies offline, without entering the platform. This page is the proof.</p><span class="met">MET</span></div>
-      <div class="cell"><h3>ART12-8 · REVISION RECORD</h3><p>System version in use is recorded.</p><p class="binding">deployed_revision pinned at execution; runtime stage is never evidence of revision.</p><span class="met">MET</span></div>
+      <div class="cell card"><h3>ART12-1 · AUTOMATIC LOGS</h3><p>Events recorded over the system lifetime.</p><p class="binding">$.predicate.timestamps.created — receipt emitted at decision time.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-2 · TRACEABILITY</h3><p>Input data and sources referenced.</p><p class="binding">Evidence items are sha256-addressed; absence ⇒ INCOMPLETE.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-3 · HUMAN PRINCIPAL</h3><p>Natural persons involved in verification identified (12(3)(d) via Art.14).</p><p class="binding">is_service_account pinned false for human actors; api_key cannot claim human.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-4 · PERIOD OF USE</h3><p>Start and end of each use recorded.</p><p class="binding">executed ≥ created; ntp_synced const true; rfc3161 for anti-backdating.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-5 · TAMPER PROTECTION</h3><p>Logs protected against alteration.</p><p class="binding">Ed25519 over DSSEv1 PAE; prev_chain_hash links every receipt.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-6 · RETENTION</h3><p>Retained per policy, six-month floor.</p><p class="binding">PENDING_SYNC is a visible state during outage; local durability after flock+fsync only.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-7 · AUDITOR ACCESS</h3><p>Logs accessible to authorities and auditors on request.</p><p class="binding">The bundle verifies offline, without entering the platform. This page is the proof.</p><span class="chip chip-proven met">MET</span></div>
+      <div class="cell card"><h3>ART12-8 · REVISION RECORD</h3><p>System version in use is recorded.</p><p class="binding">deployed_revision pinned at execution; runtime stage is never evidence of revision.</p><span class="chip chip-proven met">MET</span></div>
     </div>
     <div class="gaps">
       <h3>KNOWN GAPS — DISCLOSED, NOT HIDDEN</h3>
