@@ -1,0 +1,6 @@
+# Runtime dependencies for szl-holdings/governance-as-code. Pinned by SZL frontier v3 20260928-205006.
+# Evidence: each pinned wheel was sha256-verified from PyPI and provides the imported top-level module.
+# Pins are the latest release at pin time; required CI decides merge.
+cryptography==50.0.1
+huggingface-hub==2.0.0
+pyyaml==6.0.3
