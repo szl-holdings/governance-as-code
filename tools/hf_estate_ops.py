@@ -15,13 +15,17 @@ Usage:
   HF_TOKEN=hf_... python3 tools/hf_estate_ops.py            # dry run
   HF_TOKEN=hf_... python3 tools/hf_estate_ops.py --apply    # execute
 """
-import json, os, pathlib, sys
+import json
+import os
+import pathlib
+import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex, canonical
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INV = json.load(open(ROOT / "data" / "hf_space_inventory.json"))
-OUT = ROOT / "receipts"; OUT.mkdir(exist_ok=True)
+OUT = ROOT / "receipts"
+OUT.mkdir(exist_ok=True)
 
 CORE_MODELS = ["SZLHOLDINGS/SZL-Khipu-1.5B", "SZLHOLDINGS/SZL-Forge-1.5B-ReceiptAgent",
                "SZLHOLDINGS/A11OY-MINI", "SZLHOLDINGS/chaski", "SZLHOLDINGS/WILLAY",

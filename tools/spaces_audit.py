@@ -6,7 +6,10 @@ READ_ONLY, the side-effect classification is theater.
 Invariant enforced in code: stage=RUNNING is never treated as evidence of a
 deployed revision. Runtime state and revision attestation are separate lanes.
 """
-import json, sys, pathlib, datetime
+import json
+import sys
+import pathlib
+import datetime
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from receipt_lib import (build_receipt, chain_hash, generate_keypair, keyid,
                          export_pubkey_raw_b64, sha256_hex, canonical)

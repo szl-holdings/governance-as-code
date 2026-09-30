@@ -9,7 +9,9 @@ In production, each customer's receipts land in their own log; the metric is
 per-customer-per-month. This tool makes the metric computable from day one
 so the number exists before there is a dashboard.
 """
-import json, pathlib, sys
+import json
+import pathlib
+import sys
 from collections import defaultdict
 from datetime import datetime
 

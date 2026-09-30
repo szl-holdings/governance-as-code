@@ -3,7 +3,9 @@
 Scans markdown/text for banned phrases from governance/CANONICAL_LEXICON.yaml.
 Exit 1 if any banned phrase is found. A failing first run is correct behavior:
 the exit code is the checklist."""
-import sys, pathlib, yaml
+import sys
+import pathlib
+import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -21,8 +23,8 @@ def main(roots):
             low = text.lower()
             for b in banned:
                 if b["phrase"].lower() in low:
-                    line_no = next(i + 1 for i, l in enumerate(text.splitlines())
-                                   if b["phrase"].lower() in l.lower())
+                    line_no = next(i + 1 for i, line in enumerate(text.splitlines())
+                                   if b["phrase"].lower() in line.lower())
                     hits.append((str(p), line_no, b))
     if hits:
         print("LEXICON GATE: FAIL — Zero-Bandaid violations\n")

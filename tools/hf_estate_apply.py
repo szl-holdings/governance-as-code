@@ -7,13 +7,18 @@ Results land in data/hf_ops_results.json for the org card.
 
 Auth: injected via HTTPS proxy (custom-cred:huggingface.co). No token in this file.
 """
-import json, pathlib, subprocess, sys, time
+import json
+import pathlib
+import subprocess
+import sys
+import time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex, canonical
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INV = json.load(open(ROOT / "data" / "hf_space_inventory.json"))
-OUT = ROOT / "receipts"; OUT.mkdir(exist_ok=True)
+OUT = ROOT / "receipts"
+OUT.mkdir(exist_ok=True)
 API = "https://huggingface.co/api"
 DELAY = 0.4
 

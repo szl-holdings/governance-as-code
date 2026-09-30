@@ -2,7 +2,9 @@
 """release_gate.py — gates on CLAIMS_LEDGER (release) and COMMERCIAL_LEDGER (raise).
 Exit 0: gate passed. Exit 1: release blocked. Exit 2: raise blocked.
 UNKNOWN renders literally — an empty field reads as an oversight; UNKNOWN reads as an audited state."""
-import sys, pathlib, yaml
+import sys
+import pathlib
+import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
