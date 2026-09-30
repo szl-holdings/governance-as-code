@@ -80,3 +80,8 @@ claims:
     truth_state: VERIFIED
     evidence: "szl-holdings.github.io commit e466ee9 (10 surface cards); a11oy-net commit 7cab125 (dossier rows 05-07); both pushed 2026-08-31"
     blocks_release: false
+  - id: CLM-017
+    claim: "Domain topology aligned and live: a-11-oy.com = a11oy product Space; holdings.a-11-oy.com = Pages front door; a11oy.net = proof registry; killinchu.a-11-oy.com = killinchu Space; www redirects"
+    truth_state: VERIFIED
+    evidence: "final matrix 200/301/200/200/200 on all five hosts (2026-09-01); DNS proxied via Cloudflare fresh token; Pages canonical holdings.a-11-oy.com"
+    blocks_release: false
