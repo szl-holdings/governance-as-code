@@ -29,7 +29,7 @@ py -m venv .venv
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install pyyaml cryptography
+python -m pip install pyyaml cryptography jsonschema==4.26.0
 ```
 
 ## 4. Run the 12-step acceptance demo

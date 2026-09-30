@@ -26,13 +26,22 @@ The [five-minute quickstart](QUICKSTART.md) goes from a fresh clone to a verifie
 offline receipt chain, including Windows, macOS, and Linux commands and the exact
 shape of a passing result.
 
+Offline receipt verification applies the checked-in GovernedAction/v1 schema
+before returning `PASS`. Results report `signature_valid`, `schema_valid`, and
+computed `evidence_completeness` separately. Evidence `present` must be a boolean;
+only `true` counts as present. A valid signed receipt with missing evidence remains
+`INCOMPLETE` and can retain a valid chain link. Schema-invalid receipts return
+`FAIL`, including malformed nested objects and timestamps that violate
+`ntp_synced: true`. Hash links and signatures do not prove evidence accuracy or
+scientific truth.
+
 Credo coexistence (not a clone): [docs/CREDO_CONTROL_PLANE.md](docs/CREDO_CONTROL_PLANE.md).
 Lean discrete witness (Conjecture 1 untouched): [lutar-lean CredoVerdictWitness](https://github.com/szl-holdings/lutar-lean/blob/main/Showcase/Frontier/CredoVerdictWitness.lean).
 
 ## Run it
 
 ```bash
-pip install pyyaml cryptography   # only runtime dependencies
+pip install pyyaml cryptography jsonschema==4.26.0   # demo runtime dependencies
 python3 demo/demo_harness.py      # the 12-step demo, as a test
 python3 tests/test_credo_governor.py
 python3 demo/credo_loop.py        # Credo outcomes → SZL receipts; deny survives later allow

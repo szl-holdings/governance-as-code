@@ -5,7 +5,7 @@ Laws enforced here (not in prose):
   L1  Missing evidence => INCOMPLETE, never PASS.
   L2  A signature attests integrity & origin, never accuracy or performance.
   L3  actor.type=human implies is_service_account=False and auth_method != api_key (Art.12(3)(d)).
-  L4  ntp_synced must be True; untrusted time => INCOMPLETE.
+  L4  ntp_synced must be True; untrusted time never PASSes.
   L5  Local durability is ACKed only after flock + fsync. PENDING_SYNC is visible, never hidden.
   L6  Replay is non-mutating: verification never changes the chain.
 """
@@ -16,12 +16,20 @@ import json
 import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from pathlib import Path
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 from cryptography.hazmat.primitives import serialization
 from cryptography.exceptions import InvalidSignature
+from jsonschema import Draft202012Validator
 
 PREDICATE_TYPE = "https://szl.dev/predicates/governed-action/v1"
+_RECEIPT_SCHEMA = json.loads(
+    (Path(__file__).resolve().parents[1] / "schemas" / "governed_action_v1.schema.json")
+    .read_text(encoding="utf-8")
+)
+Draft202012Validator.check_schema(_RECEIPT_SCHEMA)
+_RECEIPT_VALIDATOR = Draft202012Validator(_RECEIPT_SCHEMA)
 
 # ---------------------------------------------------------------- canonical form
 
@@ -76,7 +84,7 @@ def build_receipt(*, action_id, subject_name, actor, policy_decision, execution,
     else:
         assert actor.get("is_service_account") is True, "L3: service actor must have is_service_account=True"
     # L1 — completeness is computed, never asserted
-    completeness = "COMPLETE" if all(i.get("present") for i in evidence_items) else "INCOMPLETE"
+    completeness = "COMPLETE" if (evidence_items and all(i.get("present") is True for i in evidence_items)) else "INCOMPLETE"
     predicate = {
         "action_id": action_id,
         "actor": actor,
@@ -111,6 +119,7 @@ class Verdict:
     evidence_completeness: str
     reasons: list = field(default_factory=list)
     time_attested: bool = True
+    schema_valid: bool = False
 
 def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
     reasons, time_attested = [], True
@@ -120,6 +129,13 @@ def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
         return Verdict(verdict="FAIL", signature_valid=False,
                        evidence_completeness="INCOMPLETE",
                        reasons=["receipt must be an object"], time_attested=False)
+
+    schema_errors = sorted(_RECEIPT_VALIDATOR.iter_errors(receipt),
+                           key=lambda error: (error.json_path, error.message))
+    schema_valid = not schema_errors
+    semantic_valid = schema_valid
+    reasons.extend(f"schema validation failed at {error.json_path}: {error.message}"
+                   for error in schema_errors)
 
     receipt_type = receipt.get("predicateType")
     if receipt_type != PREDICATE_TYPE:
@@ -192,7 +208,7 @@ def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
         items = []
         semantic_valid = False
         reasons.append("evidence.items must be an array of objects")
-    completeness = "COMPLETE" if (items and all(i.get("present") for i in items)) else "INCOMPLETE"
+    completeness = "COMPLETE" if (items and all(i.get("present") is True for i in items)) else "INCOMPLETE"
     if ev.get("completeness") != completeness:
         reasons.append(f"declared completeness {ev.get('completeness')} != computed {completeness}")
     # L1 — missing evidence never PASSes, even with a valid signature.
@@ -206,18 +222,21 @@ def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
     else:
         verdict = "PASS"
     return Verdict(verdict=verdict, signature_valid=signature_valid,
-                   evidence_completeness=completeness, reasons=reasons, time_attested=time_attested)
+                   evidence_completeness=completeness, reasons=reasons, time_attested=time_attested,
+                   schema_valid=schema_valid)
 
 def verify_chain(receipts, public_key) -> dict:
     """Verify an ordered hash chain. Non-mutating by construction."""
     verdicts, prev = [], "GENESIS"
     for i, r in enumerate(receipts):
         v = verify_receipt(r, public_key)
-        linked = r.get("predicate", {}).get("prev_chain_hash") == prev
+        pred = r.get("predicate") if isinstance(r, dict) else None
+        pred = pred if isinstance(pred, dict) else {}
+        linked = pred.get("prev_chain_hash") == prev
         if not linked:
             v.reasons.append(f"chain link broken at index {i}")
             v.verdict = "FAIL"
-        verdicts.append({"index": i, "action_id": r.get("predicate", {}).get("action_id"),
+        verdicts.append({"index": i, "action_id": pred.get("action_id"),
                          "chain_link": linked, **vars(v)})
         prev = chain_hash(r)
     ok = all(v["verdict"] in ("PASS", "INCOMPLETE") and v["chain_link"] for v in verdicts)
