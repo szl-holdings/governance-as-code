@@ -13,13 +13,14 @@ import json
 import pathlib
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
 
 from credo_governor import map_credo, compose
 from receipt_lib import (
     build_receipt, chain_hash, generate_keypair, keyid, verify_receipt, sha256_hex,
 )
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 HUMAN = {
     "type": "human",

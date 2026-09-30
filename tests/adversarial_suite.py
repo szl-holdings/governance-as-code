@@ -23,7 +23,9 @@ Attack classes:
   A14 correctly signed subject digest mismatch vs predicate
   A15 unicode/canonicalization confusion in string fields
 """
-import copy, pathlib, sys
+import copy
+import pathlib
+import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
 from receipt_lib import (build_receipt, chain_hash, generate_keypair, verify_chain,
                          verify_receipt, canonical, sha256_hex, sign)
@@ -64,19 +66,23 @@ def main():
     r1, r2 = fresh_chain(sk)
     all_ok = True
 
-    t = copy.deepcopy(r1); t["predicate"]["execution"]["deployed_revision"] = "evil00"
+    t = copy.deepcopy(r1)
+    t["predicate"]["execution"]["deployed_revision"] = "evil00"
     all_ok &= check("A1 tamper field", verify_receipt(t, pk).verdict, ["FAIL"])
 
-    t = copy.deepcopy(r2); t["signatures"] = r1["signatures"]
+    t = copy.deepcopy(r2)
+    t["signatures"] = r1["signatures"]
     all_ok &= check("A2 signature transplant", verify_receipt(t, pk).verdict, ["FAIL"])
 
     # A3: foreign predicate type, honestly signed under that foreign type.
     # Integrity alone is valid; the GovernedAction/v1 semantic contract must reject it.
-    t = copy.deepcopy(r1); t["predicateType"] = "https://example.com/other-predicate/v9"
+    t = copy.deepcopy(r1)
+    t["predicateType"] = "https://example.com/other-predicate/v9"
     resign(t, sk)
     all_ok &= check("A3 signed foreign predicate type", verify_receipt(t, pk).verdict, ["FAIL"])
 
-    t = copy.deepcopy(r1); t["predicate"]["evidence"]["items"] = []
+    t = copy.deepcopy(r1)
+    t["predicate"]["evidence"]["items"] = []
     all_ok &= check("A4 evidence deletion post-signing", verify_receipt(t, pk).verdict, ["FAIL"])
 
     honest = build_receipt(action_id="a-003", subject_name="prod:svc", actor=HUMAN,
@@ -85,7 +91,8 @@ def main():
                            prev_chain_hash=chain_hash(r2), signing_key=sk)
     all_ok &= check("A5 honest incomplete evidence", verify_receipt(honest, pk).verdict, ["INCOMPLETE"])
 
-    t = copy.deepcopy(r1); t["predicate"]["actor"]["auth_method"] = "api_key"
+    t = copy.deepcopy(r1)
+    t["predicate"]["actor"]["auth_method"] = "api_key"
     all_ok &= check("A6 api_key claims human", verify_receipt(t, pk).verdict, ["FAIL"])
 
     svc_spoof = copy.deepcopy(r1)
@@ -94,11 +101,13 @@ def main():
     resign(svc_spoof, sk)
     all_ok &= check("A7 signed service with is_service_account=false", verify_receipt(svc_spoof, pk).verdict, ["FAIL"])
 
-    t = copy.deepcopy(r1); t["predicate"]["actor"]["human_principal"] = ""
+    t = copy.deepcopy(r1)
+    t["predicate"]["actor"]["human_principal"] = ""
     all_ok &= check("A8 human without principal", verify_receipt(t, pk).verdict, ["FAIL"])
 
     # A9: splice — swap r2's prev link to skip r1
-    t = copy.deepcopy(r2); t["predicate"]["prev_chain_hash"] = "GENESIS"
+    t = copy.deepcopy(r2)
+    t["predicate"]["prev_chain_hash"] = "GENESIS"
     v = verify_chain([r1, t], pk)
     all_ok &= check("A9 chain splice", "FAIL" if not v["all_links_valid"] else "PASS", ["FAIL"])
 
@@ -106,14 +115,17 @@ def main():
     v = verify_chain([r2], pk)
     all_ok &= check("A10 forged genesis", "FAIL" if not v["all_links_valid"] else "PASS", ["FAIL"])
 
-    t = copy.deepcopy(r1); t["predicate"]["timestamps"]["ntp_synced"] = False
+    t = copy.deepcopy(r1)
+    t["predicate"]["timestamps"]["ntp_synced"] = False
     all_ok &= check("A11 unattested time", verify_receipt(t, pk).verdict, ["FAIL", "INCOMPLETE"])
 
-    t = copy.deepcopy(r1); t["predicate"]["evidence"]["completeness"] = "COMPLETE"
+    t = copy.deepcopy(r1)
+    t["predicate"]["evidence"]["completeness"] = "COMPLETE"
     t["predicate"]["evidence"]["items"][0]["present"] = False
     all_ok &= check("A12 declared-vs-computed lie", verify_receipt(t, pk).verdict, ["FAIL", "INCOMPLETE"])
 
-    t = copy.deepcopy(r1); t["signatures"] = []
+    t = copy.deepcopy(r1)
+    t["signatures"] = []
     all_ok &= check("A13 empty signature list", verify_receipt(t, pk).verdict, ["FAIL"])
 
     # A14: corrupt the predicate-binding digest, then honestly re-sign the envelope.

@@ -9,7 +9,10 @@
 Exports demo_bundle.json (receipts + raw Ed25519 pubkey) so a browser can
 re-verify every step offline with WebCrypto — the verifier is the product.
 """
-import copy, json, pathlib, sys
+import copy
+import json
+import pathlib
+import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "tools"))
 import yaml
 from receipt_lib import (FlightRecorder, build_receipt, chain_hash, generate_keypair,
@@ -17,7 +20,8 @@ from receipt_lib import (FlightRecorder, build_receipt, chain_hash, generate_key
                          sha256_hex)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-OUT = ROOT / "receipts"; OUT.mkdir(exist_ok=True)
+OUT = ROOT / "receipts"
+OUT.mkdir(exist_ok=True)
 HUMAN = {"type": "human", "id": "s.lutar", "is_service_account": False,
          "auth_method": "hardware_key", "human_principal": "Stephen P. Lutar"}
 
@@ -84,11 +88,13 @@ def main():
     fr_path = OUT / "flight_recorder.bin"
     fr_path.unlink(missing_ok=True)   # demo is idempotent: fresh recorder each run
     fr = FlightRecorder(str(fr_path))
-    ack = fr.append(r1); _ = fr.append(r2)
+    ack = fr.append(r1)
+    _ = fr.append(r2)
     print(f"[step  8] sink outage — local ACK after flock+fsync; remote state stays visible: {ack['remote']}")
 
     chain = fr.read_all()
-    before = verify_chain(chain, pk); tip_before = before["tip"]
+    before = verify_chain(chain, pk)
+    tip_before = before["tip"]
     after = verify_chain(fr.read_all(), pk)
     print(f"[step  9] replay — chain re-verified, tip unchanged: {tip_before == after['tip']} (replay is non-mutating)")
     assert tip_before == after["tip"] and before["all_links_valid"]

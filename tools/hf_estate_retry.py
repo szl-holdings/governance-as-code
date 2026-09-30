@@ -5,7 +5,11 @@ PUT /settings for visibility (POST 404s), JSON commits for missing stamps,
 restart only for docker/gradio (static 400s are N/A — no runtime to restart).
 Retries with backoff. Receipts append to receipts/hf_ops_retry.jsonl.
 """
-import json, pathlib, subprocess, sys, time
+import json
+import pathlib
+import subprocess
+import sys
+import time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex, canonical
 from hf_estate_apply import stamp, API  # reuse the stamp text
@@ -44,7 +48,8 @@ def main():
     results = []
     log = open(OUT / "hf_ops_retry.jsonl", "w")
     for s in INV["spaces"]:
-        rid = s["id"]; old = prev_by_id.get(rid, {})
+        rid = s["id"]
+        old = prev_by_id.get(rid, {})
         op = {"id": rid, "tier": s["tier"], "was_private": s["private"]}
 
         # 1. visibility: flip anything still private (old POST 404'd => still private unless OK'd)

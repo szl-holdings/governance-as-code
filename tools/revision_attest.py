@@ -10,14 +10,20 @@ signs one GovernedAction/v1 receipt per Space.
 
 Output: data/revision_attestations.json + receipts/revision_attest.jsonl
 """
-import hashlib, json, pathlib, subprocess, sys, time
+import hashlib
+import json
+import pathlib
+import subprocess
+import sys
+import time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from receipt_lib import build_receipt, chain_hash, generate_keypair, sha256_hex
 from hf_estate_apply import stamp, API
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INV = json.load(open(ROOT / "data" / "hf_space_inventory.json"))
-OUT = ROOT / "receipts"; OUT.mkdir(exist_ok=True)
+OUT = ROOT / "receipts"
+OUT.mkdir(exist_ok=True)
 RAW = "https://huggingface.co/spaces"
 
 def get_json(url, tries=3):
@@ -48,7 +54,8 @@ def main():
     attestations = []
     log = open(OUT / "revision_attest.jsonl", "w")
     for s in INV["spaces"]:
-        rid = s["id"]; name = rid.split("/", 1)[1]
+        rid = s["id"]
+        name = rid.split("/", 1)[1]
         info = get_json(f"{API}/spaces/{rid}")
         rev = info.get("sha")
         stage = (info.get("runtime") or {}).get("stage")

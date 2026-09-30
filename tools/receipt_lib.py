@@ -10,7 +10,10 @@ Laws enforced here (not in prose):
   L6  Replay is non-mutating: verification never changes the chain.
 """
 from __future__ import annotations
-import base64, hashlib, json, os
+import base64
+import hashlib
+import json
+import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
@@ -229,14 +232,20 @@ class FlightRecorder:
         self.path = path
         if not os.path.exists(path):
             with open(path, "wb") as f:
-                import fcntl; fcntl.flock(f, fcntl.LOCK_EX)
-                f.write(self.MAGIC); f.flush(); os.fsync(f.fileno())
+                import fcntl
+                fcntl.flock(f, fcntl.LOCK_EX)
+                f.write(self.MAGIC)
+                f.flush()
+                os.fsync(f.fileno())
     def append(self, receipt) -> dict:
         blob = canonical(receipt)
         with open(self.path, "ab") as f:
-            import fcntl; fcntl.flock(f, fcntl.LOCK_EX)
-            f.write(len(blob).to_bytes(4, "big")); f.write(blob)
-            f.flush(); os.fsync(f.fileno())     # L5: ACK only after fsync
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.write(len(blob).to_bytes(4, "big"))
+            f.write(blob)
+            f.flush()
+            os.fsync(f.fileno())     # L5: ACK only after fsync
         return {"durability": "LOCAL_ACK", "remote": "PENDING_SYNC"}  # L5: PENDING_SYNC is visible
     def read_all(self):
         out = []
