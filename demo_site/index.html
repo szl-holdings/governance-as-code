@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>a11oy — Offline Governed-Action Verifier</title>
 <meta name="description" content="Verify signed governed-action receipts in your browser. No server. Missing evidence yields INCOMPLETE, never PASS." />
-<meta name="theme-color" content="#030F29" /><!-- --bg (dark): --color-space-900 -->
+<meta name="theme-color" content="#080B12" /><!-- --bg (dark): --color-graphite-900 -->
 <link rel="icon" type="image/svg+xml" href="szl/logos/szl_favicon_square.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="szl/logos/szl_favicon_32.png" />
 <link rel="apple-touch-icon" href="szl/logos/szl_favicon_180.png" />
@@ -27,7 +27,7 @@
     <a class="nav__link" href="https://github.com/szl-holdings/governance-as-code" rel="noopener">Source</a>
     <a class="nav__link" href="https://huggingface.co/SZLHOLDINGS" rel="noopener">HF</a>
   </nav>
-  <button class="btn btn-ghost theme-toggle" data-theme-toggle aria-label="Toggle dark mode"></button>
+  <button type="button" class="btn btn-ghost theme-toggle" data-theme-toggle aria-label="Toggle dark mode"></button>
 </header>
 
 <main id="main">
@@ -51,7 +51,7 @@
       <h2 id="demo-title">The governed action, in six checks</h2>
       <button id="run" class="btn btn-primary" disabled>Run verification</button>
     </div>
-    <p id="status-line">bundle not yet loaded</p>
+    <p id="status-line" role="status" aria-live="polite" aria-atomic="true">bundle not yet loaded</p>
     <div class="steps">
       <div class="step" id="s2">
         <span class="no">02</span>

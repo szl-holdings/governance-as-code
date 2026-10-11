@@ -1,4 +1,4 @@
-/* a11oy verifier on SZL KANCHAY (founder direction, v1.1.0).
+/* a11oy verifier on SZL KANCHAY (founder direction, v1.3.0).
    Dark operator surface is home (:root); the toggle sets data-surface="light".
    Load szl/szl-design-system.css and szl/szl-console.css first: every color, face
    and size here is one of their tokens. Coral is the single primary action (Run
@@ -15,7 +15,7 @@ header.nav { padding-inline: max(var(--space-4), calc((100% - 1040px) / 2)); gap
 .nav__links { gap: var(--space-1); }
 .nav__link { display: inline-flex; align-items: center; min-height: 2.5rem; padding-inline: var(--space-2); border-radius: var(--radius-sm); }
 .theme-toggle { --_pad-x: var(--space-3); --_pad-y: var(--space-3); color: var(--text-sub); }
-.theme-toggle svg { display: block; }
+.theme-toggle svg { display: block; color: var(--text); }
 
 /* ---------------- hero ---------------- */
 .hero { padding-block: clamp(var(--space-12), 9vw, var(--space-24)) var(--space-12); }
@@ -32,9 +32,7 @@ header.nav { padding-inline: max(var(--space-4), calc((100% - 1040px) / 2)); gap
 .demo { padding-block: var(--space-8) var(--space-20); }
 .demo-head { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
 .demo-head h2 { font-size: var(--text-2xl); margin: 0; }
-#run { margin-left: auto; }
-[data-surface="light"] .btn-primary { background: var(--accent-press); border-color: var(--accent-press); }
-[data-surface="light"] .btn-primary:hover:not(:disabled) { background: var(--accent-press); border-color: var(--text); }
+#run { margin-left: auto; min-block-size: var(--target-size-coarse); }
 #status-line { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-sub); margin-bottom: var(--space-6); max-width: none; }
 .steps { display: grid; gap: var(--space-3); }
 .step {
@@ -93,8 +91,11 @@ footer.site .wrap { display: flex; align-items: center; column-gap: var(--space-
   .step .verdict { grid-column: 2; justify-self: start; margin-top: var(--space-2); }
   .step .detail { grid-column: 2; }
   #run { margin-left: 0; width: 100%; }
-  .nav__links { display: none; }
-  .theme-toggle { margin-left: auto; }
+  header.nav { display: grid; grid-template-columns: minmax(0, 1fr) auto; height: auto; padding-block: var(--space-2); }
+  .nav__brand { grid-column: 1; grid-row: 1; }
+  .theme-toggle { grid-column: 2; grid-row: 1; margin-left: 0; }
+  .nav__links { display: flex; grid-column: 1 / -1; grid-row: 2; flex-wrap: wrap; gap: var(--space-1); }
+  .nav__link { min-height: var(--target-size-coarse); }
 }
 /* receipt label: the vendored ghost ink is 4.37:1 on --surface-alt (dark); use --text-sub here */
 .receipt.keyline .receipt__label { color: var(--text-sub); }

@@ -26,6 +26,7 @@ jobs:
           tests/test_unsigned_receipt.py
           tests/test_demo_bundle_verifier.py
           tests/test_receipt_schema.py
+          tests/test_kanchay_projection.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
       - name: Spaces audit (READ_ONLY, self-receipting)
