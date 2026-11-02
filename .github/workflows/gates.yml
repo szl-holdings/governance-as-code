@@ -27,6 +27,7 @@ jobs:
           tests/test_demo_bundle_verifier.py
           tests/test_receipt_schema.py
           tests/test_kanchay_projection.py
+          tests/test_raise_gate_workflow.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
       - name: Spaces audit (READ_ONLY, self-receipting)
@@ -34,4 +35,13 @@ jobs:
       - name: Release gate
         run: python3 tools/release_gate.py
       - name: Raise gate (report-only in CI; founder supplies commercial facts)
-        run: python3 tools/release_gate.py --raise || true
+        shell: bash
+        run: |
+          set -euo pipefail
+          rc=0
+          python3 tools/release_gate.py --raise || rc=$?
+          case "$rc" in
+            0) ;;
+            2) echo "::notice::Raise remains blocked by unknown founder-supplied facts (report-only)." ;;
+            *) echo "::error::Raise gate failed unexpectedly (exit $rc)."; exit "$rc" ;;
+          esac
