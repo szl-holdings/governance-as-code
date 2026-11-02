@@ -26,6 +26,7 @@ jobs:
           tests/test_unsigned_receipt.py
           tests/test_demo_bundle_verifier.py
           tests/test_receipt_schema.py
+          tests/test_flight_recorder_initialization.py
           tests/test_kanchay_projection.py
           tests/test_raise_gate_workflow.py
       - name: Adversarial suite (16 attack classes must never PASS)

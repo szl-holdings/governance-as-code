@@ -249,10 +249,14 @@ class FlightRecorder:
     MAGIC = b"A11YFR01" + b"\x00" * 16  # 24-byte magic header
     def __init__(self, path):
         self.path = path
-        if not os.path.exists(path):
-            with open(path, "wb") as f:
-                import fcntl
-                fcntl.flock(f, fcntl.LOCK_EX)
+        # Open without truncation, then decide whether initialization is needed
+        # while holding the same lock used by append. Another creator may have
+        # already committed records by the time this constructor opens the file.
+        with open(path, "a+b") as f:
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.seek(0, os.SEEK_END)
+            if f.tell() == 0:
                 f.write(self.MAGIC)
                 f.flush()
                 os.fsync(f.fileno())

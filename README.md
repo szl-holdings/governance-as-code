@@ -46,6 +46,10 @@ only `true` counts as present. A valid signed receipt with missing evidence rema
 `ntp_synced: true`. Hash links and signatures do not prove evidence accuracy or
 scientific truth.
 
+The local flight recorder initializes an empty file while holding its append
+lock. Reopening or interleaved creation preserves already committed bytes;
+`LOCAL_ACK` still requires local `fsync` and does not establish remote durability.
+
 Credo coexistence (not a clone): [docs/CREDO_CONTROL_PLANE.md](docs/CREDO_CONTROL_PLANE.md).
 Lean discrete witness (Conjecture 1 untouched): [lutar-lean CredoVerdictWitness](https://github.com/szl-holdings/lutar-lean/blob/main/Showcase/Frontier/CredoVerdictWitness.lean).
 
