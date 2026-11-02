@@ -50,6 +50,10 @@ The local flight recorder initializes an empty file while holding its append
 lock. Reopening or interleaved creation preserves already committed bytes;
 `LOCAL_ACK` still requires local `fsync` and does not establish remote durability.
 
+Credo admission treats evidence as complete only when `evidence_complete` is
+the boolean `True`. Strings, numbers, containers, and `None` cannot
+authorize execution; a prior hard denial remains denied.
+
 Credo coexistence (not a clone): [docs/CREDO_CONTROL_PLANE.md](docs/CREDO_CONTROL_PLANE.md).
 Lean discrete witness (Conjecture 1 untouched): [lutar-lean CredoVerdictWitness](https://github.com/szl-holdings/lutar-lean/blob/main/Showcase/Frontier/CredoVerdictWitness.lean).
 

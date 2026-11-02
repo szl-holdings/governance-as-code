@@ -54,6 +54,8 @@ def map_credo(
     """Translate one Credo harness event into an SZL decision.
 
     `hard_deny` is a prior DENY that no later allow/escalate/advise may lift.
+    Only the boolean `True` qualifies `evidence_complete`; other values are
+    unqualified evidence and cannot authorize execution.
     """
     reasons: list[str] = []
 
@@ -67,7 +69,7 @@ def map_credo(
             reasons=tuple(reasons),
         )
 
-    if not evidence_complete:
+    if evidence_complete is not True:
         reasons.append("C4: missing evidence never becomes ALLOW")
         return GovernorResult(
             credo=outcome,
