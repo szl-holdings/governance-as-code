@@ -29,6 +29,8 @@ jobs:
           tests/test_flight_recorder_initialization.py
           tests/test_kanchay_projection.py
           tests/test_raise_gate_workflow.py
+          tests/test_credo_governor.py
+          tests/test_credo_evidence_admission.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
       - name: Spaces audit (READ_ONLY, self-receipting)
