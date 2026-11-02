@@ -24,7 +24,8 @@ def test_interleaved_creator_cannot_truncate_committed_record(tmp_path):
             # creator completes initialization and a locally ACKed append.
             interleaved = True
             recorder = FlightRecorder(path)
-            assert recorder.append(receipt)["durability"] == "LOCAL_ACK"
+            ack = recorder.append(receipt)
+            assert ack["durability"] == "LOCAL_ACK"
             committed = path.read_bytes()
         return real_open(file, *args, **kwargs)
 
@@ -41,7 +42,8 @@ def test_existing_empty_file_is_initialized_before_append(tmp_path):
     path.touch()
     recorder = FlightRecorder(path)
     receipt = {"action_id": "empty-control"}
-    assert recorder.append(receipt)["durability"] == "LOCAL_ACK"
+    ack = recorder.append(receipt)
+    assert ack["durability"] == "LOCAL_ACK"
     assert recorder.read_all() == [receipt]
 
 
