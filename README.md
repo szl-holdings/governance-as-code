@@ -1,3 +1,7 @@
+**Governance as code: the estate's policy rules enforced as executable, testable code — not prose commitments.**
+
+Demo: https://a-11-oy.com · Verify in 60s: `git clone https://github.com/szl-holdings/governance-as-code && cd governance-as-code && python -m pytest -q`
+
 # governance-as-code
 
 **Control before action. Evidence after.** The SZL Holdings governance estate as
