@@ -109,3 +109,5 @@ and verify the format. The SZL control plane and any repository carrying
 that a declared policy executed. It does not prove model accuracy, safety,
 fairness, effectiveness, or uptime. Λ = Conjecture 1 (advisory) — never
 "proven trust."
+
+Estate on Hugging Face: models, datasets and Spaces are published under the [SZLHOLDINGS](https://huggingface.co/SZLHOLDINGS) org.
