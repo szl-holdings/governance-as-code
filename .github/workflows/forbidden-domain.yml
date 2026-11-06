@@ -10,6 +10,14 @@
 #
 # Installed by the szl-alignment engine; keep in sync with
 # alignment/templates/workflows/forbidden-domain.yml.
+#
+# Repo-local correction (2026-11-06): the template's scan ran
+# `rg ... || true`, but GitHub-hosted Ubuntu images do not ship ripgrep, so
+# every run since 2026-08-31 logged "rg: command not found" and then printed
+# "OK" without scanning anything. This scan uses only git and the Python
+# standard library, fails closed on any scanner error, and applies the guard
+# words to the matched line's content (not to its file path). The behaviour is
+# pinned by tests/test_forbidden_domain_gate.py.
 name: forbidden-domain
 
 on:
@@ -23,17 +31,54 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Scan for forbidden domain references
         shell: bash
         run: |
           set -euo pipefail
-          hits="$(rg -n --no-heading --hidden -P '(?<!-)a11oy\.com' --glob '!.git' . || true)"
-          violations="$(printf '%s' "$hits" | rg -v -i 'never|forbidden|not in|assertNotIn|does not appear|is not a surface|blocklist' || true)"
-          if [ -n "$violations" ]; then
-            echo "::error::Forbidden domain references found (release-blocking CRITICAL)."
-            echo "::error::Replace with a-11-oy.com or remove; guard contexts must say so on the same line."
-            printf '%s\n' "$violations"
-            exit 1
-          fi
-          echo "OK: no forbidden domain references outside guard contexts."
+          python3 - <<'PY'
+          import re
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          FORBIDDEN = re.compile(r"(?<!-)a11oy\.com")
+          GUARD = re.compile(
+              r"never|forbidden|not in|assertNotIn|does not appear|is not a surface|blocklist",
+              re.IGNORECASE,
+          )
+
+          # check=True: a git failure raises, so an unreadable tree is an error,
+          # never an empty (passing) result.
+          listing = subprocess.run(["git", "ls-files", "-z"], check=True, capture_output=True).stdout
+          paths = [p for p in listing.decode("utf-8", "surrogateescape").split("\0") if p]
+          if not paths:
+              print("::error::git ls-files listed no tracked files; refusing to pass an empty scan.")
+              sys.exit(1)
+
+          scanned, guarded, violations = 0, 0, []
+          for name in paths:
+              path = Path(name)
+              if path.is_symlink() or not path.is_file():
+                  continue  # symlinks and submodule gitlinks carry no file content here
+              data = path.read_bytes()
+              if b"\0" in data:
+                  continue  # binary file
+              scanned += 1
+              for number, line in enumerate(data.decode("utf-8", "replace").splitlines(), 1):
+                  if not FORBIDDEN.search(line):
+                      continue
+                  if GUARD.search(line):
+                      guarded += 1
+                  else:
+                      violations.append(f"{name}:{number}:{line.strip()}")
+
+          if violations:
+              print("::error::Forbidden domain references found (release-blocking CRITICAL).")
+              print("::error::Replace with a-11-oy.com or remove; guard contexts must say so on the same line.")
+              print("\n".join(violations))
+              sys.exit(1)
+          print(f"OK: scanned {scanned} tracked text files; {guarded} reference(s), all in guard contexts.")
+          PY
