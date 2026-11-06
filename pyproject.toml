@@ -9,14 +9,37 @@ description = "GovernedAction/v1 receipt format, CI gates, and the 12-step gover
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "Stephen Lutar", email = "stephen@szlholdings.com" }]
+keywords = ["ai-governance", "receipts", "dsse", "ed25519", "policy-as-code"]
+classifiers = [
+  "Intended Audience :: Developers",
+  # FlightRecorder locks with fcntl.flock, which exists only on POSIX systems.
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security :: Cryptography",
+  "Topic :: Software Development :: Quality Assurance",
+]
+# Exact pins mirror requirements.txt (tests/test_ci_requirements.py checks it).
 dependencies = ["cryptography==50.0.1", "huggingface-hub==2.0.0", "pyyaml==6.0.3", "jsonschema==4.26.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
 
 [project.urls]
 Homepage = "https://a-11-oy.com"
-Repository = "https://github.com/szl-holdings/governance-as-code"
+Source = "https://github.com/szl-holdings/governance-as-code"
+Issues = "https://github.com/szl-holdings/governance-as-code/issues"
 
 [tool.setuptools]
+# Source-checkout project: tools/, demo/, examples/ and tests/ run from a clone
+# and locate schemas/, data/ and governance/ relative to it, so the built wheel
+# carries metadata and dependency pins only. `pip install -e '.[test]'` prepares
+# a clone; nothing here is importable from site-packages.
 packages = []
 
 [tool.ruff]

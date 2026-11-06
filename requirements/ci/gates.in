@@ -1,0 +1,9 @@
+# Hash-locked closure for .github/workflows/gates.yml (Python 3.12).
+# Runtime pins mirror requirements.txt; tests/test_ci_requirements.py fails
+# when they disagree. Recompile the lock after editing this file:
+#   uv pip compile --generate-hashes --python-version 3.12 \
+#     requirements/ci/gates.in -o requirements/ci/gates.txt
+cryptography==50.0.1
+jsonschema==4.26.0
+pyyaml==6.0.3
+pytest

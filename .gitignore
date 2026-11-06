@@ -1,3 +1,10 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+# Build and environment metadata (`pip install -e .` writes the egg-info).
+*.egg-info/
+build/
+dist/
+.venv/
+# Written by demo/credo_loop.py on every run; not a committed snapshot.
+receipts/credo_loop.json

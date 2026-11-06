@@ -36,6 +36,18 @@ _RECEIPT_VALIDATOR = Draft202012Validator(_RECEIPT_SCHEMA)
 def canonical(obj) -> bytes:
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
+def _canonical_or_none(obj):
+    """canonical(obj), or None when the value cannot be UTF-8 encoded.
+
+    JSON text may carry an escaped lone UTF-16 surrogate (e.g. "\\ud800");
+    json.loads accepts it but it has no UTF-8 encoding, so no canonical form
+    and no digest exist. Verification reports that as a failure instead of
+    raising."""
+    try:
+        return canonical(obj)
+    except UnicodeEncodeError:
+        return None
+
 def sha256_hex(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
@@ -166,13 +178,18 @@ def verify_receipt(receipt, public_key: Ed25519PublicKey) -> Verdict:
     subject = receipt.get("subject", {})
     digest = subject.get("digest", {}) if isinstance(subject, dict) else {}
     declared_subject_digest = digest.get("sha256") if isinstance(digest, dict) else None
-    observed_subject_digest = sha256_hex(canonical(pred))
-    if declared_subject_digest != observed_subject_digest:
+    predicate_bytes = _canonical_or_none(pred)
+    if predicate_bytes is None:
         semantic_valid = False
-        reasons.append(
-            "subject digest does not bind the canonical predicate: "
-            f"declared={declared_subject_digest!r} observed={observed_subject_digest}"
-        )
+        reasons.append("predicate is not canonically encodable (lone UTF-16 surrogate)")
+    else:
+        observed_subject_digest = sha256_hex(predicate_bytes)
+        if declared_subject_digest != observed_subject_digest:
+            semantic_valid = False
+            reasons.append(
+                "subject digest does not bind the canonical predicate: "
+                f"declared={declared_subject_digest!r} observed={observed_subject_digest}"
+            )
 
     actor = pred.get("actor", {})
     if not isinstance(actor, dict):
@@ -236,9 +253,16 @@ def verify_chain(receipts, public_key) -> dict:
         if not linked:
             v.reasons.append(f"chain link broken at index {i}")
             v.verdict = "FAIL"
+        encoded = _canonical_or_none(r)
+        if encoded is None:
+            v.reasons.append(f"receipt {i} is not canonically encodable; the chain cannot continue")
+            v.verdict = "FAIL"
+            # Not a valid prev_chain_hash under the schema, so no later receipt can link to it and pass.
+            prev = "UNENCODABLE"
+        else:
+            prev = sha256_hex(encoded)
         verdicts.append({"index": i, "action_id": pred.get("action_id"),
                          "chain_link": linked, **vars(v)})
-        prev = chain_hash(r)
     ok = all(v["verdict"] in ("PASS", "INCOMPLETE") and v["chain_link"] for v in verdicts)
     return {"length": len(receipts), "tip": prev, "all_links_valid": ok, "verdicts": verdicts}
 

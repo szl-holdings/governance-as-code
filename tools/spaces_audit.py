@@ -5,6 +5,10 @@ READ_ONLY, the side-effect classification is theater.
 
 Invariant enforced in code: stage=RUNNING is never treated as evidence of a
 deployed revision. Runtime state and revision attestation are separate lanes.
+
+Scope: the input is the point-in-time inventory data/hf_space_inventory.json
+(its inventory_meta.collected_at says when it was read). This tool does not
+re-read the Hub, so its counts describe that snapshot, not the live estate.
 """
 import json
 import sys
@@ -19,6 +23,9 @@ INV = ROOT / "data" / "hf_space_inventory.json"
 OUT = ROOT / "receipts"
 FLAGSHIP_CAP = 5
 SUPPORTING_CAP = 12
+
+def snapshot_date(inv):
+    return datetime.datetime.fromisoformat(inv["inventory_meta"]["collected_at"]).date()
 
 def audit(inv):
     spaces = inv["spaces"]
@@ -50,8 +57,9 @@ def audit(inv):
     pub = sum(1 for s in spaces if not s["private"])
     findings.append({"sev": "INFO", "rule": "VISIBILITY",
                      "msg": f"{pub} public / {len(spaces)-pub} private of {len(spaces)} Spaces"})
-    # Rule 6: staleness — supporting+flagship untouched > 30 days
-    today = datetime.date(2026, 8, 30)
+    # Rule 6: staleness — supporting+flagship untouched > 30 days, measured at
+    # the snapshot's own collection date (lastModified values are as of then).
+    today = snapshot_date(inv)
     for s in spaces:
         if s["tier"] in ("FLAGSHIP", "SUPPORTING"):
             age = (today - datetime.date.fromisoformat(s["lastModified"])).days
@@ -66,7 +74,9 @@ def main():
     spaces = inv["spaces"]
     blockers = [f for f in findings if f["sev"] == "BLOCKER"]
     print("SPACES AUDIT (READ_ONLY) — hf.co/SZLHOLDINGS")
-    print(f"  estate: {len(spaces)} Spaces | " +
+    print(f"  snapshot: data/hf_space_inventory.json collected {inv['inventory_meta']['collected_at']} "
+          "(not re-read from the Hub in this run)")
+    print(f"  snapshot estate: {len(spaces)} Spaces | " +
           " | ".join(f"{t}:{len(v)}" for t, v in sorted(tiers.items())))
     print(f"  visibility: {sum(1 for s in spaces if not s['private'])} public / "
           f"{sum(1 for s in spaces if s['private'])} private")
@@ -89,7 +99,9 @@ def main():
     receipt = {"audit_receipt": r, "chain_hash": chain_hash(r),
                "auditor_key": export_pubkey_raw_b64(pk),
                "completeness": "COMPLETE" if all(i["present"] for i in evidence) else "INCOMPLETE",
-               "limitations": ["stage=RUNNING is not evidence of a deployed revision",
+               "limitations": [f"inventory is the snapshot collected {inv['inventory_meta']['collected_at']}; "
+                               "the Hub was not re-read in this run",
+                               "stage=RUNNING is not evidence of a deployed revision",
                                "runtime stage not probed per-Space in this run",
                                "visibility change requires org settings scope, not available to this audit"],
                "findings": findings}
