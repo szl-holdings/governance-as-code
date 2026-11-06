@@ -309,8 +309,9 @@ def test_canonical_json_matches_python(tmp_path):
 def test_committed_demo_bundle_reproduces_in_the_browser_verifier(tmp_path, bundle_path):
     bundle = json.loads((ROOT / bundle_path).read_text(encoding="utf-8"))
     out = run_harness(tmp_path, {"cases": [], "canonical": [], "bundles": [bundle]})
-    got = out["bundles"][0]
-    assert got.pop("tip") == bundle["chain_tip"]
+    got = dict(out["bundles"][0])
+    tip = got.pop("tip")
+    assert tip == bundle["chain_tip"]
     assert got == bundle["verdicts"]
     assert got == {"allowed": "PASS", "deny_record": "PASS", "tampered": "FAIL",
                    "evidence_cut": "INCOMPLETE", "backdated": "FAIL", "spoof": "FAIL"}
