@@ -25,12 +25,20 @@ py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-## 3. Install the two runtime dependencies
+Step 4 needs Linux or macOS: the demo's flight recorder locks with POSIX
+`fcntl.flock`, which native Windows Python does not provide, so run the demo
+under WSL there. The offline verifier in step 5 does not use `fcntl`.
+
+## 3. Install the runtime dependencies
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install pyyaml cryptography jsonschema==4.26.0
+python -m pip install -r requirements.txt
 ```
+
+`requirements.txt` pins the three libraries the demo and verifier import
+(`cryptography`, `jsonschema`, `pyyaml`) plus `huggingface-hub`, which only
+`tools/hf_estate_ops.py --apply` uses.
 
 ## 4. Run the 12-step acceptance demo
 
@@ -50,13 +58,16 @@ A passing run exercises all of these outcomes:
 - a service account cannot impersonate a human principal;
 - an Article 12 conformance report is emitted.
 
-The final line has this shape:
+A passing run ends with these two lines:
 
 ```text
 DEMO COMPLETE — receipts/chain.jsonl, demo_bundle.json, article12_report.json
+Every verdict above is reproducible offline: python3 demo/demo_harness.py
 ```
 
 The demo creates a new ephemeral Ed25519 key on each run, so receipt hashes and the signer fingerprint intentionally change.
+It overwrites the committed snapshots `receipts/chain.jsonl`, `receipts/demo_bundle.json` and
+`receipts/flight_recorder.bin`; `receipts/article12_report.json` is rewritten with identical bytes.
 
 ## 5. Verify the bundle offline
 
@@ -90,16 +101,16 @@ python tests/adversarial_suite.py
 
 The adversarial suite must report that every attack class held. It includes tampering, signature transplantation, cross-predicate confusion, evidence deletion, identity spoofing, chain splicing, forged genesis, time manipulation, subject-digest drift, Unicode confusion, an empty signature list, and verification with the wrong public key.
 
-## Clean generated demo artifacts
+## Restore the committed receipt snapshots
+
+`receipts/` is tracked: besides the demo outputs it holds the signed estate-operation logs
+(`hf_ops*.jsonl`, `revision_attest.jsonl`) and other committed receipts, so do not delete the
+directory. Put the files the demo rewrote back to their committed versions and remove the ignored
+per-run outputs (such as `receipts/credo_loop.json`):
 
 ```bash
-rm -rf receipts
+git restore receipts/
+git clean -fX receipts/
 ```
 
-PowerShell equivalent:
-
-```powershell
-Remove-Item -Recurse -Force receipts
-```
-
-The repository source is unchanged by the demo; only the ignored/generated `receipts/` output is removed.
+The same two commands work in PowerShell.

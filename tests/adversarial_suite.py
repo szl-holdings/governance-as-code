@@ -22,6 +22,7 @@ Attack classes:
   A13 duplicate-signature list manipulation (empty sigs)
   A14 correctly signed subject digest mismatch vs predicate
   A15 unicode/canonicalization confusion in string fields
+  A16 verification against a different public key
 """
 import copy
 import pathlib

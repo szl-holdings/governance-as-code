@@ -2,7 +2,7 @@
 """demo_harness.py — the 12-step governed-action demo. This IS the acceptance test.
 
  1 boot + keygen            5 deny-receipt verify       9  replay (non-mutating)
- 2 allowed action -> sign   6 tamper -> FAIL           10  backdated time -> INCOMPLETE
+ 2 allowed action -> sign   6 tamper -> FAIL           10  backdated time -> FAIL (never PASS)
  3 verify -> PASS           7 evidence cut -> INCOMPLETE 11 service-acct spoof -> FAIL
  4 denied action (no exec)  8 sink outage -> PENDING_SYNC 12 Article 12 report
 

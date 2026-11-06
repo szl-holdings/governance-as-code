@@ -1,6 +1,6 @@
 **Governance as code: the estate's policy rules enforced as executable, testable code — not prose commitments.**
 
-Demo: https://a-11-oy.com · Verify in 60s: `git clone https://github.com/szl-holdings/governance-as-code && cd governance-as-code && python -m pytest -q`
+Demo: https://a-11-oy.com · Verify from a fresh clone: `git clone https://github.com/szl-holdings/governance-as-code && cd governance-as-code && python -m pip install -e '.[test]' && python -m pytest -q`
 
 # governance-as-code
 
@@ -34,6 +34,7 @@ Give away the format. Sell the control plane. This repo is the format.
 | Demo | `demo/demo_harness.py` | 12 steps: sign, deny, tamper, evidence-cut, outage, replay, spoof, Article 12 report |
 | Credo loop | `demo/credo_loop.py` | allow → advise → block → later allow stays DENY; receipts signed |
 | Offline verification | `examples/verify_demo_bundle.py` | Replays DSSE signatures and the receipt hash chain without network access |
+| Browser verifier | `demo_site/verify.js` | The same verdict laws as `verify_receipt`, in WebCrypto; parity with the Python verdicts is tested |
 
 ## Start here
 
@@ -64,18 +65,40 @@ Lean discrete witness (Conjecture 1 untouched): [lutar-lean CredoVerdictWitness]
 ## Run it
 
 ```bash
-pip install pyyaml cryptography jsonschema==4.26.0   # demo runtime dependencies
+python3 -m pip install -r requirements.txt   # pinned runtime dependencies
 python3 demo/demo_harness.py      # the 12-step demo, as a test
 python3 tests/test_credo_governor.py
 python3 demo/credo_loop.py        # Credo outcomes → SZL receipts; deny survives later allow
 python3 examples/verify_demo_bundle.py receipts/demo_bundle.json
 python3 tools/lexicon_gate.py     # vocabulary gate
-python3 tools/spaces_audit.py     # estate audit + self-receipt
-python3 tools/release_gate.py     # release gate
+python3 tools/spaces_audit.py     # snapshot audit + self-receipt
+python3 tools/release_gate.py     # release gate; also lists claims that are not current
 python3 tools/release_gate.py --raise   # raise gate (will report UNKNOWNs)
+python3 -m pip install pytest && python3 -m pytest -q   # every test in tests/
 ```
 
 Gates failing on first run is correct. The exit codes are the checklist.
+
+The demo's flight recorder locks with POSIX `fcntl.flock`, so step 8 needs
+Linux or macOS (on Windows, use WSL); the offline verifier does not use it.
+Each demo and audit run signs with a fresh ephemeral key and rewrites tracked
+snapshots (`receipts/chain.jsonl`, `receipts/demo_bundle.json`,
+`receipts/flight_recorder.bin`, `receipts/spaces_audit_receipt.json`);
+`git restore receipts/` puts the committed versions back. `demo/credo_loop.py`
+writes the git-ignored `receipts/credo_loop.json`.
+
+### Browser verifier
+
+`demo_site/` is a static page that re-verifies the demo bundle in the browser
+with WebCrypto Ed25519; no server decides anything. Serve it with
+`python3 -m http.server --directory demo_site 8000` and open
+<http://localhost:8000/>. `demo_site/verify.js` applies the same verdict laws as
+`receipt_lib.verify_receipt` (schema structure, `predicateType`, subject-digest
+binding, actor law, attested time, boolean evidence presence), and
+`tests/test_browser_verifier_parity.py` runs it under Node and requires the
+Python verdict for every generated receipt. Where the two knowingly differ
+(non-integer numbers in extra fields, stray base64 characters, a trailing
+newline before a schema `$`), the page is the stricter side.
 
 ## The positioning sentence
 
