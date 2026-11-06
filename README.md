@@ -30,7 +30,7 @@ Give away the format. Sell the control plane. This repo is the format.
 | Credo map | `tools/credo_governor.py` | C1 advise never authorizes; C2 hard DENY is unliftable; C3 escalate needs a human; C4 missing evidence never ALLOW; C5 Λ floor miss is advisory |
 | Vocabulary | `tools/lexicon_gate.py` | Banned phrases fail CI with the correction attached |
 | Release | `tools/release_gate.py` | Claims without evidence block release; commercial UNKNOWNs block a raise |
-| Estate | `tools/spaces_audit.py` | READ_ONLY audit of all 45 Spaces; signs a receipt for its own run |
+| Estate | `tools/spaces_audit.py` | READ_ONLY audit of the 45-Space snapshot in `data/hf_space_inventory.json` (collected 2026-08-30; it does not re-read the Hub); signs a receipt for its own run |
 | Demo | `demo/demo_harness.py` | 12 steps: sign, deny, tamper, evidence-cut, outage, replay, spoof, Article 12 report |
 | Credo loop | `demo/credo_loop.py` | allow → advise → block → later allow stays DENY; receipts signed |
 | Offline verification | `examples/verify_demo_bundle.py` | Replays DSSE signatures and the receipt hash chain without network access |

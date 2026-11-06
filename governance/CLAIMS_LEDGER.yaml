@@ -3,27 +3,33 @@
 # truth_state: VERIFIED (machine-checked) | ATTESTED (signed, human-checked) |
 #              DEGRADED (was true, stale) | UNKNOWN (no evidence — default)
 # A claim that is public with truth_state UNKNOWN is a Zero-Bandaid violation.
+# A DEGRADED claim keeps its original text and evidence; `degraded` records why
+# it is no longer current. Re-attest it with fresh evidence to restore VERIFIED.
 version: 1
 claims:
   - id: CLM-001
     claim: "45 Spaces exist under hf.co/SZLHOLDINGS"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "data/hf_space_inventory.json (collected 2026-08-30 via hub_repo_search)"
+    degraded: "2026-11-06: estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos) lists 48 Spaces; 24 of the 45 inventoried on 2026-08-30 no longer exist and 27 current Spaces are not in data/hf_space_inventory.json."
     blocks_release: false
   - id: CLM-002
     claim: "45 Spaces public (was 7 public / 38 private before 2026-08-30 remediation)"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "data/hf_final_state.json + data/hf_space_inventory.json (independent re-read)"
+    degraded: "2026-11-06: estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos) shows 27 public / 21 private of 48 Spaces."
     blocks_release: false
   - id: CLM-003
     claim: "43 models and 36 datasets under SZLHOLDINGS"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "data/hf_models_datasets.json (collected 2026-08-30)"
+    degraded: "2026-11-06: estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos) lists 122 models and 68 datasets."
     blocks_release: false
   - id: CLM-004
     claim: "98 repos under github.com/szl-holdings, 5 private"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "szl-audit/github_repos.tsv (gh api, 2026-08-30)"
+    degraded: "2026-11-06: estate-audit repository lists (2026-11-06T15:00Z) show 126 active + 29 archived repositories under szl-holdings; the private count was not re-read."
     blocks_release: false
   - id: CLM-005
     claim: "Receipts are Ed25519-signed and offline-verifiable"
@@ -47,20 +53,23 @@ claims:
     blocks_release: false
   - id: CLM-008b
     claim: "All 45 Spaces stage=RUNNING; governance stamp committed to each (backlinks + rebuild)"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "data/hf_final_state.json; receipts/hf_ops_retry.jsonl (chained, signed)"
+    degraded: "2026-11-06: 24 of these 45 Spaces no longer exist (estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos)); runtime stage was not re-read."
     note: "RUNNING is runtime state. It is not evidence of deployed revision — CLM-009 stays open."
     blocks_release: false
   - id: CLM-009
     claim: "Every public Space is revision-pinned and its governance stamp is verified deployed at that revision"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "data/revision_attestations.json + receipts/revision_attest.jsonl (45 receipts, chain-signed, 2026-08-31)"
+    degraded: "2026-11-06: the 2026-08-31 attestation covers the 45 inventoried Spaces; 24 of them no longer exist and 13 of the 27 currently public Spaces are outside it (estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos))."
     note: "stage=RUNNING plus pinned rev plus stamp content-match. The claim IS the attestation scope; nothing broader is claimed."
     blocks_release: false
   - id: CLM-010
     claim: "Flagship Spaces render correctly on mobile"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "szl-audit/flagship_{a11oy,killinchu,governed-receipt-verifier,szl-atelier,holographic}_mobile.png — all 5 render clean at 390px (2026-08-31)"
+    degraded: "2026-11-06: SZLHOLDINGS/holographic no longer exists and governed-receipt-verifier and szl-atelier are private (estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos)); the 2026-08-31 captures are not in this repository."
     note: "SPAs needed extended load waits; verified with 14s paint allowance."
     blocks_release: false
   - id: CLM-011
@@ -71,7 +80,8 @@ claims:
     blocks_release: false
   - id: CLM-012
     claim: "License register covers every model + dataset (80 rows: 43 models, 37 datasets)"
-    truth_state: VERIFIED
+    truth_state: DEGRADED
     evidence: "governance/MODEL_BOM.yaml + data/model_bom.json (live HF reads 2026-08-31); 1 dataset UNDECLARED, disclosed"
+    degraded: "2026-11-06: estate-audit Hub listing of SZLHOLDINGS at 2026-11-06T14:58Z (org-member read, includes private repos) lists 122 models + 68 datasets = 190 artifacts; governance/MODEL_BOM.yaml still holds 80."
     note: "UNDECLARED license on vault-artifacts (private) is disclosed, not hidden. Legal review of training-data rights is a counsel action, COM-019."
     blocks_release: false

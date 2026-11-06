@@ -8,16 +8,25 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
-def check_claims():
-    ledger = yaml.safe_load(open(ROOT / "governance" / "CLAIMS_LEDGER.yaml"))
-    blockers, ok = [], []
+CLAIMS_LEDGER = ROOT / "governance" / "CLAIMS_LEDGER.yaml"
+CURRENT_STATES = ("VERIFIED", "ATTESTED")
+
+def check_claims(path=CLAIMS_LEDGER):
+    """Partition claims into current (VERIFIED/ATTESTED), release blockers, and
+    non-blocking claims that are not current (DEGRADED/UNKNOWN). The last group
+    does not block a release, but it is reported, never silently dropped."""
+    with open(path, encoding="utf-8") as fh:
+        ledger = yaml.safe_load(fh)
+    ok, blockers, not_current = [], [], []
     for c in ledger["claims"]:
         state, blocks = c["truth_state"], c.get("blocks_release", False)
-        if state in ("VERIFIED", "ATTESTED"):
+        if state in CURRENT_STATES:
             ok.append(c)
         elif blocks:
             blockers.append(c)
-    return ok, blockers
+        else:
+            not_current.append(c)
+    return ok, blockers, not_current
 
 ATTESTED_ARTIFACT_STATES = {"HYPOTHESIS_PUBLISHED", "DEFINED_UNVALIDATED", "REGISTER_COMPLETE", "INSTRUMENTED", "SCAFFOLDED"}
 
@@ -30,12 +39,17 @@ def check_commercial():
 
 def main():
     raise_mode = "--raise" in sys.argv
-    ok, blockers = check_claims()
-    print(f"RELEASE GATE — claims verified/attested: {len(ok)}, blocking: {len(blockers)}")
+    ok, blockers, not_current = check_claims()
+    print(f"RELEASE GATE — claims verified/attested: {len(ok)}, blocking: {len(blockers)}, "
+          f"not current (non-blocking): {len(not_current)}")
     for c in blockers:
         print(f"  [BLOCKER] {c['id']}: {c['claim']}")
         if c.get("note"):
             print(f"            {c['note']}")
+    for c in not_current:
+        print(f"  [{c['truth_state']}] {c['id']}: {c['claim']}")
+        if c.get("degraded"):
+            print(f"            {c['degraded']}")
     if raise_mode:
         unknown, attested, targets = check_commercial()
         if attested:
