@@ -45,6 +45,7 @@ jobs:
           tests/test_browser_verifier_parity.py
           tests/test_ci_requirements.py
           tests/test_release_gate.py
+          tests/test_north_star.py
       - name: Adversarial suite (16 attack classes must never PASS)
         run: python3 tests/adversarial_suite.py
       - name: Spaces audit (READ_ONLY, self-receipting)
