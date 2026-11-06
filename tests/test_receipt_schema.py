@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import copy
+import json
 import pathlib
+import subprocess
 import sys
 
 import pytest
@@ -186,3 +188,27 @@ def test_empty_chain_contract_remains_unchanged():
     _, public = generate_keypair()
     result = verify_chain([], public)
     assert result == {"length": 0, "tip": "GENESIS", "all_links_valid": True, "verdicts": []}
+
+
+@pytest.mark.parametrize("where", [("predicate", "action_id"), ("subject", "name")])
+def test_unencodable_string_fails_closed_without_throwing(signed_control, where, tmp_path):
+    # JSON may carry an escaped lone UTF-16 surrogate; it has no UTF-8 (canonical) form.
+    receipt, _, public = signed_control
+    receipt[where[0]][where[1]] = "\ud800"
+    verdict = verify_receipt(receipt, public)
+    assert verdict.verdict == "FAIL"
+    assert verdict.signature_valid is False
+    chain = verify_chain([receipt], public)
+    assert chain["all_links_valid"] is False
+    assert chain["verdicts"][0]["verdict"] == "FAIL"
+    assert any("not canonically encodable" in reason for reason in chain["verdicts"][0]["reasons"])
+    bundle = {"public_key_raw_b64": export_pubkey_raw_b64(public), "keyid": keyid(public),
+              "chain_tip": "0" * 64, "receipts": [receipt]}
+    code, message = verify_bundle(bundle)
+    assert code == 1 and message.startswith("CHAIN FAIL")
+    path = tmp_path / "bundle.json"
+    path.write_text(json.dumps(bundle), encoding="utf-8")  # ensure_ascii escapes the surrogate
+    cli = subprocess.run([sys.executable, str(ROOT / "examples" / "verify_demo_bundle.py"), str(path)],
+                         capture_output=True, text=True, check=False)
+    assert cli.returncode == 1
+    assert cli.stderr.startswith("CHAIN FAIL") and "Traceback" not in cli.stderr
