@@ -1,0 +1,14 @@
+# Hash-locked closure for .github/workflows/base-python-ci.yml (Python 3.11
+# and 3.12). Runtime pins mirror requirements.txt; tests/test_ci_requirements.py
+# fails when they disagree. setuptools builds the editable install without
+# build isolation, so nothing is fetched outside this lock. Recompile after
+# editing this file:
+#   uv pip compile --generate-hashes --universal --python-version 3.11 \
+#     requirements/ci/base-python-ci.in -o requirements/ci/base-python-ci.txt
+cryptography==50.0.1
+huggingface-hub==2.0.0
+jsonschema==4.26.0
+pyyaml==6.0.3
+pytest
+ruff
+setuptools>=77

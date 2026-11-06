@@ -14,3 +14,24 @@ updates:
       github_actions:
         patterns:
           - "*"
+
+  # Runtime pins (requirements.txt, pyproject.toml) and the hash-locked CI
+  # closures (requirements/ci/*.txt, compiled from *.in). One grouped update
+  # spans both directories; tests/test_ci_requirements.py fails if a bump
+  # lands in one place but not the other.
+  - package-ecosystem: "pip"
+    directories:
+      - "/"
+      - "/requirements/ci"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/New_York"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 5
+    groups:
+      pip:
+        patterns:
+          - "*"
