@@ -3,7 +3,7 @@
 # when they disagree. Recompile the lock after editing this file:
 #   uv pip compile --generate-hashes --python-version 3.12 \
 #     requirements/ci/gates.in -o requirements/ci/gates.txt
-cryptography==50.0.1
+cryptography==50.0.2
 jsonschema==4.26.0
 pyyaml==6.0.3
 pytest
